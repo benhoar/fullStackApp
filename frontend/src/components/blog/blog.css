@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  font-family: 'Dosis', 'sans-serif';
+  background: rgb(175, 180, 211);
+}
+
+.container {
+  width: 80vw;
+  margin: 0px auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px auto 20px auto;
+  width: 70vw;
+  padding: 8px 16px;
+  border-radius: 5px;
+  background-color: rgb(231, 232, 240);
+}
+
+.header h1 {
+  color: rgb(42, 44, 122);
+  font-weight: bold;
+  font-size: 46px;
+  padding-bottom: 7px;
+}
+
+.btn {
+  background:rgb(175, 180, 211) !important;
+  color: rgb(42, 44, 122);
+  border: none;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 20px;
+  font-family: inherit;
+  font-weight: bold;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.blog {
+  background-color: rgb(231, 232, 240);
+  color:rgb(42, 44, 122);
+  border-radius: 5px;
+  margin: 10px auto;
+  width: 70vw;
+  padding: 5px 8px;
+  text-align: justify;
+}
+
+.blog h3 {
+  font-weight: bolder;
+}
+
+.restaurant {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.07);
+  padding: 2px 2px;
+  border-radius: 2px;
+}
+
+.add-form {
+  width: 70vw;
+  margin: 0px auto;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 20px;
+}
+
+form label {
+  display: block;
+  color:rgb(42, 44, 122);
+  margin-bottom: 2px;
+  margin-left: 2px;
+  font-size: 20px;
+}
+
+.half-width-1 {
+  grid-column: 1 / 4;
+}
+
+.half-width-2 {
+  grid-column: 4 / 7;
+}
+
+.full-width {
+  grid-column: 1 / 7;
+}
+
+input,
+textarea {
+  padding: 0.5em;
+  width: 100%;
+  border-radius: 5px;
+  border: 0px;
+  background-color: rgb(231, 232, 240);
+  color:rgb(42, 44, 122);
+  font: inherit;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px rgb(42, 44, 122) solid;
+}
+
+.btn-block {
+  width: 100%;
+  background: rgb(231, 232, 240) !important; 
+  margin: 0;
+}
+
+
+
+@media(max-width: 1000px) {
+  .header {
+    margin: 20px auto 10px auto; 
+    width: 80vw;
+  }
+
+  .blog {
+    margin: 10px auto; 
+    width: 80vw;
+  }
+
+  .add-form {
+    width: 80vw;
+  }
+}
+

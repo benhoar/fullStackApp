@@ -1,0 +1,222 @@
+:root {
+   --dark-blue: rgb(42, 44, 122);
+   --light-blue: rgb(231, 232, 240);
+}
+
+.navbar {
+   background-color: var(--dark-blue);
+   margin: 0;
+   padding: 6px 30px;
+   box-sizing: border-box;
+   color: white;
+   display: flex;
+   align-items: center;
+   position: sticky;
+   top: 0;
+   font-weight: normal;
+   font-size: 32px;
+   border-bottom: 2px solid white;
+}
+
+a {
+   text-decoration: none;
+   color: white;
+   font-size: 24px;
+}
+
+a:hover {
+   color: rgb(175, 180, 211);
+}
+
+img {
+   height: 3rem;
+   border-radius: 50%;
+   border: 2px solid white;
+   margin-top: 5px;
+}
+
+.listmenu {
+   display: flex;
+   justify-content: flex-end;
+   list-style-type: none;
+   padding-bottom: 10px;
+   flex: 25%;
+}
+
+.listmenu > li {
+   padding-left: 20px;
+}
+
+#profilePic {
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+   flex: 25%;
+}
+
+#username {
+   padding-left: 10px;
+}
+
+.title {
+   font-weight: normal;
+   font-size: 48px;
+   padding-bottom: 8px;
+   flex: 50%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+/* HAMBURGER MENU */
+
+.hamburger {
+   display: none;
+   margin-bottom: 4px;
+   transition: 0.5s;
+   cursor: pointer;
+   flex: 25%;
+}
+
+[class*="hamburger-"] {
+   height: 2px;
+   width: 25px;
+   margin-bottom: 2px;
+   background-color: white;
+}
+
+.hamburger:hover {
+   transform: scale(1.05);
+}
+
+.hamburger-middle {
+   transform: translateY(3px);
+}
+.hamburger-bottom {
+   transform: translateY(6px);
+}
+
+.drop-menu {
+   display: none;
+}
+
+@media(max-width: 800px) {
+   #username {
+      display: none;
+   }
+   .hamburger {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+   }
+
+   [class*="hamburger-"] {
+      transition: all 0.3s ease;
+   }
+
+   .drop-menu {
+      list-style-type: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3px 20px;
+      background-color: rgb(231, 232, 240);
+   }
+
+   .menu-item {
+      margin: 8px 40px;
+   }
+
+   .menu-item > a {
+      color: rgb(42, 44, 122);
+      font-weight: bolder;
+      transition: filter 300ms;
+   }
+
+   .menu-item > a:hover {
+      filter: brightness(1.8)
+   }
+
+
+   .hamburger.active > .hamburger-middle{
+      opacity: 0;
+   }
+
+   .hamburger.active > .hamburger-top {
+      transform: translateY(4px) rotate(45deg);
+   }
+
+   .hamburger.active > .hamburger-bottom {
+      transform: translateY(-4px) rotate(-45deg);
+   }
+
+   .listmenu {
+      display: none;
+   }
+
+   .hashone {
+      height: 2px;
+      width: 25px;
+      margin-bottom: 2px;
+      background-color: white;
+      transform: translateY(4px) rotate(45deg);
+   }
+
+   .hashtwo {
+      height: 2px;
+      width: 25px;
+      margin-bottom: 2px;
+      background-color: white;
+      transform: rotate(-45deg);
+   }
+
+   .ex {
+      flex: 25%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      transition: all 0.3s ease;
+   }
+
+   .ex:hover {
+      transform: scale(1.05);
+   }
+
+   .ex-enter {
+      opacity: 0;
+    }
+    .ex-enter-active {
+      opacity: 1;
+      transition: opacity ease-in;
+    }
+    .ex-exit {
+      opacity: 1;
+    }
+    .ex-exit-active {
+      opacity: 0;
+      transition: opacity ease-out;
+    }
+}
+
+/* 
+.butt {
+   height: 30px;
+   width: 30px;
+   border-radius: 50%;
+   background-color: white;
+}
+ .circle-enter {
+   opacity: 0;
+ }
+ .circle-enter-active {
+   opacity: 1;
+   transition: opacity 200ms;
+ }
+ .circle-exit {
+   opacity: 1;
+ }
+ .circle-exit-active {
+   opacity: 0;
+   transition: opacity 200ms;
+ } */
