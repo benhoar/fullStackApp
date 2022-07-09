@@ -11,7 +11,7 @@ const NavBar = ({ onClick }) => {
       <div className="navbar">
          <div id="profilePic">
             <a href="/">
-               <img src="images/BH_Pic.jpg" alt=""/>
+               <img className="propic" src="images/BH_Pic.jpg" alt=""/>
             </a>
             <a id="username" href="/">Ben Hoar</a>
          </div>

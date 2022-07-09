@@ -1,0 +1,41 @@
+.buttons {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 230px;
+   justify-content: space-between;
+   row-gap: 40px;
+   margin-top: 40px;
+   margin-left: 15px;
+}
+
+.btn {
+   height: 100px;
+   width: 200px;
+   display: flex;
+   align-items: center;
+}
+
+.btn > img {
+   height: 100px;
+   -webkit-filter: drop-shadow(0 0 5px rgb(42, 44, 122));
+   filter: drop-shadow(0 0 5px rgb(42, 44, 122));
+}
+
+.btn:hover > img {
+   transform: translateX(-40px) scale(0.4);
+   transition: 300ms ease-out;
+}
+
+.btn > a {
+   opacity: 0;
+   white-space: nowrap;
+   transform: translateX(100px);
+}
+
+.btn:hover > a {
+   opacity: 1;
+   transform: translateX(-60px);
+   transition: all 300ms ease-out;
+   color: white;
+}
