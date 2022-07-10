@@ -2,10 +2,10 @@ import './sidebar.css'
 import Button from './Button'
 
 const SideBar = () => {
-  const st1 = [{paddingLeft:'0px'}, {marginLeft:'0px'}];
-  const st2 = [{paddingLeft:'8px'}, {marginLeft:'7px'}];
-  const st3 = [{paddingLeft:'2px'}, {marginLeft:'0px'}];
-  const st4 = [{paddingLeft:'5px'}, {marginLeft:'4px'}];
+  const st1 = [{paddingLeft:'0px'}, {marginLeft:'8px'}];
+  const st2 = [{paddingLeft:'8px'}, {marginLeft:'13px'}];
+  const st3 = [{paddingLeft:'2px'}, {marginLeft:'6px'}];
+  const st4 = [{paddingLeft:'5px'}, {marginLeft:'10px'}];
 
   return (
       <div className="buttons">
@@ -16,24 +16,5 @@ const SideBar = () => {
       </div>
   )
 }
-
-/* <div className="buttons">
-<div id="plates" className="btn-1">
-   <img src="images/1plate.png" alt="diner"/>
-   <a href="/">Show Scores!</a>
-</div>
-<div id="revs" className="btn-2">
-   <img src="images/revs.png" alt="diner"/>
-   <a href="/">Add a Note!</a>
-</div>
-<div id="regions" className="btn-3">
-   <img src="images/globe.png" alt="diner"/>
-   <a href="/">Pick a Region!</a>
-</div>
-<div id="meal" className="btn-4">
-   <img src="images/diner.png" alt="diner"/>
-   <a href="/">Find a Meal!</a>
-</div
-</div> */
 
 export default SideBar

@@ -1,5 +1,4 @@
-import TopBar from './components/navbar/TopBar'
-import SideBar from './components/sidebar/SideBar'
+import HomePage from './components/homepage/HomePage'
 // this is a hook called useState
 // import { useState } from 'react'
 // import { Switch, Route, Link } from 'react-router-dom'
@@ -11,8 +10,7 @@ function App() {
 
   return (
     <div>
-      <TopBar />
-      <SideBar />
+      <HomePage />
     </div>
   );
 }

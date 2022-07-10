@@ -1,0 +1,20 @@
+.hero {
+   display: flex;
+   align-items: center;
+   overflow-x: auto;
+   background-color: rgb(175, 180, 211);
+}
+
+.mapWrapper {
+   position: relative;
+}
+
+.map {
+   margin-top: 5px;
+   height: 600px;
+}
+
+.marker {
+   position: absolute;
+}
+

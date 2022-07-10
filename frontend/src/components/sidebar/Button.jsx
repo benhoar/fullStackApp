@@ -1,7 +1,6 @@
 import './sidebar.css'
 
 const Button = ({image, text, style}) => {
-  console.log(style)
   return (
     <div className="btn">
       <img src={image} alt={text} style={style[1]}/>

@@ -2,6 +2,7 @@ import Header from './components/blog/Header'
 import Blogs from './components/blog/Blogs'
 import AddBlog from './components/blog/AddBlog'
 import TopBar from './components/navbar/TopBar'
+import Footer from './components/footer/Footer'
 // this is a hook called useState
 import { useState } from 'react'
 // import { Switch, Route, Link } from 'react-router-dom'
@@ -59,6 +60,7 @@ const addBlog = (blog) => {
       />
       {showAddBlog && <AddBlog onAdd={addBlog}/>}
       <Blogs blogs={blogs} onDelete={deleteBlog}/>
+      <Footer />
     </div>
   );
 }
