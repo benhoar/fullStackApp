@@ -30,15 +30,16 @@ body {
 .header h1 {
   color: rgb(42, 44, 122);
   font-weight: bold;
-  font-size: 46px;
+  font-size: 40px;
   padding-bottom: 7px;
 }
 
 .btn {
   background:rgb(175, 180, 211) !important;
   color: rgb(42, 44, 122);
+  height: 50px;
   border: none;
-  padding: 8px 16px;
+  padding: 8px 0px;
   margin: 5px;
   border-radius: 5px;
   cursor: pointer;
@@ -46,6 +47,11 @@ body {
   font-size: 20px;
   font-family: inherit;
   font-weight: bold;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
 }
 
 .btn:active {
@@ -127,6 +133,7 @@ textarea:focus {
   width: 100%;
   background: rgb(231, 232, 240) !important; 
   margin: 0;
+  font-size: 24px;
 }
 
 

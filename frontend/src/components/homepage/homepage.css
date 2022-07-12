@@ -1,12 +1,12 @@
 .hero {
    display: flex;
    align-items: center;
-   overflow-x: auto;
    background-color: rgb(175, 180, 211);
 }
 
 .mapWrapper {
    position: relative;
+   overflow-x: auto;
 }
 
 .map {

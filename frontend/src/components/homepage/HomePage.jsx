@@ -1,8 +1,8 @@
-import TopBar from '../navbar/TopBar'
-import SideBar from '../sidebar/SideBar'
+import TopBar from '../../components/navbar/TopBar'
+import SideBar from '../../components/sidebar/SideBar'
 import Map from './Map'
-import Footer from '../footer/Footer'
-import Marker from '../marker/Marker'
+import Footer from '../../components/footer/Footer'
+import Marker from '../../components/marker/Marker'
 import './homepage.css'
 
 const HomePage = () => {

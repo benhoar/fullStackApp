@@ -3,10 +3,10 @@ import './blog.css'
 
 const Header = ({ onAdd, text }) => {
   return (
-    <header className='header'>
+    <div className='header'>
       <h1>Restaurant Blog</h1>
       <Button text={text} onClick={onAdd}/>
-    </header>
+    </div>
   )
 }
 
