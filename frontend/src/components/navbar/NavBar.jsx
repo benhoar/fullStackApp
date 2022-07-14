@@ -9,18 +9,22 @@ const NavBar = ({ onClick }) => {
 
    return (
       <div className="navbar">
-         <div id="profilePic">
+         <div className="leftSide">
             <a href="/">
+               <h1 className="title">cuisine map</h1>
+            </a>
+            <ul className="listmenu">
+               <li><a href="/about">About</a></li>
+               <li><a href="/blogs">Blogs</a></li>
+               <li><a href="/">Summary</a></li>
+            </ul>
+         </div>
+         <div id="profilePic">
+            <a href="/profile">
                <img className="propic" src="images/BH_Pic.jpg" alt=""/>
             </a>
-            <a id="username" href="/">Ben Hoar</a>
+            <a id="username" href="/profile">Ben Hoar</a>
          </div>
-         <h1 className="title">cuisine map</h1>
-         <ul className="listmenu">
-            <li><a href="/">About</a></li>
-            <li><a href="/">Blogs</a></li>
-            <li><a href="/">Summary</a></li>
-         </ul>
 
 
          {closedMenu && <div className="hamburger" onClick={() => {onClick(); setOpenedMenu(true)}}>

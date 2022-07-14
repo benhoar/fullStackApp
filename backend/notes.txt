@@ -1,0 +1,28 @@
+React Application (FrontEnd) --> REST API for Communication --> Express Node.js Server (BackEnd) is our API
+*API is just the middleman when two applications need a translator
+   *A request is made by the client, the API relays that request to the server,
+   *the server executes the request and sends the result to the API, which then
+   *presents the excecuted request to the client.
+   *Simply put, it is a mediator between provider and client.
+*REST (representational state transfer) API is defined by its architectural constraints
+   *A client-server architecture managed by HTTP requests
+   *Each request is separate and unconnected
+   *There are other things, but this is fine
+*The REST API allows for sending of GET, PUT, DELETE, POST requests etc. from the client to the server, which sends back either just a 200 response (if it went well, 200 means OK) and possibly a payload (e.g. requested data)
+
+Back End
+*This folder contains routes, models (data base stuff), and controllers will exist
+*server.js is the entry point to the server
+*npm i -D nodemon // constantly watches server.js file so we don't have to keep restarting it
+*"start" : "node backend/server.js", "server": "nodemon backend/server.js" were added to package.json
+*Mongoose was the last thing implemented, folders were generated in the order
+   *routes: deals with CRUD requests
+   *controllers: defines what to do for these routes – the actions to be performed by server
+   *middleware: ill-defined now, but first file changed error handling, in general middleware
+                funcitons run during the req/res cycle
+*NOTE: I get the impression the (async, await, try/catch) paradigm is an alternatie to the (.then().catch()) paradigm
+*npm i express-async-handler
+   * "Simple middleware for handling exceptions inside of async express routes and passing them to your express error handlers."
+*THIS WAS ALL DONE BEFORE MONGODB – NEXT IS MONGODB IMPLEMENTATION
+
+I think anything brought into server.js can be used anywhere

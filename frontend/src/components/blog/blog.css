@@ -11,6 +11,10 @@ body {
   background: rgb(175, 180, 211);
 }
 
+.blogs {
+  margin-bottom: 90px;
+}
+
 .container {
   width: 80vw;
   margin: 0px auto;
@@ -24,19 +28,20 @@ body {
   width: 70vw;
   padding: 8px 16px;
   border-radius: 5px;
-  background-color: rgb(231, 232, 240);
+  border: 2px solid #1B3A20;
+  background-color: white;
 }
 
 .header h1 {
-  color: rgb(42, 44, 122);
+  color: #1B3A20;
   font-weight: bold;
   font-size: 40px;
   padding-bottom: 7px;
 }
 
-.btn {
-  background:rgb(175, 180, 211) !important;
-  color: rgb(42, 44, 122);
+.button {
+  background: #1B3A20 !important;
+  color: white;
   height: 50px;
   border: none;
   padding: 8px 0px;
@@ -59,9 +64,10 @@ body {
 }
 
 .blog {
-  background-color: rgb(231, 232, 240);
-  color:rgb(42, 44, 122);
+  background-color: white;
+  color:#1B3A20;
   border-radius: 5px;
+  border: 2px solid #1B3A20;
   margin: 10px auto;
   width: 70vw;
   padding: 5px 8px;
@@ -95,7 +101,7 @@ body {
 
 form label {
   display: block;
-  color:rgb(42, 44, 122);
+  color:#1B3A20;
   margin-bottom: 2px;
   margin-left: 2px;
   font-size: 20px;
@@ -119,24 +125,21 @@ textarea {
   width: 100%;
   border-radius: 5px;
   border: 0px;
-  background-color: rgb(231, 232, 240);
-  color:rgb(42, 44, 122);
+  background-color: rgba(122, 194, 82, 0.2);
+  color: gray;
   font: inherit;
 }
 
 input:focus,
 textarea:focus {
-  outline: 2px rgb(42, 44, 122) solid;
+  outline: 2px #1B3A20 solid;
 }
 
 .btn-block {
   width: 100%;
-  background: rgb(231, 232, 240) !important; 
   margin: 0;
   font-size: 24px;
 }
-
-
 
 @media(max-width: 1000px) {
   .header {

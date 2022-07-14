@@ -3,7 +3,7 @@ import './blog.css'
 const Button = ( {text, onClick} ) => {
    return (
       <button 
-         className='btn'
+         className='button'
          onClick={onClick}>
          {text}
       </button>

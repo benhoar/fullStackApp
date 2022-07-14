@@ -1,48 +1,44 @@
 .buttons {
    display: flex;
    flex-direction: column;
-   align-items: flex-start;
-   flex-shrink: 0;
-   width: 190px;
+   align-items: center;
    justify-content: space-between;
-   row-gap: 40px;
-   padding-top: 10px;
-   padding-bottom: 10px;
-   padding-left: 20px;
-   overflow: hidden;
-}
+   flex-shrink: 0;
+   height: 600px;
+   width: 180px;
+   padding: 30px 10px;
 
-.linktext {
-   font-size: 24px;
 }
 
 .btn {
-   height: 100px;
-   width: 100px;
+   height: 100px !important;
+   padding: 0px !important;
+   margin: 0px !important;
    display: flex;
    align-items: center;
 }
 
+.btn > a {
+   opacity: 0;
+   transform: translateX(100px);
+   white-space: nowrap;
+}
+
 .btn > img {
    height: 100px;
-   -webkit-filter: drop-shadow(0 0 5px rgb(42, 44, 122));
-   filter: drop-shadow(0 0 5px rgb(42, 44, 122));
+   padding-left: 120px;
+   -webkit-filter: drop-shadow(0 0 5px black);
+   filter: drop-shadow(0 0 5px black);
 }
 
 .btn:hover > img {
-   transform: translateX(-70px) scale(0.3);
-   transition: 250ms ease-out;
-}
-
-.btn > a {
-   opacity: 0;
-   white-space: nowrap;
-   transform: translateX(100px);
+   transform: translateX(-18px) scale(0.3);
+   transition: 250ms ease-in;
 }
 
 .btn:hover > a {
    opacity: 1;
    transform: translateX(-100px);
    transition: all 250ms ease-in;
-   color: white;
+   color: #E4DEAE;
 }

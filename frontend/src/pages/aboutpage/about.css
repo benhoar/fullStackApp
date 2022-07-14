@@ -1,0 +1,35 @@
+.aboutPost {
+   margin: 20px 200px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.text {
+   font-size: 24px;
+   text-align: justify;
+   margin-bottom: 20px;
+}
+
+.text::first-letter {
+   font-size: 40px;
+   margin-left: 32px;
+}
+
+.uspic {
+   height: 200px;
+   border-radius: 10px;
+   border: 2px solid #1D3A21;
+   margin-bottom: 80px;
+}
+
+@media(max-width: 800px) {
+   .aboutPost {
+      margin: 20px 50px;
+   }
+   .text {
+      font-size: 18px;
+   }
+}
+
+

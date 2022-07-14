@@ -3,10 +3,11 @@
    display: flex;
    align-items: flex-start;
    justify-content: space-between;
-   padding: 15px 20px;
-   color: white;
+   padding: 20px;
+   color: #1B3A20;
    font-size: 24px;
    bottom: 0;
-   position: sticky;
-   background-color: rgb(175, 180, 211);
+   position: fixed;
+   background-color: white;
+   border-top: 2px solid #1B3A20;
 }

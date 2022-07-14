@@ -1,0 +1,9 @@
+.wrapper {
+   position: relative;
+   overflow-x: auto;
+}
+
+.map {
+   margin-top: 5px;
+   height: 600px;
+}

@@ -75,7 +75,7 @@ const AddBlog = ({ onAdd }) => {
                />
             </p>
             <p className="full-width">
-               <input type="submit" value="Save Blog" className="btn btn-block"/>
+               <input type="submit" value="Save Blog" className="button btn-block"/>
             </p>
          </div>
       </form>

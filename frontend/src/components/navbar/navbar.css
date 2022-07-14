@@ -1,53 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&family=Teko:wght@300&display=swap');
+
 .navbar {
-   background-color: rgb(42, 44, 122);
+   /* background-color: rgb(42, 44, 122); */
+   background-color: white;
    margin: 0;
-   padding: 6px 30px;
+   padding: 0px 30px;
    box-sizing: border-box;
-   color: white;
+   color:  #1B3A20;
    display: flex;
    align-items: center;
+   justify-content: space-between;
    position: sticky;
    top: 0;
    font-weight: normal;
    font-size: 32px;
-   border-bottom: 2px solid white;
+   border-bottom: 2px solid #1B3A20;
    z-index: 100;
 }
 
 a {
    text-decoration: none;
-   color: white;
+   color:  #1B3A20;
    font-size: 24px;
 }
 
 a:hover {
-   color: rgb(175, 180, 211);
+   color: #7AC252;
 }
 
 .propic {
-   height: 3rem;
+   height: 2.7rem;
+   width: 2.7rem;
+   object-fit: cover;
    border-radius: 50%;
-   border: 2px solid white;
+   border: 2px solid #1B3A20;
    margin-top: 5px;
+}
+
+.leftSide {
+   display:flex;
+   align-items: center;
+   justify-content: flex-start;
 }
 
 .listmenu {
    display: flex;
-   justify-content: flex-end;
+   justify-content: flex-start;
    list-style-type: none;
    padding-bottom: 10px;
-   flex: 25%;
+   padding-left: 20px;
 }
 
 .listmenu > li {
-   padding-left: 20px;
+   padding-right: 20px;
 }
 
 #profilePic {
    display: flex;
    align-items: center;
+   justify-content: flex-end;
    cursor: pointer;
-   flex: 25%;
 }
 
 #username {
@@ -55,13 +67,13 @@ a:hover {
 }
 
 .title {
-   font-weight: normal;
-   font-size: 48px;
-   padding-bottom: 8px;
-   flex: 50%;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
+   font-family: 'Teko', sans-serif;
+   font-weight: lighter;
+   font-size: 46px;
+}
+
+.title:hover {
+   color: #1B3A20;
 }
 
 /* HAMBURGER MENU */
@@ -78,7 +90,7 @@ a:hover {
    height: 2px;
    width: 25px;
    margin-bottom: 2px;
-   background-color: white;
+   background-color: #1B3A20;
 }
 
 .hamburger:hover {
@@ -99,7 +111,7 @@ a:hover {
 }
 
 @media(max-width: 800px) {
-   #username {
+   #profilePic {
       display: none;
    }
    .hamburger {
@@ -119,7 +131,7 @@ a:hover {
       align-items: center;
       justify-content: space-between;
       padding: 3px 20px;
-      background-color: rgb(231, 232, 240);
+      background-color: rgba(122, 194, 82, 0.2);
    }
 
    .menu-item {
@@ -127,7 +139,7 @@ a:hover {
    }
 
    .menu-item > a {
-      color: rgb(42, 44, 122);
+      color: #1B3A20;
       font-weight: bolder;
       transition: filter 300ms;
    }
@@ -157,7 +169,7 @@ a:hover {
       height: 2px;
       width: 25px;
       margin-bottom: 2px;
-      background-color: white;
+      background-color: #1B3A20;
       transform: translateY(4px) rotate(45deg);
    }
 
@@ -165,7 +177,7 @@ a:hover {
       height: 2px;
       width: 25px;
       margin-bottom: 2px;
-      background-color: white;
+      background-color: #1B3A20;
       transform: rotate(-45deg);
    }
 
@@ -197,25 +209,3 @@ a:hover {
       transition: opacity ease-out;
     }
 }
-
-/* 
-.butt {
-   height: 30px;
-   width: 30px;
-   border-radius: 50%;
-   background-color: white;
-}
- .circle-enter {
-   opacity: 0;
- }
- .circle-enter-active {
-   opacity: 1;
-   transition: opacity 200ms;
- }
- .circle-exit {
-   opacity: 1;
- }
- .circle-exit-active {
-   opacity: 0;
-   transition: opacity 200ms;
- } */

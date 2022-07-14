@@ -3,11 +3,11 @@ import './blog.css'
 
 const Blogs = ({ blogs, onDelete }) => {
    return (
-      <>
+      <div className="blogs">
          {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} onDelete={onDelete}/>
          ))}
-      </>
+      </div>
    )
 }
 
