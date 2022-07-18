@@ -10,6 +10,11 @@ const getBlogs = asyncHandler(async (req, res) => {
    res.status(200).json(Blogs)
 })
 
+const getBlog = asyncHandler(async (req, res) => {
+   const blog = await Blog.findById(req.params.id)
+   res.status(200).json(blog)
+})
+
 // @desc set blogs
 // @route POST /api/blogs
 // @access NOT IMPLEMENTED
@@ -47,12 +52,18 @@ const updateBlog = asyncHandler(async (req, res) => {
 // @route DELETE /api/blogs/:id
 // @access NOT IMPLEMENTED
 const deleteBlog = asyncHandler(async (req, res) => {
-   res.status(200).json({ message: `delete ${req.params.id}` })
+   try {
+      await Blog.findByIdAndDelete(req.params.id)
+      res.status(200).json({msg: "blog deleted"})
+   } catch {
+      console.log("delete failed")
+   }
 })
 
 module.exports = {
    getBlogs,
    postBlog,
    updateBlog,
-   deleteBlog
+   deleteBlog,
+   getBlog
 }

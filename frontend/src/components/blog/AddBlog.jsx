@@ -1,27 +1,67 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './blog.css'
 
-const AddBlog = ({ onAdd }) => {
+const axios = require('axios').default
+
+const AddBlog = ({ onClose,
+                   buttontxt,
+                   defRest,
+                   defCuis,
+                   defRating,
+                   defDate,
+                   defBlog,
+                   postId
+                }) => {
    const [restaurant, setRestaurant] = useState('')
    const [cuisine, setCuisine] = useState('')
    const [date, setDate] = useState('')
    const [rating, setRating] = useState('')
-   const [text, setText] = useState('')
+   const [blog, setBlog] = useState('')
 
-   const onSubmit = (e) => {
-      e.preventDefault()
-      
-      if (!text) {
-         alert('Please add a blog')
-         return
+   const nav = useNavigate()
+
+   useEffect(() => {
+      const setStates = () => {
+         setRestaurant(defRest)
+         setCuisine(defCuis)
+         setDate(defDate)
+         setRating(defRating)
+         setBlog(defBlog)
       }
+      setStates()
+   }, [defRest, defCuis, defRating, defDate, defBlog])
 
-      onAdd({restaurant, cuisine, date, rating, text})
-      setText('')
-      setDate('')
-      setCuisine('')
-      setRating('')
-      setRestaurant('')
+   const onSubmit = async (e) => {
+      e.preventDefault()
+      try {
+         if (buttontxt === 'Save Blog') {
+            await axios.post("/api/blogs/", {
+               restaurant,
+               cuisine,
+               rating,
+               date,
+               blog
+            })
+            setBlog('')
+            setDate('')
+            setCuisine('')
+            setRating('')
+            setRestaurant('')
+            onClose()
+         } else {
+            await axios.put(`/api/blogs/${postId}`, {
+               restaurant,
+               cuisine,
+               rating,
+               date,
+               blog
+            })
+            nav('/blogs')
+         }
+      } catch (err) {
+         console.log(err)
+      }
    }
 
    return (
@@ -32,7 +72,7 @@ const AddBlog = ({ onAdd }) => {
                <input 
                   type="text" 
                   placeholder="Input Restaurant"
-                  value={restaurant}
+                  defaultValue={defRest}
                   onChange={(e) => setRestaurant(e.target.value)}   
                />
             </p>
@@ -40,17 +80,17 @@ const AddBlog = ({ onAdd }) => {
                <label>Cuisine</label>
                <input 
                   type="text" 
-                  placeholder="Input Cuisine" 
-                  value={cuisine}
+                  placeholder="Input Cuisine"
+                  defaultValue={defCuis}
                   onChange={(e) => setCuisine(e.target.value)}   
                />
             </p>
             <p className="half-width-1">
                <label>Date</label>
                <input 
-                  type="Date" 
-                  placeholder="" 
-                  value={date}
+                  type="Date"
+                  defaultValue={defDate}
+                  placeholder=""
                   onChange={(e) => setDate(e.target.value)}   
                />
             </p>
@@ -60,8 +100,8 @@ const AddBlog = ({ onAdd }) => {
                   type="number" 
                   min="1" 
                   max="10" 
-                  placeholder="Rate Experience" 
-                  value={rating}
+                  placeholder="Rate Your Experience"
+                  defaultValue={defRating}
                   onChange={(e) => setRating(e.target.value)}   
                />
             </p>
@@ -70,16 +110,25 @@ const AddBlog = ({ onAdd }) => {
                <textarea 
                   name="" 
                   id=""
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}   
+                  placeholder=""
+                  defaultValue={defBlog}
+                  onChange={(e) => setBlog(e.target.value)}   
                />
             </p>
             <p className="full-width">
-               <input type="submit" value="Save Blog" className="button btn-block"/>
+            <input type="submit" value={buttontxt} className="button btn-block"/>
             </p>
          </div>
       </form>
    )
+}
+
+ AddBlog.defaultProps = {
+    buttontxt: "Save Blog",
+    onClose: () => null,
+    defRest: '',
+   //  defCuis: '',
+   //  defRating: '',
 }
 
 export default AddBlog

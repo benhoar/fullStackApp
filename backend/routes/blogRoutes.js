@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getBlogs, postBlog, updateBlog, deleteBlog } = require('../controllers/blogController')
+const { getBlogs, postBlog, updateBlog, deleteBlog, getBlog } = require('../controllers/blogController')
 
 /*
    you CAN have the requests executed withing these router functions,
@@ -11,7 +11,9 @@ const { getBlogs, postBlog, updateBlog, deleteBlog } = require('../controllers/b
 // the chained methods can be done for any requests
 // that share a path, I am leaving put and delete as
 // unmodified examples
-router.route('/').get(getBlogs).post(postBlog)
+router.route('/').get(getBlogs)
+router.route('/').post(postBlog)
+router.route('/:id').get(getBlog)
 router.put('/:id', updateBlog)
 router.delete('/:id', deleteBlog)
 

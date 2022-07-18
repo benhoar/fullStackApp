@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const blogSchema = mongoose.Schema({
    restaurant: {
       type: String,
-      required: true
+      required: true,
+      unique: true
    },
    cuisine: {
       type: String,

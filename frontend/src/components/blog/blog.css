@@ -87,6 +87,22 @@ body {
   border-radius: 2px;
 }
 
+.icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 10px;
+}
+
+.edit {
+  height: 16px;
+  margin-bottom: 2px;
+}
+
+.link:hover {
+  color: #1B3A20;
+}
+
 .add-form {
   width: 70vw;
   margin: 0px auto;

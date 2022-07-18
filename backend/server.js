@@ -5,6 +5,7 @@ const connectDB = require('./config/db')
 const port = process.env.PORT || 5000
 const colors = require('colors')
 
+
 connectDB()
 
 const app = express()
@@ -18,6 +19,7 @@ app.use(express.urlencoded({extended: false}))
 // related to the blogs page are all stored in separate 
 // folder and file (post, puts, delete etc. for blogs)
 app.use('/api/blogs', require('./routes/blogRoutes'))
+app.use('/api/countries', require('./routes/countryRoutes'))
 
 
 // overwrites the default error hanlder

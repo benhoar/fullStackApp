@@ -1,5 +1,6 @@
-import { FaTimes } from 'react-icons/fa'
+import { FaTimes, FaEdit } from 'react-icons/fa'
 import './blog.css'
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog, onDelete }) => {
   return (
@@ -8,10 +9,17 @@ const Blog = ({ blog, onDelete }) => {
         <h3>
           {`${blog.restaurant} (${blog.cuisine}) – ${blog.rating}/10`}
         </h3>
-        <FaTimes style={{cursor:'pointer'}}
-        onClick={() => {onDelete(blog.id)}}/>
+        <div className="icons">
+          <Link to={`/blogs/edit/${blog._id}`} className="link">
+            <FaEdit style={{cursor:'pointer'}} className="edit"/>
+          </Link>
+          <FaTimes style={{cursor:'pointer'}}
+          onClick={() => {onDelete(blog._id)}}/>
+        </div>
       </div>
-      <p>{`${blog.text} ${blog.date}`}</p>
+      <p>{`${blog.blog}
+           ${new Date(blog.date).toDateString()}`}
+      </p>
     </div>
   )
 }
