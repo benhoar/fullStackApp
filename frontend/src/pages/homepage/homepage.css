@@ -2,4 +2,5 @@
    display: flex;
    align-items: center;
    background-color: #00A9C7;
+   position: relative;
 }

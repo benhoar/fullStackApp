@@ -16,12 +16,14 @@
    margin: 0px !important;
    display: flex;
    align-items: center;
+   cursor: pointer;
 }
 
-.btn > a {
+.btn > p {
    opacity: 0;
    transform: translateX(100px);
    white-space: nowrap;
+   font-size: 24px;
 }
 
 .btn > img {
@@ -36,7 +38,7 @@
    transition: 250ms ease-in;
 }
 
-.btn:hover > a {
+.btn:hover > p {
    opacity: 1;
    transform: translateX(-100px);
    transition: all 250ms ease-in;

@@ -8,7 +8,7 @@ const TopBar = () => {
 
    return (
       <div>
-         <NavBar onClick={() => {setShowPopMenu(!showPopMenu); console.log(showPopMenu)}}/> 
+         <NavBar onClick={() => setShowPopMenu(!showPopMenu)}/> 
          {showPopMenu && <PopMenu />}
       </div>
    )

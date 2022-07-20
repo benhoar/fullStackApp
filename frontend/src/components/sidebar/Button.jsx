@@ -1,10 +1,10 @@
 import './sidebar.css'
 
-const Button = ({image, text, style}) => {
+const Button = ({image, text, style, onClick}) => {
   return (
-    <div className="btn">
+    <div className="btn" onClick={onClick}>
       <img src={image} alt={text} style={style[1]}/>
-      <a className="linktext" href="/" style={style[0]}>{text}</a>
+      <p className="linktext" style={style[0]}>{text}</p>
     </div>
   )
 }

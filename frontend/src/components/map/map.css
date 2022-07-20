@@ -7,3 +7,27 @@
    margin-top: 5px;
    height: 600px;
 }
+
+.compWrapper {
+   position:  absolute;
+   left: 40%;
+   top: 18px;
+}
+
+.compWrapper-enter {
+   opacity: 0;
+}
+
+.compWrapper-enter-active {
+   opacity: 1;
+   transition: all 100ms ease-in;
+}
+
+.compWrapper-exit {
+   opacity: 1;
+}
+
+.compWrapper-exit-active {
+   opacity: 0;
+   transition: all 0ms linear;
+}

@@ -65,7 +65,7 @@ const AddBlog = ({ onClose,
    }
 
    return (
-      <form className="add-form" onSubmit={onSubmit}>
+      <form className="add-form" onSubmit={onSubmit} onClose={onClose}>
          <div className="form-control">
             <p className="half-width-1">
                <label>Restaurant</label>

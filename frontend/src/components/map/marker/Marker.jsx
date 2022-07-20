@@ -1,9 +1,12 @@
 import './marker.css'
 
-const Marker = ({ position, name }) => {
+const Marker = ({ position, name, onClick }) => {
+
   return (
-   <div className="marker" style={position} alt={name}>
-      <div className="circle"></div>
+    <div className="markerWrap" style={position} onClick={onClick}>
+      <div className="marker" alt={name}>
+        <div className="circle"></div>
+      </div>
    </div>
   )
 }
