@@ -7,7 +7,7 @@
    color: #1B3A20;
    font-size: 24px;
    bottom: 0;
-   position: fixed;
+   position: relative;
    background-color: white;
    border-top: 2px solid #1B3A20;
 }

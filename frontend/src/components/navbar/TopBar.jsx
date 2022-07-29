@@ -7,7 +7,7 @@ const TopBar = () => {
    const [showPopMenu, setShowPopMenu] = useState(false)
 
    return (
-      <div>
+      <div className="topBar">
          <NavBar onClick={() => setShowPopMenu(!showPopMenu)}/> 
          {showPopMenu && <PopMenu />}
       </div>

@@ -8,5 +8,8 @@
   
   body {
     font-family: 'Dosis', 'sans-serif';
-    margin-bottom: 55px;
+  }
+
+  .mainWrapper {
+    min-height: calc(100vh - 135px);
   }

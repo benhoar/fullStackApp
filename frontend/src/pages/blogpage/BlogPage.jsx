@@ -1,8 +1,6 @@
 import Header from '../../components/blog/Header'
 import Blogs from '../../components/blog/Blogs'
 import AddBlog from '../../components/blog/AddBlog'
-import TopBar from '../../components/navbar/TopBar'
-import Footer from '../../components/footer/Footer'
 import './blogpage.css'
 // this is a hook called useState
 import { useEffect, useState } from 'react'
@@ -46,14 +44,12 @@ const BlogPage = () => {
 
   return (
     <div>
-      <TopBar />
       <Header 
         onAdd={() => setShowAddBlog(!showAddBlog)}
         text={showAddBlog ? 'Close' : 'Add'}
       />
       {showAddBlog && <AddBlog onClose={hideBlog}/>}
       <Blogs blogs={blogs} onDelete={deleteBlog}/>
-      <Footer />
     </div>
   );
 }

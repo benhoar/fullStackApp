@@ -1,5 +1,3 @@
-import Footer from "../../components/footer/Footer"
-import TopBar from '../../components/navbar/TopBar'
 import AddBlog from "../../components/blog/AddBlog"
 import { useState, useEffect } from 'react'
 const axios = require('axios').default
@@ -31,7 +29,6 @@ const EditPage = () => {
 
    return (
       <div>
-         <TopBar />
          <br></br>
          <AddBlog buttontxt={"Update Blog"}
                   defRest={restaurant}
@@ -39,8 +36,8 @@ const EditPage = () => {
                   defDate={date}
                   defRating={rating}
                   defBlog={blog}
-                  postId={postId}/>
-         <Footer />
+                  postId={postId}
+         />
       </div>
    )
 }

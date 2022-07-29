@@ -1,5 +1,3 @@
-import Footer from "../../components/footer/Footer"
-import TopBar from "../../components/navbar/TopBar"
 import './profile.css'
 
 const Profile = () => {
@@ -10,8 +8,6 @@ const Profile = () => {
    const favorite = "Korean"
  
    return (
-      <div>
-      <TopBar />
       <div className="fieldWrapper">
          <img id="pic" src={pic} alt="" />
          <div className="fields">
@@ -32,8 +28,6 @@ const Profile = () => {
                <span>: {favorite}</span>
             </div>
          </div>
-      </div>
-      <Footer />
       </div>
    )
 }
