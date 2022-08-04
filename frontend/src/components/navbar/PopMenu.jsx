@@ -5,7 +5,7 @@ const PopMenu = () => {
       <ul className="drop-menu">
          <li className="menu-item"><a href="/about">About</a></li>
          <li className="menu-item"><a href="/blogs">Blogs</a></li>
-         <li className="menu-item"><a href="/">Summary</a></li>
+         <li className="menu-item"><a href="/summary">Summary</a></li>
       </ul>
     
   )

@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Secular+One&family=Teko:wght@300&display=swap');
 
+.formWrapper {
+   color: #1B3A20;
+}
+
 .topBar {
    position: sticky;
    top: 0;

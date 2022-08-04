@@ -16,7 +16,7 @@ const NavBar = ({ onClick }) => {
             <ul className="listmenu">
                <li><a href="/about">About</a></li>
                <li><a href="/blogs">Blogs</a></li>
-               <li><a href="/">Summary</a></li>
+               <li><a href="/summary">Summary</a></li>
             </ul>
          </div>
          <div id="profilePic">

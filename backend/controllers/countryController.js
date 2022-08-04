@@ -27,6 +27,7 @@ const postCountry = asyncHandler(async (req, res) => {
       country: req.body.country,
       rating: req.body.rating,
       blog: req.body.blog ? req.body.blog : "",
+      topRestaurant: req.body.topRestaurant ? req.body.topRestaurant : ""
    })
    res.status(200).json(country)
 })
@@ -46,9 +47,20 @@ const updateCountry = asyncHandler(async (req, res) => {
    res.status(200).json(updatedCountry)
 })
 
+const deleteCountry = asyncHandler(async (req, res) => {
+   try {
+      await Country.findByIdAndDelete(req.params.id)
+      res.status(200).json({msg: "country deleted"})
+   } catch {
+      console.log("delete failed")
+   }
+})
+
+
 module.exports = {
    getCountries,
    postCountry,
    updateCountry,
-   getCountry
+   getCountry,
+   deleteCountry
 }

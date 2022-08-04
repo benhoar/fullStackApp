@@ -1,0 +1,96 @@
+.formWrapper {
+   width: 180px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.countriesList {
+   overflow: auto;
+   height: 450px;
+   width: 140px;
+   padding: 0 4px;
+   border: 2px solid #1B3A20;
+   border-radius: 4px;
+   background-color: #E3DEAE;
+}
+
+.selectHeader {
+   width: 130px;
+   cursor: pointer;
+   text-align: center;
+   margin-bottom: 4px;
+}
+
+.ratingHeaders {
+  color: #E3DEAE;
+  font-size: 22px;
+}
+
+.countryItem {
+   border-bottom: 1px solid lightgray;
+   text-align: center;
+   cursor: pointer;
+ }
+
+ .selectedCountry {
+   border-bottom: 1px solid lightgray;
+   text-align: center;
+   background-color: rgba(122, 194, 82, 0.4);
+   cursor: pointer;
+ }
+
+ .countryItem:last-child {
+   border: none;
+ }
+
+ .ratingsWrapper {
+   display:flex;
+   flex-direction: column;
+   align-items: center;
+   width: 140px;
+   margin-top: 2px;
+ }
+
+ .ratingOptions {
+   display: flex;
+   width: 100%;
+   margin-top: 4px;
+   background: #E3DEAE;
+   border-radius: 4px;
+   margin-bottom: 4px;
+ }
+
+ [class^="rating-"] {
+   cursor: pointer;
+   border: 2px solid #1B3A20;
+   width: 100%;
+   text-align: center;
+ }
+
+ .rating-1 {
+   border-right: 0.75px;
+   border-radius: 4px 0 0 4px;
+ }
+
+ .rating-3 {
+   border-left: 0.75px;
+   border-radius: 0 4px 4px 0;
+ }
+
+ .selectedRating {
+   background-color: rgba(122, 194, 82, 0.4);
+ }
+
+ .submitRatings {
+  background: #1B3A20;
+  width: 140px;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 0;
+ }
+
+ .submitRatings > h3 {
+  font-size: 18px;
+ }
