@@ -2,14 +2,31 @@ import './map.css'
 import Marker from './marker/Marker'
 import CountryPop from '../countrypop/CountryPop'
 import { CSSTransition } from 'react-transition-group'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import extractData from '../../scripts/homeData'
+const axios = require('axios').default
 
 const Map = () => {
 
   const [active, setActive] = useState(false)
   const [country, setCountry] = useState('')
   const [score, setScore] = useState(0)
-  //const [randomClick, setRandomClick] = useState(false)
+  const [blogs, setBlogs] = useState([])
+
+  // Get Blogs
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await axios.get("/api/blogs/")
+        setBlogs(res.data)
+        extractData(res.data)
+        console.log("Effect Used")
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchBlogs()
+  }, [blogs.length]) // note this dependency is pretty irrelevant
 
   const onClick = (name, curScore) => {
     setActive(true)
@@ -21,7 +38,7 @@ const Map = () => {
     <div className="wrapper">
       <CSSTransition 
         in={active}
-        timeout={100}
+        timeout={200}
         classNames="compWrapper"
         unmountOnExit
       >

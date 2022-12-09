@@ -1,16 +1,35 @@
 import './countrypop.css'
 import { FaTimes } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
+const axios = require('axios').default
 
-export const CountryPop = ({ onClick, name, score }) => {
+const CountryPop = ({ onClick, name, score }) => {
 
-  const [country, setCountry] = useState('')
+  const [country, setCountry] = useState("")
   const [curscore, setScore] = useState(0)
 
   useEffect(() => {
+    const getCountryInfo = async () => {
+      try {
+        const res = await axios.get("/api/countries/")
+        let countryData = null
+        res.data.forEach((entry) => {
+          if (entry.country === name)
+            countryData = entry
+        })
+        if (countryData) {
+          setScore(countryData.rating)
+        }
+        else {
+          setScore(0)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getCountryInfo()
     setCountry(name)
-    setScore(score)
-  }, [name, score])
+  }, [name])
 
   return (
     <div className="countryInfo">

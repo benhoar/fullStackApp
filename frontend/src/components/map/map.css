@@ -20,7 +20,7 @@
 
 .compWrapper-enter-active {
    opacity: 1;
-   transition: all 100ms ease-in;
+   transition: all 200ms ease-in;
 }
 
 .compWrapper-exit {

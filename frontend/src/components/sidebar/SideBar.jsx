@@ -1,6 +1,7 @@
 import './sidebar.css'
 import Button from './Button'
 import Rater from '../rater/Rater'
+import SideBlog from '../sideblog/SideBlog'
 import { useState } from 'react' 
 
 const SideBar = ({ noteClick }) => {
@@ -9,6 +10,7 @@ const SideBar = ({ noteClick }) => {
   const st3 = [{paddingLeft:'9px'}, {marginLeft:'18px'}];
   const st4 = [{paddingLeft:'12px'}, {marginLeft:'0px'}];
   const [rater, setRater] = useState(false)
+  const [sideBlog, setSideBlog] = useState(false)
 
   const randomDinner = () => {
     const cuisines = [
@@ -26,13 +28,13 @@ const SideBar = ({ noteClick }) => {
 
   return (
       <div>
-        {!rater && <div className="buttons">
+        {(!rater && !sideBlog) && <div className="buttons">
           <Button image={"images/1plate2.png"} text={"Show Scores!"} style={st1}/>
           <Button 
                   image={"images/revs2.png"} 
                   text={"Add a Note!"} 
                   style={st2}
-                  onClick={noteClick}
+                  onClick={() => setSideBlog(true)}
             />
           <Button image={"images/globe2.png"} text={"Pick a Region!"} style={st3} onClick={() => setRater(true)}/>
           <Button 
@@ -43,6 +45,7 @@ const SideBar = ({ noteClick }) => {
             />
         </div>}
         {rater && <Rater onClick={() => {setRater(false)}} />}
+        {sideBlog && <SideBlog onClick={() => {setSideBlog(false)}}/>}
       </div>
   )
 }

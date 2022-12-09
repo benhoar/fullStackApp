@@ -2,6 +2,7 @@ import HomePage from './pages/homepage/HomePage'
 import BlogPage from './pages/blogpage/BlogPage'
 import About from './pages/aboutpage/About'
 import Profile from './pages/profile/Profile'
+import SummaryPage from './pages/summarypage/SummaryPage'
 import EditPage from './pages/editPage/EditPage'
 import TopBar from './components/navbar/TopBar'
 import Footer from './components/footer/Footer'
@@ -26,6 +27,7 @@ function App() {
             <Route path='/about' element={<About />}/>
             <Route path='/profile' element={<Profile />}/>
             <Route path='/blogs/edit/:id' element={<EditPage />}/>
+            <Route path='/summary' element={<SummaryPage />}/>
           </Routes>
         </Router>
       </div>

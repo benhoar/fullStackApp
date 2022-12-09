@@ -1,0 +1,40 @@
+.summaryWrapper {
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+   padding-top: 10px;
+   color: #1B3A20;
+}
+
+.summaryTable {
+   text-align: left;
+   font-size: 24px;
+   border-collapse: collapse;
+}
+
+.scores {
+   text-align: center;
+}
+
+.tableHeader {
+   color: white;
+   background-color: #1B3A20;
+   text-align: center;
+   font-weight: bolder;
+}
+
+.tableHeader:first-child {
+   border-radius: 8px 0 0 0;
+}
+.tableHeader:last-child {
+   border-radius: 0 8px 0 0;
+}
+
+
+.tableRow > th, td {
+   padding: 2px 20px 2px 20px;
+}
+
+.summaryBody > tr:nth-child(2n) {
+   background-color: rgba(175, 180, 211, 0.2);
+}

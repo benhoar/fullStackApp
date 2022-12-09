@@ -24,13 +24,12 @@ const BlogPage = () => {
     }
     fetchBlogs()
     setBlogUpated(false)
-  }, [blogUpdated]) // empty array means it fires automatically
+  }, [blogUpdated]) 
 
   // Delete Blog
   const deleteBlog = async (id) => {
     try {
       await axios.delete(`/api/blogs/${id}`)
-      console.log("button clicked")
       setBlogUpated(true)
     } catch (err) {
       console.log(err)

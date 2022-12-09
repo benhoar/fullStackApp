@@ -1,5 +1,7 @@
 .markerWrap {
    position: absolute;
+   display: flex;
+   align-items: flex-start;
 }
 
 .marker {

@@ -1,8 +1,11 @@
 import './rater.css'
 import { useState } from 'react'
+import { FaTimes } from 'react-icons/fa'
+
+const axios = require('axios').default
 
 const Rater = ({ onClick }) => {
-   const [selected, setSelected] = useState("")
+   const [country, setCountry] = useState('')
    const [rating, setRating] = useState(0)
 
    const regionSorter = (regions) => {
@@ -10,6 +13,20 @@ const Rater = ({ onClick }) => {
     }
 
    const ratings = [1,2,3]
+
+   const onSubmit = async (e) => {
+      try {
+         await axios.post("/api/countries/", {
+            country,
+            rating
+         })
+         setCountry('')
+         setRating(0)
+         onClick()
+      } catch (err) {
+         console.log(err)
+      }
+   }
   
    let regions = {
                   "Eastern USA":"USA1", "Southern USA":"USA2", "Mexico":"Mexico", "Central America":"CAm",
@@ -27,14 +44,17 @@ const Rater = ({ onClick }) => {
    regions = regionSorter(regions)
    return (
       <form className="formWrapper">
-         <div className="selectHeader"  onClick={() => onClick()}>
-            <h3 className="ratingHeaders">Select a Region</h3>
+         <div className="selectHeader">
+            <div className="headerCancel">
+               <h3 className="ratingHeaders">Select a Region</h3>
+               <FaTimes className="cancelBlog" onClick={() => onClick()}/>
+            </div>
          </div>
          <ul className="countriesList">
             {Object.entries(regions).map(([key, value]) => {
-               return <li className={selected === key ? "selectedCountry" : "countryItem"}
+               return <li className={country === key ? "selectedCountry" : "countryItem"}
                            key={value} 
-                           onClick={() => setSelected(key)}>
+                           onClick={() => setCountry(key)}>
                            {key}
                         </li>
             })}
@@ -45,13 +65,13 @@ const Rater = ({ onClick }) => {
                {ratings.map((val) => {
                   return <span key={val}
                           className={rating === val ? `rating-${val} selectedRating`: `rating-${val}`}
-                          onClick={() => setRating(val)}>
+                          onClick={() => setRating(val)} >
                         {val}
                         </span>
                })}
             </div>
          </div>
-         <div className="submitRatings">
+         <div className="submitRatings" onClick={() => onSubmit()}>
             <h3 className="ratingHeaders">Submit</h3>
          </div>
       </form>
