@@ -20,7 +20,6 @@ const Map = () => {
         const res = await axios.get("/api/blogs/")
         setBlogs(res.data)
         extractData(res.data)
-        console.log("Effect Used")
       } catch (err) {
         console.log(err)
       }

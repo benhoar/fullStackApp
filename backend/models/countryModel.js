@@ -13,10 +13,6 @@ const countrySchema = mongoose.Schema({
    topRestaurant: {
       type: String,
       required: false
-   },
-   blog: {
-      type: String,
-      required: false
    }
 })
 

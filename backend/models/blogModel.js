@@ -10,6 +10,10 @@ const blogSchema = mongoose.Schema({
       type: String,
       required: true
    },
+   location: {
+      type: String,
+      required: true
+   },
    rating: {
       type: Number,
       required: true
@@ -21,6 +25,10 @@ const blogSchema = mongoose.Schema({
    blog: {
       type: String,
       required: true
+   },
+   highlight: {
+      type: String,
+      required: false
    }
 }, { timestamps: true })
 

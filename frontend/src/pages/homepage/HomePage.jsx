@@ -3,6 +3,7 @@ import Map from '../../components/map/Map'
 import './homepage.css'
 
 const HomePage = () => {
+
   return (
     <div>
       <div className="hero">

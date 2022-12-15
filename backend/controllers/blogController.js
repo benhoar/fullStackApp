@@ -29,6 +29,8 @@ const postBlog = asyncHandler(async (req, res) => {
       cuisine: req.body.cuisine,
       date: req.body.date,
       blog: req.body.blog,
+      location: req.body.location,
+      highlight: req.body.highlight
    })
    res.status(200).json(blog)
 })

@@ -123,6 +123,22 @@ form label {
   font-size: 20px;
 }
 
+.quarter-width-1 {
+  grid-column: 1/3
+}
+
+.quarter-width-2 {
+  grid-column: 3/5
+}
+
+.quarter-width-3 {
+  grid-column: 5/6
+}
+
+.quarter-width-4 {
+  grid-column: 6/7
+}
+
 .half-width-1 {
   grid-column: 1 / 4;
 }

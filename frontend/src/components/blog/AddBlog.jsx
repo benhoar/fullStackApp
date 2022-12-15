@@ -10,7 +10,9 @@ const AddBlog = ({ onClose,
                    defCuis,
                    defRating,
                    defDate,
+                   defLocation,
                    defBlog,
+                   defHighlight,
                    postId
                 }) => {
    const [restaurant, setRestaurant] = useState('')
@@ -18,9 +20,12 @@ const AddBlog = ({ onClose,
    const [date, setDate] = useState('')
    const [rating, setRating] = useState('')
    const [blog, setBlog] = useState('')
+   const [location, setLocation] = useState('')
+   const [highlight, setHighlight] = useState('')
 
    const nav = useNavigate()
 
+   /* try to delete this */
    useEffect(() => {
       const setStates = () => {
          setRestaurant(defRest)
@@ -28,9 +33,11 @@ const AddBlog = ({ onClose,
          setDate(defDate)
          setRating(defRating)
          setBlog(defBlog)
+         setLocation(defLocation)
+         setHighlight(defHighlight)
       }
       setStates()
-   }, [defRest, defCuis, defRating, defDate, defBlog])
+   }, [defRest, defCuis, defRating, defDate, defBlog, defHighlight, defLocation])
 
    const onSubmit = async (e) => {
       e.preventDefault()
@@ -39,23 +46,29 @@ const AddBlog = ({ onClose,
             await axios.post("/api/blogs/", {
                restaurant,
                cuisine,
+               location,
                rating,
                date,
-               blog
+               blog,
+               highlight
             })
             setBlog('')
             setDate('')
             setCuisine('')
             setRating('')
             setRestaurant('')
+            setLocation('')
+            setHighlight('')
             onClose()
          } else {
             await axios.put(`/api/blogs/${postId}`, {
                restaurant,
                cuisine,
+               location,
                rating,
                date,
-               blog
+               blog,
+               highlight
             })
             nav('/blogs')
          }
@@ -85,16 +98,34 @@ const AddBlog = ({ onClose,
                   onChange={(e) => setCuisine(e.target.value)}   
                />
             </p>
-            <p className="half-width-1">
+            <p className="quarter-width-1">
+               <label>Location</label>
+               <input 
+                  type="text"
+                  defaultValue={defLocation}
+                  placeholder="Input Location"
+                  onChange={(e) => setLocation(e.target.value)}
+                  />
+            </p>
+            <p className="quarter-width-2">
+               <label>Highlight</label>
+               <input 
+                  type="text"
+                  defaultValue={defHighlight}
+                  placeholder="Input Highlight"
+                  onChange={(e) => setHighlight(e.target.value)}
+                  />
+            </p>
+            <p className="quarter-width-3">
                <label>Date</label>
                <input 
-                  type="Date"
+                  type="date"
                   defaultValue={defDate}
                   placeholder=""
                   onChange={(e) => setDate(e.target.value)}   
                />
             </p>
-            <p className="half-width-2">
+            <p className="quarter-width-4">
                <label>Score</label>
                <input 
                   type="number" 

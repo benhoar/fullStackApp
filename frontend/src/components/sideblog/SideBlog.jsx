@@ -10,6 +10,8 @@ const SideBlog = ({ onClick }) => {
    const [date, setDate] = useState('')
    const [rating, setRating] = useState('')
    const [blog, setBlog] = useState('')
+   const [location, setLocation] = useState('')
+   const [highlight, setHighlight] = useState('')
 
    const onSubmit = async (e) => {
       e.preventDefault()
@@ -17,15 +19,19 @@ const SideBlog = ({ onClick }) => {
          await axios.post("/api/blogs/", {
             restaurant,
             cuisine,
+            location,
             rating,
             date,
-            blog
+            blog,
+            highlight
          })
          setBlog('')
          setDate('')
          setCuisine('')
          setRating('')
          setRestaurant('')
+         setLocation('')
+         setHighlight('')
          onClick()
       } catch (err) {
          console.log(err)
@@ -54,6 +60,24 @@ const SideBlog = ({ onClick }) => {
                type="text" 
                placeholder="Input Cuisine"
                onChange={(e) => setCuisine(e.target.value)}   
+            />
+         </div>
+         <div className="inputWrap">
+            <label className="sideLabel">Location</label>
+            <input 
+               className="sideArea"
+               type="text" 
+               placeholder="Input Location"
+               onChange={(e) => setLocation(e.target.value)}   
+            />
+         </div>
+         <div className="inputWrap">
+            <label className="sideLabel">Highlight</label>
+            <input 
+               className="sideArea"
+               type="text" 
+               placeholder="Input Highlight"
+               onChange={(e) => setHighlight(e.target.value)}   
             />
          </div>
          <div className="inputWrap">
