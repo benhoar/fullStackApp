@@ -20,6 +20,7 @@ app.use(express.urlencoded({extended: false}))
 // folder and file (post, puts, delete etc. for blogs)
 app.use('/api/blogs', require('./routes/blogRoutes'))
 app.use('/api/countries', require('./routes/countryRoutes'))
+app.use('/api/cuisines', require('./routes/cuisineRoutes'))
 
 
 // overwrites the default error hanlder

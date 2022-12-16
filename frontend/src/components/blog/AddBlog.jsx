@@ -18,7 +18,7 @@ const AddBlog = ({ onClose,
    const [restaurant, setRestaurant] = useState('')
    const [cuisine, setCuisine] = useState('')
    const [date, setDate] = useState('')
-   const [rating, setRating] = useState('')
+   const [rating, setRating] = useState(0)
    const [blog, setBlog] = useState('')
    const [location, setLocation] = useState('')
    const [highlight, setHighlight] = useState('')
@@ -43,7 +43,7 @@ const AddBlog = ({ onClose,
       e.preventDefault()
       try {
          if (buttontxt === 'Save Blog') {
-            await axios.post("/api/blogs/", {
+            const res = await axios.post("/api/blogs/", {
                restaurant,
                cuisine,
                location,
@@ -52,6 +52,7 @@ const AddBlog = ({ onClose,
                blog,
                highlight
             })
+            updateCuisine(res.data._id)
             setBlog('')
             setDate('')
             setCuisine('')
@@ -70,10 +71,40 @@ const AddBlog = ({ onClose,
                blog,
                highlight
             })
+            updateCuisine()
             nav('/blogs')
          }
       } catch (err) {
          console.log(err)
+      }
+   }
+
+   /* test where await is actually necessary */
+   const updateCuisine = async (id) => {
+      try {
+         const res = await axios.get(`/api/cuisines/cuisine/${cuisine}`, {responseType: "json"})
+         const newScoreSum = Number(res.data.scoreSum) + Number(rating)
+         const newSpotsVisited = res.data.spotsVisited + 1
+         const newTopSpot = rating > res.data.topSpotScore ? id : res.data.topSpot
+         const newTopSpotScore = rating > res.data.topSpotScore ? rating : res.data.topSpotScore
+         const newAllScores = res.data.allScores
+         if (!(rating in newAllScores )) {
+            newAllScores[rating] = 0
+         }
+         newAllScores[rating] = newAllScores[rating] + 1
+         await axios.put(`api/cuisines/${res.data._id}`, {
+            scoreSum: newScoreSum,
+            spotsVisited: newSpotsVisited,
+            topSpot: newTopSpot,
+            topSpotScore: newTopSpotScore,
+            allScores: newAllScores
+         }).catch((e) => console.log(e.data))
+      } catch (err) {
+         await axios.post('/api/cuisines/', {
+            cuisine: cuisine,
+            topSpotScore: rating,
+            topSpot: id
+         }).catch((e) => console.log(e.data))     
       }
    }
 

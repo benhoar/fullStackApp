@@ -20,7 +20,7 @@ Back End
    *controllers: defines what to do for these routes – the actions to be performed by server
    *middleware: ill-defined now, but first file changed error handling, in general middleware
                 funcitons run during the req/res cycle
-*NOTE: I get the impression the (async, await, try/catch) paradigm is an alternatie to the (.then().catch()) paradigm
+*NOTE: I get the impression the (async, await, try/catch) paradigm is an alternative to the (.then().catch()) paradigm
 *npm i express-async-handler
    * "Simple middleware for handling exceptions inside of async express routes and passing them to your express error handlers."
 *THIS WAS ALL DONE BEFORE MONGODB – NEXT IS MONGODB IMPLEMENTATION

@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 
-const Blog = require('../models/blogModel')
+const Blog  = require('../models/blogModel')
 
 // @desc Get blogs
 // @route GET /api/blogs
@@ -13,6 +13,15 @@ const getBlogs = asyncHandler(async (req, res) => {
 const getBlog = asyncHandler(async (req, res) => {
    const blog = await Blog.findById(req.params.id)
    res.status(200).json(blog)
+})
+
+const getBlogsByCuisine = asyncHandler(async (req, res) => {
+   const cuisine = await Blog.find({"cuisine": req.params.cuisine})
+   if (!cuisine) {
+      res.status(400)
+      throw new Error("Not found")
+   }
+   res.status(200).json(cuisine)
 })
 
 // @desc set blogs
@@ -67,5 +76,6 @@ module.exports = {
    postBlog,
    updateBlog,
    deleteBlog,
-   getBlog
+   getBlog,
+   getBlogsByCuisine,
 }

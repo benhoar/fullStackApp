@@ -8,23 +8,23 @@ const blogSchema = mongoose.Schema({
    },
    cuisine: {
       type: String,
-      required: true
+      required: false
    },
    location: {
       type: String,
-      required: true
+      required: false
    },
    rating: {
       type: Number,
-      required: true
+      required: false
    },
    date: {
       type: Date, 
-      required: true
+      required: false
    },
    blog: {
       type: String,
-      required: true
+      required: false
    },
    highlight: {
       type: String,
