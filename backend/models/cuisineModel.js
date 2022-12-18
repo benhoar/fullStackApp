@@ -1,5 +1,36 @@
 const mongoose = require('mongoose')
 
+const blogSchema = mongoose.Schema({
+   restaurant: {
+      type: String,
+      required: true,
+   },
+   rating: {
+      type: Number,
+      required: true
+   },
+   location: {
+      type: String,
+      required: true,
+   },
+   highlight: {
+      type: String,
+      required: false,
+   },
+   date: {
+      type: Date,
+      required: true,
+   },
+   rating: {
+      type: Number,
+      required: true,
+   },
+   blog: {
+      type: String,
+      required: true,
+   },
+})
+
 const cuisineSchema = mongoose.Schema({
    cuisine: {
       type: String,
@@ -26,6 +57,10 @@ const cuisineSchema = mongoose.Schema({
    topSpot: {
       type: String,
       required: false,
+   },
+   blogs: {
+      type: [blogSchema],
+      required: false
    }
 })
 

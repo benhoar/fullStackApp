@@ -4,29 +4,26 @@ const axios = require('axios').default
 
 const EditPage = () => {
 
-   //const [blog, setBlog] = useState([])
-   const [restaurant, setRestaurant] = useState('')
-   const [cuisine, setCuisine] = useState('')
-   const [date, setDate] = useState('')
-   const [rating, setRating] = useState('')
-   const [blog, setBlog] = useState('')
-   const [location, setLocation] = useState('')
-   const [highlight, setHighlight] = useState('')
-   const [postId, setPostId] = useState('')
+   const [blog, setBlog] = useState([])
+   const [ids, setIds] = useState([])
 
    useEffect(() => {
       const getBlog = async () => {
          const path = window.location.href.split('/')
-         const curId = path[path.length-1]
-         const blog = await axios.get(`/api/blogs/${curId}`)
-         setRestaurant(blog.data.restaurant)
-         setCuisine(blog.data.cuisine)
-         setDate(blog.data.date.split('T')[0])
-         setRating(blog.data.rating)
-         setLocation(blog.data.location)
-         setBlog(blog.data.blog)
-         setHighlight(blog.data.highlight)
-         setPostId(blog.data._id)
+         const ids = path[path.length-1].split('_')
+         await axios.get(`/api/cuisines/${ids[0]}`)
+            .then(function(res) {
+               let blog = null
+               res.data.blogs.forEach((b) => {
+                  if (b._id === ids[1]) {
+                     blog = b
+                     return
+                  }
+               })
+               setBlog(blog)
+               setIds(ids)
+            })
+            .catch((e) => console.log(e))
       }
       getBlog()
    }, []) 
@@ -35,14 +32,10 @@ const EditPage = () => {
       <div>
          <br></br>
          <AddBlog buttontxt={"Update Blog"}
-                  defRest={restaurant}
-                  defCuis={cuisine}
-                  defDate={date}
-                  defRating={rating}
                   defBlog={blog}
-                  defLocation={location}
-                  defHighlight={highlight}
-                  postId={postId}
+                  defCuis={ids[2]}
+                  cuisineId={ids[0]}
+                  blogId={ids[1]}
          />
       </div>
    )

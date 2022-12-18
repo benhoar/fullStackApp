@@ -15,27 +15,51 @@ const SideBlog = ({ onClick }) => {
 
    const onSubmit = async (e) => {
       e.preventDefault()
-      try {
-         await axios.post("/api/blogs/", {
-            restaurant,
-            cuisine,
-            location,
-            rating,
-            date,
-            blog,
-            highlight
-         })
-         setBlog('')
-         setDate('')
-         setCuisine('')
-         setRating('')
-         setRestaurant('')
-         setLocation('')
-         setHighlight('')
-         onClick()
-      } catch (err) {
-         console.log(err)
+      const outBoundData = {
+         cuisine: cuisine,
+         topSpot: restaurant,
+         topSpotScore: rating,
+         blogs: [
+            {
+               restaurant: restaurant,
+               rating: rating,
+               location: location,
+               date: date,
+               blog: blog
+            }
+         ]
       }
+      if (highlight) {
+         outBoundData.blogs[0].highlight = highlight 
+      }
+      await axios.get(`/api/cuisines/cuisine/${cuisine}`)
+         .then(async function(res) {
+            const blogs = res.data.blogs
+            blogs.push(outBoundData.blogs[0])
+            const newSpotsVisited = res.data.spotsVisited + 1
+            const newScoreSum = Number(res.data.scoreSum) + Number(rating)
+            const newAllScores = res.data.allScores
+            if (!(rating in newAllScores)) {
+               newAllScores[rating] = 0
+            }
+            newAllScores[rating] += 1
+            const newTopSpotScore = rating >= res.data.topSpotScore ? rating : res.data.topSpotScore
+            const newTopSpot = rating >= res.data.topSpotScore ? restaurant : res.data.topSpot
+            await axios.put(`api/cuisines/${res.data._id}`, {
+               spotsVisited: newSpotsVisited,
+               scoreSum: newScoreSum,
+               allScores: newAllScores,
+               topSpot: newTopSpot,
+               topSpotScore: newTopSpotScore,
+               blogs: blogs,
+            })
+               .catch(() => console.log("put error"))
+         })
+         .catch(async () => {
+            await axios.post("/api/cuisines/", outBoundData)
+               .catch((e) => console.log(e))
+         })
+         onClick()
    }
 
   return (
@@ -51,7 +75,7 @@ const SideBlog = ({ onClick }) => {
                type="text" 
                placeholder="Input Restaurant"
                onChange={(e) => setRestaurant(e.target.value)}   
-            />
+               required/>
          </div>
          <div className="inputWrap">
             <label className="sideLabel">Cuisine</label>
@@ -60,7 +84,7 @@ const SideBlog = ({ onClick }) => {
                type="text" 
                placeholder="Input Cuisine"
                onChange={(e) => setCuisine(e.target.value)}   
-            />
+               required/>
          </div>
          <div className="inputWrap">
             <label className="sideLabel">Location</label>
@@ -69,7 +93,7 @@ const SideBlog = ({ onClick }) => {
                type="text" 
                placeholder="Input Location"
                onChange={(e) => setLocation(e.target.value)}   
-            />
+               required/>
          </div>
          <div className="inputWrap">
             <label className="sideLabel">Highlight</label>
@@ -87,7 +111,7 @@ const SideBlog = ({ onClick }) => {
                type="Date"
                placeholder=""
                onChange={(e) => setDate(e.target.value)}   
-            />
+               required/>
          </div>
          <div className="inputWrap">
             <label className="sideLabel">Score</label>
@@ -98,7 +122,7 @@ const SideBlog = ({ onClick }) => {
                max="10" 
                placeholder="Rate Experience"
                onChange={(e) => setRating(e.target.value)}   
-            />
+               required/>
          </div>
          <div className="inputWrap">
             <label className="sideLabel">Blog</label>
@@ -106,7 +130,7 @@ const SideBlog = ({ onClick }) => {
                className="sideArea"
                placeholder=""
                onChange={(e) => setBlog(e.target.value)}   
-            />
+               required/>
          </div>
          <input type="submit" value="Submit" className="sideSubmit"/>
       </form>

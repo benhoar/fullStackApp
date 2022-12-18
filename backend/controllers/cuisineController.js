@@ -41,8 +41,8 @@ const postCuisine = asyncHandler(async (req, res) => {
       scoreSum: req.body.topSpotScore,
       allScores: startMap,
       topSpotScore: req.body.topSpotScore,
-      topSpot: req.body.topSpot
-
+      topSpot: req.body.topSpot,
+      blogs: req.body.blogs
    })
    res.status(200).json(newCuisine)
 })
@@ -70,7 +70,6 @@ const deleteCuisine = asyncHandler(async (req, res) => {
       console.log("delete failed")
    }
 })
-
 
 module.exports = {
    getCuisines,

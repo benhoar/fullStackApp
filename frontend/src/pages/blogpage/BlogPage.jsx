@@ -10,90 +10,43 @@ const BlogPage = () => {
   // state is blogs and setBlogs is used to update state
   const [showAddBlog, setShowAddBlog] = useState(false)
   const [blogs, setBlogs] = useState([])
-  const [blogUpdated, setBlogUpated] = useState(false)
+  const [blogUpdated, setBlogUpdated] = useState(false)
 
   // Get Blogs
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await axios.get("/api/blogs/")
-        setBlogs(res.data)
+        const res = await axios.get("/api/cuisines/")
+        const allBlogs = []
+        res.data.forEach((cuisine) => 
+          cuisine.blogs.forEach((blog) => {
+            blog["cuisine"] = cuisine.cuisine
+            blog["cuisine_id"] = cuisine._id
+            allBlogs.push(blog)
+         })
+        )
+        setBlogs(allBlogs)
       } catch (err) {
         console.log(err)
       }
     }
     fetchBlogs()
-    setBlogUpated(false)
+    setBlogUpdated(false)
   }, [blogUpdated]) 
-
-  const getTopSpotInfo = async (cuisine) => {
-    const prev = await axios.get(`api/blogs/blog/${cuisine}`)
-    const prevBlogs = prev.data
-    let winner = null
-    prevBlogs.forEach(blog => {
-      if (!winner || blog.rating > winner.rating) {
-        winner = blog
-      }
-    })
-    return winner
-  }
-
-  const cuisineUpdate = async (id) => {
-    const blog = await axios.get(`/api/blogs/${id}`, {responseType: "json"})
-      .catch(() => console.log("blog error"))
-    const blogData = blog.data
-    const cuisine = await axios.get(`api/cuisines/cuisine/${blogData.cuisine}`)
-      .catch(() => console.log("cuisine error"))
-    const cuisineData = cuisine.data
-    const newScoreSum = Number(cuisineData.scoreSum) - Number(blogData.rating)
-    const newSpotsVisited = cuisineData.spotsVisited - 1
-    if (newSpotsVisited === 0) {
-      await axios.delete(`/api/cuisines/${cuisineData._id}`).catch(() => console.log("failed delete"))
-      return
-    }
-    let newTopSpot = cuisineData.topSpot
-    let newTopSpotScore = cuisineData.topSpotScore
-    if (id === cuisineData.topSpot) {
-      let topSpotInfo = await getTopSpotInfo(blogData.cuisine)
-      console.log(topSpotInfo)
-      newTopSpot = topSpotInfo._id
-      newTopSpotScore = topSpotInfo.rating
-    }
-    const newAllScores = cuisineData.allScores
-    newAllScores[blogData.rating] -= 1
-    await axios.put(`api/cuisines/${cuisineData._id}`, {
-       scoreSum: newScoreSum,
-       spotsVisited: newSpotsVisited,
-       topSpot: newTopSpot,
-       topSpotScore: newTopSpotScore,
-       allScores: newAllScores
-    }).catch((e) => console.log(e.data))
-  }
-
-  // Delete Blog
-  const deleteBlog = async (id) => {
-    try {
-      cuisineUpdate(id)
-      await axios.delete(`/api/blogs/${id}`)
-      setBlogUpated(true)
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const hideBlog = () => {
       setShowAddBlog(false)
-      setBlogUpated(true)
+      setBlogUpdated(true)
   }
 
   return (
-    <div>
+    <div style={{paddingTop:"20px"}}>
       <Header 
         onAdd={() => setShowAddBlog(!showAddBlog)}
         text={showAddBlog ? 'Close' : 'Add'}
       />
       {showAddBlog && <AddBlog onClose={hideBlog}/>}
-      <Blogs blogs={blogs} onDelete={deleteBlog}/>
+      <Blogs blogs={blogs} onUpdate={() => hideBlog()}/>
     </div>
   );
 }
