@@ -51,14 +51,19 @@ const AddBlog = ({ onClose,
 
    // if called from edit page, the update behavior is unique
    const editBlogSubmit = async () => {
+      let sameCuisine = true
       await axios.get(`/api/cuisines/${cuisineId}`)
          .then(async function(res) {
-            const scoreDif = rating - defBlog.rating
+            sameCuisine = res.data.cuisine === cuisine ? true : false          
+            const scoreDif = sameCuisine ? rating - defBlog.rating : -defBlog.rating
+            const newSpotsVisited = sameCuisine ? res.data.spotsVisited : res.data.spotsVisited - 1 
             const newScoreSum = res.data.scoreSum + scoreDif
             const newBlogs = res.data.blogs
             const newAllScores = res.data.allScores
-            if (scoreDif !== 0) {
+            if (scoreDif !== 0 || !sameCuisine) {
                newAllScores[defBlog.rating] -= 1
+            }
+            if (sameCuisine) {
                if (!(rating in newAllScores)) {
                   newAllScores[rating] = 0
                }
@@ -66,29 +71,46 @@ const AddBlog = ({ onClose,
             }
             let newTopSpotScore = 0
             let newTopSpot = null
-            newBlogs.forEach((b) => {
+            let blogIndex = 0
+            for (let i = 0; i < newBlogs.length; i++) {
+               const b = newBlogs[i]
                if (b._id === blogId) {
                   b.restaurant = restaurant
-                  b.rating = rating
+                  b.rating = sameCuisine ? rating : 0
                   b.location = location
                   b.highlight = highlight
                   b.date = date
-                  b.b = blog
+                  b.blog = blog
+                  blogIndex = i
                }
                if (!newTopSpot || b.rating >= newTopSpotScore) {
                   newTopSpot = b.restaurant
                   newTopSpotScore = b.rating
                }
-            })
-            await axios.put(`/api/cuisines/${cuisineId}`, {
-               scoreSum: newScoreSum,
-               topSpot: newTopSpot,
-               topSpotScore: newTopSpotScore,
-               blogs: newBlogs,
-               allScores: newAllScores
-            }).catch((e) => console.log(e))
-         }).catch(() => console.log("failed get"))
-      nav('/blogs')
+            }
+            if (!(sameCuisine)) {
+               newBlogs.splice(blogIndex, 1)
+            }
+            // if the cuisine changed and it was only rep of that cuisine, delete cuisine
+            if (!newSpotsVisited) {
+               await axios.delete(`/api/cuisines/${cuisineId}`)
+                  .catch(() => console.log("deletion error"))
+            }
+            // otherwise, update it
+            else {
+               await axios.put(`/api/cuisines/${cuisineId}`, {
+                  scoreSum: newScoreSum,
+                  topSpot: newTopSpot,
+                  topSpotScore: newTopSpotScore,
+                  blogs: newBlogs,
+                  allScores: newAllScores,
+                  spotsVisited: newSpotsVisited
+               })
+               .catch((e) => console.log(e))
+            }
+         })
+         .catch(() => console.log("failed get"))
+      return sameCuisine
    }
 
    // general submit from blog page
@@ -96,8 +118,11 @@ const AddBlog = ({ onClose,
    const onSubmit = async (e) => {
       e.preventDefault()
       if (buttontxt === 'Update Blog') {
-         await editBlogSubmit()
-         return
+         const sameCuisine = await editBlogSubmit()
+         if (sameCuisine) {
+            nav('/blogs')
+            return
+         }
       }
       const outBoundData = {
          cuisine: cuisine,
@@ -129,7 +154,7 @@ const AddBlog = ({ onClose,
             newAllScores[rating] += 1
             const newTopSpotScore = rating >= res.data.topSpotScore ? rating : res.data.topSpotScore
             const newTopSpot = rating >= res.data.topSpotScore ? restaurant : res.data.topSpot
-            await axios.put(`api/cuisines/${res.data._id}`, {
+            await axios.put(`/api/cuisines/${res.data._id}`, {
                spotsVisited: newSpotsVisited,
                scoreSum: newScoreSum,
                allScores: newAllScores,
@@ -140,7 +165,7 @@ const AddBlog = ({ onClose,
                .then(() => {
                   clearFields()
                })
-               .catch(() => console.log("put error"))
+               .catch((e) => console.log(e))
          })
          .catch(async () => {
             await axios.post("/api/cuisines/", outBoundData)
@@ -149,7 +174,11 @@ const AddBlog = ({ onClose,
                })
                .catch((e) => console.log(e))
          })
-         onClose()
+      if (buttontxt === 'Update Blog') {
+         nav('/blogs')
+      } else {
+      onClose()
+      }
    }
 
    return (

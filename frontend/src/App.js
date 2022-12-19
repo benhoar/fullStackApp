@@ -26,7 +26,7 @@ function App() {
             <Route path='/blogs' element={<BlogPage />}/>
             <Route path='/about' element={<About />}/>
             <Route path='/profile' element={<Profile />}/>
-            <Route path='/blogs/edit/:id' element={<EditPage />}/>
+            <Route path='/blogs/edit/' element={<EditPage />}/>
             <Route path='/summary' element={<SummaryPage />}/>
           </Routes>
         </Router>

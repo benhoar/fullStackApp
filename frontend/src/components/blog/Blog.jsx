@@ -1,9 +1,11 @@
 import { FaTimes, FaEdit } from 'react-icons/fa'
 import './blog.css'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const Blog = ({ blog, onUpdate }) => {
+
+  const navigate = useNavigate()
 
   const onDelete = async () => {
     await axios.get(`/api/cuisines/${blog.cuisine_id}`)
@@ -54,9 +56,15 @@ const Blog = ({ blog, onUpdate }) => {
           {`${blog.restaurant} (${blog.cuisine}) – ${blog.rating}/10`}
         </h3>
         <div className="icons">
-          <Link to={`/blogs/edit/${blog.cuisine_id}_${blog._id}_${blog.cuisine}`} className="link">
-            <FaEdit style={{cursor:'pointer'}} className="edit"/>
-          </Link>
+          <FaEdit style={{cursor:'pointer'}} 
+                  className="edit" 
+                  onClick={() => navigate('/blogs/edit/', {
+                    state: {
+                            cuisine_id: blog.cuisine_id,
+                            blog_id: blog._id,
+                            cuisine: blog.cuisine
+                            }
+                  })}/>
           <FaTimes style={{cursor:'pointer'}}
                    onClick={async () => { await onDelete() }}
           />

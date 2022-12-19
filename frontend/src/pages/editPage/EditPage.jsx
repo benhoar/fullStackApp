@@ -1,41 +1,40 @@
 import AddBlog from "../../components/blog/AddBlog"
 import { useState, useEffect } from 'react'
+import {useLocation} from 'react-router-dom'
 const axios = require('axios').default
+
+
 
 const EditPage = () => {
 
-   const [blog, setBlog] = useState([])
-   const [ids, setIds] = useState([])
-
+   const loc = useLocation()
+   const [blog, setBlog] = useState()
    useEffect(() => {
       const getBlog = async () => {
-         const path = window.location.href.split('/')
-         const ids = path[path.length-1].split('_')
-         await axios.get(`/api/cuisines/${ids[0]}`)
+         await axios.get(`/api/cuisines/${loc.state.cuisine_id}`)
             .then(function(res) {
                let blog = null
                res.data.blogs.forEach((b) => {
-                  if (b._id === ids[1]) {
+                  if (b._id === loc.state.blog_id) {
                      blog = b
                      return
                   }
                })
                setBlog(blog)
-               setIds(ids)
             })
             .catch((e) => console.log(e))
       }
       getBlog()
-   }, []) 
+   }, [loc]) 
 
    return (
       <div>
          <br></br>
          <AddBlog buttontxt={"Update Blog"}
                   defBlog={blog}
-                  defCuis={ids[2]}
-                  cuisineId={ids[0]}
-                  blogId={ids[1]}
+                  defCuis={loc.state.cuisine}
+                  cuisineId={loc.state.cuisine_id}
+                  blogId={loc.state.blog_id}
          />
       </div>
    )
