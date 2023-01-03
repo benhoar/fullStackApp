@@ -24,6 +24,19 @@ const getCuisineByName = asyncHandler(async (req, res) => {
    res.status(200).json(cuisine)
 })
 
+// get a blog
+const getBlog = asyncHandler(async (req, res) => {
+   await Cuisine.findOne({"cuisine": req.params.cuisine})
+      .then((cuisine) => {
+         const blog = cuisine.blogs.id(req.params.restaurant)
+         res.status(200).json(blog)
+       })
+       .catch((e) => {
+         res.status(400)
+         throw new Error(`Not Found: ${e}`)
+       })
+})
+
 // @desc set Cuisine
 // @route POST /api/countries
 // @access NOT IMPLEMENTED
@@ -52,16 +65,40 @@ const postCuisine = asyncHandler(async (req, res) => {
 // @access NOT IMPLEMENTED
 const updateCuisine = asyncHandler(async (req, res) => {
    const cuisine = await Cuisine.findById(req.params.id)
-
+   
    if (!cuisine) {
       res.status(400)
       throw new Error('Blog Not Found')
    }
 
-   const updatedCuisine = await Cuisine.findByIdAndUpdate(req.params.id, req.body, {new: true})
+   const updatedCuisine = await Cuisine.findByIdAndUpdate(cuisine._id, req.body, {new: true})
    res.status(200).json(updatedCuisine)
 })
 
+
+// Add a blog to a cuisine
+const addBlog = asyncHandler(async (req, res) => {
+   await Cuisine.findById(req.params.id)
+      .then((cuisine) => {
+         cuisine.blogs.push(req.body.blog)
+         cuisine.markModified('blogs'); 
+         cuisine.save((saverr, saveres) => {
+            if (saverr) {
+               console.log(`add saverr: ${saverr}`)
+            }
+            else {
+               console.log(saveres)
+            }
+         })
+         res.status(200).json(cuisine)
+      })
+      .catch((e) => {
+         console.log(e)
+         res.status(400).json({msg:'Error adding blog'})
+      })
+})
+
+// Delete a cuisine entirely
 const deleteCuisine = asyncHandler(async (req, res) => {
    try {
       await Cuisine.findByIdAndDelete(req.params.id)
@@ -71,6 +108,26 @@ const deleteCuisine = asyncHandler(async (req, res) => {
    }
 })
 
+// delete a blog
+const deleteBlog = asyncHandler(async (req, res) => {
+   await Cuisine.findOne({"cuisine": req.params.cuisine})
+      .then((cuisine) => {
+         cuisine.blogs.pull(req.params.restaurant)
+         cuisine.save(function (err) {
+            if (err) {
+               console.log(`Blog deletion error: ${err}`)
+               return
+            };
+            console.log('the blog was removed');
+          });
+         res.status(200).json({msg: "Blog deleted"})
+       })
+       .catch((e) => {
+         res.status(400)
+         throw new Error(`Error Deleting: ${e}`)
+       })
+})
+
 module.exports = {
    getCuisines,
    postCuisine,
@@ -78,4 +135,7 @@ module.exports = {
    getCuisine,
    deleteCuisine,
    getCuisineByName,
+   getBlog,
+   deleteBlog,
+   addBlog
 }

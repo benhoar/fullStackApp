@@ -13,6 +13,17 @@ const SideBlog = ({ onClick }) => {
    const [location, setLocation] = useState('')
    const [highlight, setHighlight] = useState('')
 
+   // reset state after blog submission
+   const clearFields = () => {
+      setBlog('')
+      setDate('')
+      setCuisine('')
+      setRating('')
+      setRestaurant('')
+      setLocation('')
+      setHighlight('')
+   }
+
    const onSubmit = async (e) => {
       e.preventDefault()
       const outBoundData = {
@@ -21,6 +32,7 @@ const SideBlog = ({ onClick }) => {
          topSpotScore: rating,
          blogs: [
             {
+               _id: restaurant,
                restaurant: restaurant,
                rating: rating,
                location: location,
@@ -34,8 +46,10 @@ const SideBlog = ({ onClick }) => {
       }
       await axios.get(`/api/cuisines/cuisine/${cuisine}`)
          .then(async function(res) {
-            const blogs = res.data.blogs
-            blogs.push(outBoundData.blogs[0])
+            await axios.put(`/api/cuisines/blog/${res.data._id}`, {
+               blog: outBoundData.blogs[0]
+            })
+               .catch((e) => console.log(e))
             const newSpotsVisited = res.data.spotsVisited + 1
             const newScoreSum = Number(res.data.scoreSum) + Number(rating)
             const newAllScores = res.data.allScores
@@ -45,21 +59,27 @@ const SideBlog = ({ onClick }) => {
             newAllScores[rating] += 1
             const newTopSpotScore = rating >= res.data.topSpotScore ? rating : res.data.topSpotScore
             const newTopSpot = rating >= res.data.topSpotScore ? restaurant : res.data.topSpot
-            await axios.put(`api/cuisines/${res.data._id}`, {
+            await axios.put(`/api/cuisines/${res.data._id}`, {
                spotsVisited: newSpotsVisited,
                scoreSum: newScoreSum,
                allScores: newAllScores,
                topSpot: newTopSpot,
                topSpotScore: newTopSpotScore,
-               blogs: blogs,
             })
-               .catch(() => console.log("put error"))
+               .then(() => {
+                  clearFields()
+                  onClick()
+               })
+               .catch((e) => console.log(e))
          })
          .catch(async () => {
             await axios.post("/api/cuisines/", outBoundData)
+               .then(() => {
+                  clearFields()
+                  onClick()
+               })
                .catch((e) => console.log(e))
          })
-         onClick()
    }
 
   return (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './blog.css'
+import { getTopBlog } from '../../scripts/getTopBlog'
 
 const axios = require('axios').default
 
@@ -8,10 +9,9 @@ const AddBlog = ({ onClose,
                    buttontxt,
                    defCuis,
                    defBlog,
-                   blogId,
-                   cuisineId
+                   cuisineId,
                 }) => {
-   const [restaurant, setRestaurant] = useState(defBlog ? defBlog.restaurant : '')
+   const [restaurant, setRestaurant] = useState('')
    const [cuisine, setCuisine] = useState('')
    const [date, setDate] = useState('')
    const [rating, setRating] = useState(0)
@@ -49,18 +49,41 @@ const AddBlog = ({ onClose,
       setHighlight('')
    }
 
+   const handleBlog = async (blogs, sameCuisine) => {
+      const newBlog = {
+         _id: restaurant,
+         restaurant: restaurant,
+         location: location,
+         highlight: highlight,
+         date: date,
+         rating: rating,
+         blog: blog
+      }
+      // delete blog from current location no matter what
+      await axios.delete(`/api/cuisines/blog/${defCuis}/${defBlog.restaurant}`)
+         .catch((e) => {console.log(`failed blog delete: ${e}`)})
+      if (sameCuisine) {
+         // if same cuisine, let's add the new one ine and use that for finding new top
+         await axios.put(`/api/cuisines/blog/${cuisineId}`, {blog: newBlog})
+            .catch((e) => `Error in handle blog: ${e}`)
+         newBlog.restaurant = "new spot"
+         blogs.push(newBlog) // this NewBlog workaround is safe because newBlog has already been PUT
+      }
+      return getTopBlog(blogs, restaurant)
+   }
+
    // if called from edit page, the update behavior is unique
    const editBlogSubmit = async () => {
       let sameCuisine = true
       await axios.get(`/api/cuisines/${cuisineId}`)
-         .then(async function(res) {
+         .then(async (res) => {
             sameCuisine = res.data.cuisine === cuisine ? true : false          
             const scoreDif = sameCuisine ? rating - defBlog.rating : -defBlog.rating
             const newSpotsVisited = sameCuisine ? res.data.spotsVisited : res.data.spotsVisited - 1 
             const newScoreSum = res.data.scoreSum + scoreDif
-            const newBlogs = res.data.blogs
             const newAllScores = res.data.allScores
-            if (scoreDif !== 0 || !sameCuisine) {
+            if (scoreDif !== 0 || !sameCuisine || restaurant !== defBlog.restaurant) {
+               console.log("hey")
                newAllScores[defBlog.rating] -= 1
             }
             if (sameCuisine) {
@@ -69,28 +92,9 @@ const AddBlog = ({ onClose,
                }
                newAllScores[rating] += 1 
             }
-            let newTopSpotScore = 0
-            let newTopSpot = null
-            let blogIndex = 0
-            for (let i = 0; i < newBlogs.length; i++) {
-               const b = newBlogs[i]
-               if (b._id === blogId) {
-                  b.restaurant = restaurant
-                  b.rating = sameCuisine ? rating : 0
-                  b.location = location
-                  b.highlight = highlight
-                  b.date = date
-                  b.blog = blog
-                  blogIndex = i
-               }
-               if (!newTopSpot || b.rating >= newTopSpotScore) {
-                  newTopSpot = b.restaurant
-                  newTopSpotScore = b.rating
-               }
-            }
-            if (!(sameCuisine)) {
-               newBlogs.splice(blogIndex, 1)
-            }
+            const topSpotInfo = await handleBlog(res.data.blogs, sameCuisine)
+            const newTopSpot = topSpotInfo[0]
+            const newTopSpotScore = topSpotInfo[1]
             // if the cuisine changed and it was only rep of that cuisine, delete cuisine
             if (!newSpotsVisited) {
                await axios.delete(`/api/cuisines/${cuisineId}`)
@@ -102,14 +106,13 @@ const AddBlog = ({ onClose,
                   scoreSum: newScoreSum,
                   topSpot: newTopSpot,
                   topSpotScore: newTopSpotScore,
-                  blogs: newBlogs,
                   allScores: newAllScores,
                   spotsVisited: newSpotsVisited
                })
                .catch((e) => console.log(e))
             }
          })
-         .catch(() => console.log("failed get"))
+         .catch((e) => console.log(`failed get: ${e}`))
       return sameCuisine
    }
 
@@ -130,6 +133,7 @@ const AddBlog = ({ onClose,
          topSpotScore: rating,
          blogs: [
             {
+               _id: restaurant,
                restaurant: restaurant,
                rating: rating,
                location: location,
@@ -143,8 +147,10 @@ const AddBlog = ({ onClose,
       }
       await axios.get(`/api/cuisines/cuisine/${cuisine}`)
          .then(async function(res) {
-            const blogs = res.data.blogs
-            blogs.push(outBoundData.blogs[0])
+            await axios.put(`/api/cuisines/blog/${res.data._id}`, {
+               blog: outBoundData.blogs[0]
+            })
+               .catch((e) => console.log(e))
             const newSpotsVisited = res.data.spotsVisited + 1
             const newScoreSum = Number(res.data.scoreSum) + Number(rating)
             const newAllScores = res.data.allScores
@@ -160,7 +166,6 @@ const AddBlog = ({ onClose,
                allScores: newAllScores,
                topSpot: newTopSpot,
                topSpotScore: newTopSpotScore,
-               blogs: blogs,
             })
                .then(() => {
                   clearFields()

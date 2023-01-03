@@ -1,9 +1,14 @@
 const mongoose = require('mongoose')
 
 const blogSchema = mongoose.Schema({
+   _id: {
+      type: String,
+      index: true,
+      required: true,
+   },
    restaurant: {
       type: String,
-      required: true,
+      required: true
    },
    rating: {
       type: Number,

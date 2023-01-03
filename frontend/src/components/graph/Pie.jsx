@@ -34,6 +34,9 @@ import {
 
    const options = {
       maintainAspectRatio: false,
+      animation: {
+        duration: 200
+      },
       elements: {
         bar: {
           borderWidth: 2,
@@ -52,7 +55,10 @@ import {
          display: false
         },
         datalabels: {
-          color: "white"
+          color: "white",
+          display: function(context) {
+            return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+         }
         }
       },
     };
@@ -60,8 +66,8 @@ import {
     const tograph = {
       labels: labels,
       datasets: [{
-        label: 'My First Dataset',
         data: data,
+        borderColor: 'white',
         backgroundColor: [
           'rgb(5, 30, 17)',
           'rgb(3, 48, 24)',
@@ -73,12 +79,11 @@ import {
           'rgb(138, 175, 135)',
           'rgb(155, 174, 154)',
           'rgb(166, 170, 168)',
-          'rgb(100, 99, 132)',
+          //'rgb(100, 99, 132)',
         ],
         hoverOffset: 4
       }]
     };
-
    return (
       <Pie data={tograph} options={options} plugins={[ChartDataLabels]}/>
    )

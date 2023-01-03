@@ -5,11 +5,9 @@ import './homepage.css'
 const HomePage = () => {
 
   return (
-    <div>
-      <div className="hero">
-        <SideBar />
-        <Map />
-      </div>
+    <div className="hero">
+      <SideBar />
+      <Map />
     </div>
   )
 }

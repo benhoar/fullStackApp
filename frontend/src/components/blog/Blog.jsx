@@ -2,6 +2,7 @@ import { FaTimes, FaEdit } from 'react-icons/fa'
 import './blog.css'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { getTopBlog } from '../../scripts/getTopBlog.js'
 
 const Blog = ({ blog, onUpdate }) => {
 
@@ -14,31 +15,25 @@ const Blog = ({ blog, onUpdate }) => {
         const newSpotsVisited = res.data.spotsVisited - 1
         if (newSpotsVisited === 0) {
           await axios.delete(`/api/cuisines/${blog.cuisine_id}`)
-            .catch(() => console.log("failed cuisine delete"))
+            .catch((e) => console.log(`failed cuisine delete: ${e}`))
         }
         else {
           const newAllScores = res.data.allScores
           newAllScores[blog.rating] -= 1
-          const newBlogs = res.data.blogs
-          let newTopSpot = null
-          let newTopSpotScore = 0
-          let blogIndex = 0
-          for (let i = 0; i < newBlogs.length; i++) {
-            const b = newBlogs[i]
-            if (b.restaurant === blog.restaurant) {
-              blogIndex = i
-              continue
-            }
-            if (!newTopSpot || b.rating > newTopSpotScore) {
-              newTopSpot = b.restaurant
-              newTopSpotScore = b.rating
-            }
+          await axios.delete(`/api/cuisines/blog/${blog.cuisine}/${blog.restaurant}`)
+            .catch((e) => {console.log(`failed blog delete: ${e}`)})
+          let newTopSpot = res.data.topSpot
+          let newTopSpotScore = res.data.topSpotScore
+          console.log(`Pre if: ${res.data.topSpot}, ${blog.restaurant}`)
+          if (res.data.topSpot === blog.restaurant) {
+            const topInfo = getTopBlog(res.data.blogs, blog.restaurant)
+            newTopSpot = topInfo[0]
+            newTopSpotScore = topInfo[1]
+            console.log(`After if: ${topInfo}`)
           }
-         newBlogs.splice(blogIndex, 1)
          await axios.put(`/api/cuisines/${blog.cuisine_id}`, {
             scoreSum: newScoreSum,
             spotsVisited: newSpotsVisited,
-            blogs: newBlogs,
             allScores: newAllScores,
             topSpot: newTopSpot,
             topSpotScore: newTopSpotScore
@@ -62,8 +57,8 @@ const Blog = ({ blog, onUpdate }) => {
                     state: {
                             cuisine_id: blog.cuisine_id,
                             blog_id: blog._id,
-                            cuisine: blog.cuisine
-                            }
+                            cuisine: blog.cuisine,
+                          }
                   })}/>
           <FaTimes style={{cursor:'pointer'}}
                    onClick={async () => { await onDelete() }}

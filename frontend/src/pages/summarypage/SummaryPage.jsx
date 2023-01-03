@@ -1,53 +1,46 @@
 import './summarypage.css'
 import Graph from '../../components/graph/Graph'
-import SummaryPost from '../../components/summarypost/SummaryPost'
 import { useState, useEffect } from 'react'
 const axios = require('axios').default
 
 const SummaryPage = () => {
-  //const [blogs, setBlogs] = useState([])
-  const [cuisines, setCuisines] = useState({})
+  const [cuisines, setCuisines] = useState([])
+  const [allScores, setAllScores] = useState([])
+  const [numSpots, setNumSpots] = useState(0)
+  const [fullScoreSum, setFullScoreSum] = useState(0)
 
   useEffect(() => {
     const getBlogData = async () => {
-      const foods = {}
       try {
-        const res = await axios.get("/api/blogs")
-        const allBlogs = res.data
-        const allScores = new Array(10).fill(0)
-        allBlogs.forEach((blog) => {
-          if (blog.cuisine in foods) {
-            foods[blog.cuisine].push({"rating":blog.rating, "restaurant":blog.restaurant, "location":blog.location})
-          }
-          else {
-            foods[blog.cuisine] = [{"rating":blog.rating, "restaurant":blog.restaurant, "location":blog.location}]
-          }
-          allScores[blog.rating-1] += 1
+        const res = await axios.get("/api/cuisines")
+        const scores = new Array(10).fill(0)
+        let totalSpots = 0
+        const allCuisines = []
+        let scoreSum = 0
+        res.data.forEach((cuisine) => {
+           allCuisines.push(cuisine)
+           totalSpots += cuisine.spotsVisited
+           scoreSum += cuisine.scoreSum
+           Object.entries(cuisine.allScores).map(([rating, count]) => scores[rating-1] += count)
         })
-        setCuisines(foods)
-      } catch {
-        console.log("error")
+        setNumSpots(totalSpots)
+        setAllScores(scores)
+        setCuisines(allCuisines)
+        setFullScoreSum(scoreSum)
+      } catch (e) {
+        console.log(e)
       }
     }
     getBlogData()
   }, [])
 
   const getFirstRow = () => {
-    const allScores = new Array(10).fill(0)
-    let count = 0
-    let length = 0
-    Object.entries(cuisines).map(([cuisine, data]) => 
-      Object.entries(data).forEach((d) => {
-        allScores[d[1].rating-1] += 1
-        count += d[1].rating
-        length += 1
-    }))
-    let avg = (count/length).toFixed(2)
+    const avg = (fullScoreSum/numSpots).toFixed(2)
     return (
       <tr className="tableRow">
         <td>All Cuisines</td>
-        <td>No Winner</td>
-        <td className="scores">{length}</td>
+        <td>Still Looking...</td>
+        <td className="scores">{numSpots}</td>
         <td className="scores">{avg}</td>
         <td>
           <div className="graphWrapper">
@@ -56,6 +49,43 @@ const SummaryPage = () => {
         </td>
       </tr>
     )
+  }
+
+  const getTableRow = (cuisine) => {
+    let topSpot = ["nowhere", 0, "nowhere"]
+    const graphScores = new Array(10).fill(0)
+    cuisine.blogs.forEach((b) => {
+      graphScores[b.rating-1] += 1
+      if (b.rating > topSpot[1]) {
+        topSpot = [b.restaurant, b.rating, b.location]
+      }
+    })
+    let av = (cuisine.scoreSum / cuisine.blogs.length).toFixed(2)
+    return (
+      <tr key={cuisine.cuisine} className="tableRow">
+        <td>{cuisine.cuisine}</td>
+        <td>
+          <span>{topSpot[0]}</span>
+          <span style={{fontSize:"18px"}}>{" – "}{topSpot[2]}</span> 
+        </td>
+        <td className="scores">{cuisine.blogs.length}</td>
+        <td className="scores">{av}</td>
+        <td>
+          <div className="graphWrapper">
+            <Graph data={graphScores}/>
+          </div>
+        </td>
+      </tr>
+    )
+  }
+
+  const getTableBody = () => {
+    const rows = []
+    for (let i = 0; i < cuisines.length; i++) {
+      const cuisine = cuisines[i]
+      rows.push(getTableRow(cuisine))
+    }
+    return rows
   }
 
   return (
@@ -80,41 +110,11 @@ const SummaryPage = () => {
             </thead>
             <tbody className="summaryBody">
               {getFirstRow()}
-              {Object.entries(cuisines).map(([cuisine, data]) => {
-                let topSpot = ["nowhere", 0, "nowhere"]
-                let sumOfScores = 0
-                const graphScores = new Array(10).fill(0)
-                Object.entries(data).forEach((d) => {
-                  d = d[1]
-                  sumOfScores += d.rating
-                  graphScores[d.rating-1] += 1
-                  if (d.rating > topSpot[1]) {
-                    topSpot = [d.restaurant, d.rating, d.location]
-                  }
-                })
-                const av = sumOfScores / data.length
-                return (
-                  <tr key={cuisine} className="tableRow">
-                    <td>{cuisine}</td>
-                    <td>
-                      <span>{topSpot[0]}</span>
-                      <span style={{fontSize:"18px"}}>{" – "}{topSpot[2]}</span> 
-                    </td>
-                    <td className="scores">{data.length}</td>
-                    <td className="scores">{av.toFixed(2)}</td>
-                    <td>
-                      <div className="graphWrapper">
-                        <Graph data={graphScores}/>
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })}
+              {getTableBody()}
             </tbody>
           </table>
           <div className="tableCap"></div>
         </div>
-        <SummaryPost />
       </div>
     </div>
   )

@@ -12,6 +12,7 @@ const BlogPage = () => {
   const [blogs, setBlogs] = useState([])
   const [blogUpdated, setBlogUpdated] = useState(false)
 
+
   // Get Blogs
   useEffect(() => {
     const fetchBlogs = async () => {
