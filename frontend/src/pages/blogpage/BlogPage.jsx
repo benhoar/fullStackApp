@@ -4,6 +4,7 @@ import AddBlog from '../../components/blog/AddBlog'
 import './blogpage.css'
 // this is a hook called useState
 import { useEffect, useState } from 'react'
+import { useAuthContext } from '../../hooks/useAuthContext'
 const axios = require('axios').default
 
 const BlogPage = () => {
@@ -11,13 +12,16 @@ const BlogPage = () => {
   const [showAddBlog, setShowAddBlog] = useState(false)
   const [blogs, setBlogs] = useState([])
   const [blogUpdated, setBlogUpdated] = useState(false)
+  const { user } = useAuthContext()
 
 
   // Get Blogs
   useEffect(() => {
     const fetchBlogs = async () => {
-      try {
-        const res = await axios.get("/api/cuisines/")
+      try { // BELOW GET REQUEST VERIFIED
+        const res = await axios.get("/api/cuisines/", {
+          headers: { 'Authorization': `Bearer ${user.token}` }
+        })
         const allBlogs = []
         res.data.forEach((cuisine) => 
           cuisine.blogs.forEach((blog) => {
@@ -31,9 +35,11 @@ const BlogPage = () => {
         console.log(err)
       }
     }
-    fetchBlogs()
-    setBlogUpdated(false)
-  }, [blogUpdated]) 
+    if (user) {
+      fetchBlogs()
+      setBlogUpdated(false)
+    }
+  }, [blogUpdated, user]) 
 
   const hideBlog = () => {
       setShowAddBlog(false)

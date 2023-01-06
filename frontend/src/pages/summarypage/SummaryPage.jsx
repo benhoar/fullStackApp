@@ -1,6 +1,7 @@
 import './summarypage.css'
 import Graph from '../../components/graph/Graph'
 import { useState, useEffect } from 'react'
+import { useAuthContext } from '../../hooks/useAuthContext'
 const axios = require('axios').default
 
 const SummaryPage = () => {
@@ -8,11 +9,16 @@ const SummaryPage = () => {
   const [allScores, setAllScores] = useState([])
   const [numSpots, setNumSpots] = useState(0)
   const [fullScoreSum, setFullScoreSum] = useState(0)
+  const { user } = useAuthContext()
 
   useEffect(() => {
     const getBlogData = async () => {
       try {
-        const res = await axios.get("/api/cuisines")
+        const res = await axios.get("/api/cuisines",
+          {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+          }
+        )
         const scores = new Array(10).fill(0)
         let totalSpots = 0
         const allCuisines = []
@@ -32,7 +38,7 @@ const SummaryPage = () => {
       }
     }
     getBlogData()
-  }, [])
+  }, [user])
 
   const getFirstRow = () => {
     const avg = (fullScoreSum/numSpots).toFixed(2)

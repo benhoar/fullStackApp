@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
+import { useAuthContext } from '../../hooks/useAuthContext'
 import './sideblog.css'
 
 const axios = require('axios').default
@@ -12,6 +13,7 @@ const SideBlog = ({ onClick }) => {
    const [blog, setBlog] = useState('')
    const [location, setLocation] = useState('')
    const [highlight, setHighlight] = useState('')
+   const { user } = useAuthContext()
 
    // reset state after blog submission
    const clearFields = () => {
@@ -44,42 +46,52 @@ const SideBlog = ({ onClick }) => {
       if (highlight) {
          outBoundData.blogs[0].highlight = highlight 
       }
-      await axios.get(`/api/cuisines/cuisine/${cuisine}`)
-         .then(async function(res) {
-            await axios.put(`/api/cuisines/blog/${res.data._id}`, {
+      await axios.get(`/api/cuisines/cuisine/${cuisine}`,
+         {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+         }
+      ).then(async function(res) {
+         await axios.put(`/api/cuisines/blog/${res.data._id}`, 
+            {
                blog: outBoundData.blogs[0]
-            })
-               .catch((e) => console.log(e))
-            const newSpotsVisited = res.data.spotsVisited + 1
-            const newScoreSum = Number(res.data.scoreSum) + Number(rating)
-            const newAllScores = res.data.allScores
-            if (!(rating in newAllScores)) {
-               newAllScores[rating] = 0
             }
-            newAllScores[rating] += 1
-            const newTopSpotScore = rating >= res.data.topSpotScore ? rating : res.data.topSpotScore
-            const newTopSpot = rating >= res.data.topSpotScore ? restaurant : res.data.topSpot
-            await axios.put(`/api/cuisines/${res.data._id}`, {
+         ).catch((e) => console.log(e))
+         const newSpotsVisited = res.data.spotsVisited + 1
+         const newScoreSum = Number(res.data.scoreSum) + Number(rating)
+         const newAllScores = res.data.allScores
+         if (!(rating in newAllScores)) {
+            newAllScores[rating] = 0
+         }
+         newAllScores[rating] += 1
+         const newTopSpotScore = rating >= res.data.topSpotScore ? rating : res.data.topSpotScore
+         const newTopSpot = rating >= res.data.topSpotScore ? restaurant : res.data.topSpot
+         await axios.put(`/api/cuisines/${res.data._id}`, 
+            {
                spotsVisited: newSpotsVisited,
                scoreSum: newScoreSum,
                allScores: newAllScores,
                topSpot: newTopSpot,
                topSpotScore: newTopSpotScore,
-            })
-               .then(() => {
-                  clearFields()
-                  onClick()
-               })
-               .catch((e) => console.log(e))
-         })
-         .catch(async () => {
-            await axios.post("/api/cuisines/", outBoundData)
-               .then(() => {
-                  clearFields()
-                  onClick()
-               })
-               .catch((e) => console.log(e))
-         })
+            },
+            {
+               headers: { 'Authorization': `Bearer ${user.token}` }
+            }
+         ).then(() => {
+               clearFields()
+               onClick()
+            }
+         ).catch((e) => console.log(e))
+      }).catch(async () => {
+         await axios.post("/api/cuisines/", outBoundData,
+            {
+               headers: { 'Authorization': `Bearer ${user.token}` }
+            }
+         ).then(() => {
+               clearFields()
+               onClick()
+            }
+         ).catch((e) => console.log(e))
+      })
    }
 
   return (

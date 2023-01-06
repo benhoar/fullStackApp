@@ -6,11 +6,13 @@ import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import useOutsideClick from '../../hooks/useOutsideClick'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 const SummaryPost = ({ data, setVisible, visible }) => {
 
    const [topSpotInfo, setTopSpotInfo] = useState({})
    const { ref } = useOutsideClick(setVisible);
+   const { user } = useAuthContext()
 
    const cuisToRegion = {
       "American": "United States",
@@ -101,16 +103,20 @@ const SummaryPost = ({ data, setVisible, visible }) => {
 
    useEffect(() => {
       const getTopSpotInfo = async () => {
-         await axios.get(`/api/cuisines/blog/${topSpot.cuisine}/${topSpot.topSpot}`)
-            .then((res) => {
+         await axios.get(`/api/cuisines/blog/${topSpot._id}/${topSpot.topSpot}`,
+            {
+               headers: { 'Authorization': `Bearer ${user.token}` }
+            }
+         ).then((res) => {
                setTopSpotInfo(res.data)
-            })
-            .catch((err) => {
+            }
+         ).catch((err) => {
                console.log(`Error: ${err}`)
-            })
+            }
+         )
       }
       getTopSpotInfo(topSpot)
-   }, [topSpot])
+   }, [topSpot, user])
 
    const averageScore = (scoreSum / spotsVisited).toFixed(2)
   

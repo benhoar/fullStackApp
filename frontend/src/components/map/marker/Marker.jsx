@@ -1,6 +1,8 @@
 import './marker.css'
 import SummaryPost from '../../summarypost/SummaryPost'
 import { useState } from 'react'
+import { useAuthContext } from '../../../hooks/useAuthContext'
+
 const axios = require('axios').default
 
 const Marker = ({ details }) => {
@@ -8,7 +10,7 @@ const Marker = ({ details }) => {
   const [popData, setPopData] = useState([])
   const [pop, setPop] = useState(false)
   const [notFound, setNotFound] = useState(false)
-
+  const { user } = useAuthContext()
   // const cuisineCountryMap = {
   //   "American": "USA1",
   //   "Seafood": "USA1",
@@ -82,13 +84,17 @@ const Marker = ({ details }) => {
   const getCuisines = async () => {
     const cuisData = []
     for (const cuisine of details.cuisines) {
-      await axios.get(`/api/cuisines/cuisine/${cuisine}`)
-        .then((res) => {
+      await axios.get(`/api/cuisines/cuisine/${cuisine}`,
+        {
+          headers: { 'Authorization': `Bearer ${user.token}` }
+        }
+      ).then((res) => {
           cuisData.push(res.data)
-        })
-        .catch(() => {
+        }
+      ).catch(() => {
           console.log(cuisine, " not found")
-        })
+        }
+      )
     }
     if (cuisData.length === 0) {
       return null

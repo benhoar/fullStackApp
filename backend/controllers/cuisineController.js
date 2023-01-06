@@ -1,45 +1,59 @@
 const asyncHandler = require('express-async-handler')
 
 const Cuisine = require('../models/CuisineModel')
+const User = require('../models/userModel')
 
-// @desc get Cuisine
-// @route GET /api/countries
-// @access NOT IMPLEMENTED
+// @desc get all Cuisines
+// @route GET /api/cuisines
+// CHECKED
 const getCuisines = asyncHandler(async (req, res) => {
-   const cuisines = await Cuisine.find()
+   const cuisines = await Cuisine.find({ user: req.user.id })
+
+   if (!cuisines) {
+      res.status(400)
+      throw new Error('No cuisines found for user')
+   }
    res.status(200).json(cuisines)
 })
 
+// @desc get specific Cuisine
+// @route GET /api/cuisines/cuisine
+// CHECKED
 const getCuisine = asyncHandler(async (req, res) => {
-   const cuisine = await Cuisine.findById(req.params.id)
-   res.status(200).json(cuisine)
-})
+   const cuisine = await Cuisine.findOne({ user: req.user.id, cuisine: req.params.cuisine })
 
-const getCuisineByName = asyncHandler(async (req, res) => {
-   const cuisine = await Cuisine.findOne({"cuisine": req.params.cuisine})
    if (!cuisine) {
       res.status(400)
-      throw new Error("Not found")
+      throw new Error('Cuisine not found for user')
    }
+
    res.status(200).json(cuisine)
 })
 
-// get a blog
+// @desc get blog for user/cuisine
+// @route GET /api/cuisines/blog
+// CHECKED
 const getBlog = asyncHandler(async (req, res) => {
-   await Cuisine.findOne({"cuisine": req.params.cuisine})
-      .then((cuisine) => {
-         const blog = cuisine.blogs.id(req.params.restaurant)
-         res.status(200).json(blog)
-       })
-       .catch((e) => {
-         res.status(400)
-         throw new Error(`Not Found: ${e}`)
-       })
+   const cuisine = await Cuisine.findOne({ user: req.user.id, _id: req.params.cuisine_id })
+
+   if (!cuisine) {
+      res.status(400)
+      throw new Error('Cuisine blogs for requested user not found')
+   }
+
+   console.log(cuisine)
+   const blog = cuisine.blogs.id(req.params.blog_id)
+   
+   if (!blog) {
+      res.status(400)
+      throw new Error('Blog not found')
+   }
+   res.status(200).json(blog)
 })
 
 // @desc set Cuisine
-// @route POST /api/countries
-// @access NOT IMPLEMENTED
+// @route POST /api/cuisines
+// CHECKED
 const postCuisine = asyncHandler(async (req, res) => {
    if (!req.body.cuisine) {
       res.status(400)
@@ -55,20 +69,35 @@ const postCuisine = asyncHandler(async (req, res) => {
       allScores: startMap,
       topSpotScore: req.body.topSpotScore,
       topSpot: req.body.topSpot,
-      blogs: req.body.blogs
+      blogs: req.body.blogs,
+      user: req.user.id,
    })
    res.status(200).json(newCuisine)
 })
 
 // @desc update Cuisine
-// @route PUT /api/countries/:id
-// @access NOT IMPLEMENTED
+// @route PUT /api/cuisines/:id
+// CHECKED
 const updateCuisine = asyncHandler(async (req, res) => {
-   const cuisine = await Cuisine.findById(req.params.id)
+   const cuisine = await Cuisine.findOne({user:req.user.id, _id:req.params.id})
    
    if (!cuisine) {
       res.status(400)
-      throw new Error('Blog Not Found')
+      throw new Error('Cuisine Not Found')
+   }
+
+   const user = await User.findById(req.user.id) 
+
+   // check for user
+   if (!user) {
+      res.status(401)
+      throw new Error('User not found')
+   }
+
+   // ensure current user matches cuisine author
+   if (cuisine.user.toString() !== user.id) {
+      res.status(401)
+      throw new Error('Edit Access Denied')
    }
 
    const updatedCuisine = await Cuisine.findByIdAndUpdate(cuisine._id, req.body, {new: true})
@@ -76,9 +105,12 @@ const updateCuisine = asyncHandler(async (req, res) => {
 })
 
 
+// @desc update Cuisine by adding a blog
+// @route PUT /api/cuisines/blog/:id
 // Add a blog to a cuisine
+// I THINK CHECKED --> HARD TO TEST
 const addBlog = asyncHandler(async (req, res) => {
-   await Cuisine.findById(req.params.id)
+   await Cuisine.findOne({ user: req.user.id, _id: req.params.id })
       .then((cuisine) => {
          cuisine.blogs.push(req.body.blog)
          cuisine.markModified('blogs'); 
@@ -98,19 +130,40 @@ const addBlog = asyncHandler(async (req, res) => {
       })
 })
 
-// Delete a cuisine entirely
+// @desc delete a Cuisine
+// @route DELETE /api/cuisines/:id
+// CHECKED
 const deleteCuisine = asyncHandler(async (req, res) => {
-   try {
-      await Cuisine.findByIdAndDelete(req.params.id)
-      res.status(200).json({msg: "Cuisine deleted"})
-   } catch {
-      console.log("delete failed")
+   const cuisine = await Cuisine.findById(req.params.id)
+
+   // check if cuisine exists
+   if (!cuisine) {
+      res.status(401)
+      throw new Error('Cuisine not found')
    }
+
+   const user = await User.findById(req.user.id) 
+
+   // check for user
+   if (!user) {
+      res.status(401)
+      throw new Error('User not found')
+   }
+
+   // ensure current user matches cuisine author
+   if (cuisine.user.toString() !== user.id) {
+      res.status(401)
+      throw new Error('Edit Access Denied')
+   }
+   
+   await cuisine.remove()
+   res.status(200).json({ id: req.params.id })
 })
 
 // delete a blog
+// DEFINITELY WILL NOT WORK AS IS
 const deleteBlog = asyncHandler(async (req, res) => {
-   await Cuisine.findOne({"cuisine": req.params.cuisine})
+   await Cuisine.findOne({ user:req.user.id, _id:req.params.cuisine_id })
       .then((cuisine) => {
          cuisine.blogs.pull(req.params.restaurant)
          cuisine.save(function (err) {
@@ -134,7 +187,6 @@ module.exports = {
    updateCuisine,
    getCuisine,
    deleteCuisine,
-   getCuisineByName,
    getBlog,
    deleteBlog,
    addBlog

@@ -37,10 +37,14 @@ const blogSchema = mongoose.Schema({
 })
 
 const cuisineSchema = mongoose.Schema({
+   user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User'
+   },
    cuisine: {
       type: String,
       required: true,
-      unique: true
    },
    spotsVisited: {
       type: Number,

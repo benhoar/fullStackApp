@@ -2,6 +2,7 @@ import './countrylist.css'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import SummaryPost from '../summarypost/SummaryPost'
+import { useAuthContext } from '../../hooks/useAuthContext'
 const axios = require('axios').default
 
 const CountryList = ({ onClick }) => {
@@ -9,6 +10,7 @@ const CountryList = ({ onClick }) => {
    const [pop, setPop] = useState(false)
    const [notFound, setNotFound] = useState(false)
    const [popData, setPopData] = useState([])
+   const { user } = useAuthContext()
 
    const regionSorter = (regions) => {
       return Object.keys(regions).sort().reduce(function(res, key) {res[key]=regions[key]; return res}, {})
@@ -287,13 +289,17 @@ const CountryList = ({ onClick }) => {
    const getCountryData = async (val) => {
       const cuisData = []
       for (const cuisine of regionInfo[val].cuisines) {
-        await axios.get(`/api/cuisines/cuisine/${cuisine}`)
-          .then((res) => {
+        await axios.get(`/api/cuisines/cuisine/${cuisine}`,
+          {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+          }
+        ).then((res) => {
             cuisData.push(res.data)
-          })
-          .catch(() => {
+          }
+        ).catch(() => {
             console.log(cuisine, " not found")
-          })
+          }
+        )
       }
       if (cuisData.length === 0) {
         return null

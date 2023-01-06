@@ -18,9 +18,8 @@ app.use(express.urlencoded({extended: false}))
 // this is just to clean things up --> now routes
 // related to the blogs page are all stored in separate 
 // folder and file (post, puts, delete etc. for blogs)
-app.use('/api/blogs', require('./routes/blogRoutes'))
-app.use('/api/countries', require('./routes/countryRoutes'))
 app.use('/api/cuisines', require('./routes/cuisineRoutes'))
+app.use('/api/users', require('./routes/userRoutes'))
 
 
 // overwrites the default error hanlder

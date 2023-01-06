@@ -3,25 +3,36 @@ import './blog.css'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { getTopBlog } from '../../scripts/getTopBlog.js'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 const Blog = ({ blog, onUpdate }) => {
 
+  const { user } = useAuthContext()
   const navigate = useNavigate()
 
   const onDelete = async () => {
-    await axios.get(`/api/cuisines/${blog.cuisine_id}`)
-      .then(async function(res) {
+    await axios.get(`/api/cuisines/cuisine/${blog.cuisine}`,
+      {
+        headers: { 'Authorization': `Bearer ${user.token}` }
+      }
+    ).then(async function(res) {
         const newScoreSum = res.data.scoreSum - blog.rating
         const newSpotsVisited = res.data.spotsVisited - 1
         if (newSpotsVisited === 0) {
-          await axios.delete(`/api/cuisines/${blog.cuisine_id}`)
-            .catch((e) => console.log(`failed cuisine delete: ${e}`))
+          await axios.delete(`/api/cuisines/${blog.cuisine_id}`,
+            {
+              headers: { 'Authorization': `Bearer ${user.token}` }
+            }
+          ).catch((e) => console.log(`failed cuisine delete: ${e}`))
         }
         else {
           const newAllScores = res.data.allScores
           newAllScores[blog.rating] -= 1
-          await axios.delete(`/api/cuisines/blog/${blog.cuisine}/${blog.restaurant}`)
-            .catch((e) => {console.log(`failed blog delete: ${e}`)})
+          await axios.delete(`/api/cuisines/blog/${blog.cuisine_id}/${blog.restaurant}`,
+            {
+              headers: { 'Authorization': `Bearer ${user.token}` }
+            }
+          ).catch((e) => {console.log(`failed blog delete: ${e}`)})
           let newTopSpot = res.data.topSpot
           let newTopSpotScore = res.data.topSpotScore
           console.log(`Pre if: ${res.data.topSpot}, ${blog.restaurant}`)
@@ -31,14 +42,18 @@ const Blog = ({ blog, onUpdate }) => {
             newTopSpotScore = topInfo[1]
             console.log(`After if: ${topInfo}`)
           }
-         await axios.put(`/api/cuisines/${blog.cuisine_id}`, {
-            scoreSum: newScoreSum,
-            spotsVisited: newSpotsVisited,
-            allScores: newAllScores,
-            topSpot: newTopSpot,
-            topSpotScore: newTopSpotScore
-         })
-          .catch(() => console.log("update during deletion error"))
+         await axios.put(`/api/cuisines/${blog.cuisine_id}`, 
+            {
+                scoreSum: newScoreSum,
+                spotsVisited: newSpotsVisited,
+                allScores: newAllScores,
+                topSpot: newTopSpot,
+                topSpotScore: newTopSpotScore
+            },
+            {
+              headers: { 'Authorization': `Bearer ${user.token}` }
+            }
+         ).catch(() => console.log("update during deletion error"))
         }
       })
       onUpdate()

@@ -28,9 +28,9 @@
 }
    
 .marker:hover {
-      background-color: pink;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-      transform: scale(2) rotate(45deg);
+   background-color: pink;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+   transform: scale(2) rotate(45deg);
 }
 
 .maker:active {

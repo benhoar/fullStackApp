@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './blog.css'
 import { getTopBlog } from '../../scripts/getTopBlog'
+import { useAuthContext } from '../../hooks/useAuthContext'
+
 
 const axios = require('axios').default
 
@@ -18,6 +20,7 @@ const AddBlog = ({ onClose,
    const [blog, setBlog] = useState('')
    const [location, setLocation] = useState('')
    const [highlight, setHighlight] = useState('')
+   const { user } = useAuthContext()
 
    const nav = useNavigate()
 
@@ -60,12 +63,18 @@ const AddBlog = ({ onClose,
          blog: blog
       }
       // delete blog from current location no matter what
-      await axios.delete(`/api/cuisines/blog/${defCuis}/${defBlog.restaurant}`)
-         .catch((e) => {console.log(`failed blog delete: ${e}`)})
+      await axios.delete(`/api/cuisines/blog/${cuisineId}/${defBlog.restaurant}`,
+         {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+         }
+      ).catch((e) => {console.log(`failed blog delete: ${e}`)})
       if (sameCuisine) {
          // if same cuisine, let's add the new one ine and use that for finding new top
-         await axios.put(`/api/cuisines/blog/${cuisineId}`, {blog: newBlog})
-            .catch((e) => `Error in handle blog: ${e}`)
+         await axios.put(`/api/cuisines/blog/${cuisineId}`, {blog: newBlog},
+            {
+               headers: { 'Authorization': `Bearer ${user.token}` }
+            }
+         ).catch((e) => `Error in handle blog: ${e}`)
          newBlog.restaurant = "new spot"
          blogs.push(newBlog) // this NewBlog workaround is safe because newBlog has already been PUT
       }
@@ -75,44 +84,52 @@ const AddBlog = ({ onClose,
    // if called from edit page, the update behavior is unique
    const editBlogSubmit = async () => {
       let sameCuisine = true
-      await axios.get(`/api/cuisines/${cuisineId}`)
-         .then(async (res) => {
-            sameCuisine = res.data.cuisine === cuisine ? true : false          
-            const scoreDif = sameCuisine ? rating - defBlog.rating : -defBlog.rating
-            const newSpotsVisited = sameCuisine ? res.data.spotsVisited : res.data.spotsVisited - 1 
-            const newScoreSum = res.data.scoreSum + scoreDif
-            const newAllScores = res.data.allScores
-            if (scoreDif !== 0 || !sameCuisine || restaurant !== defBlog.restaurant) {
-               console.log("hey")
-               newAllScores[defBlog.rating] -= 1
+      await axios.get(`/api/cuisines/cuisine/${defCuis}`,
+         {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+         }
+      ).then(async (res) => {
+         sameCuisine = res.data.cuisine === cuisine ? true : false          
+         const scoreDif = sameCuisine ? rating - defBlog.rating : -defBlog.rating
+         const newSpotsVisited = sameCuisine ? res.data.spotsVisited : res.data.spotsVisited - 1 
+         const newScoreSum = res.data.scoreSum + scoreDif
+         const newAllScores = res.data.allScores
+         if (scoreDif !== 0 || !sameCuisine || restaurant !== defBlog.restaurant) {
+            newAllScores[defBlog.rating] -= 1
+         }
+         if (sameCuisine) {
+            if (!(rating in newAllScores)) {
+               newAllScores[rating] = 0
             }
-            if (sameCuisine) {
-               if (!(rating in newAllScores)) {
-                  newAllScores[rating] = 0
+            newAllScores[rating] += 1 
+         }
+         const topSpotInfo = await handleBlog(res.data.blogs, sameCuisine)
+         const newTopSpot = topSpotInfo[0]
+         const newTopSpotScore = topSpotInfo[1]
+         // if the cuisine changed and it was only rep of that cuisine, delete cuisine
+         if (!newSpotsVisited) {
+            await axios.delete(`/api/cuisines/${cuisineId}`,
+               {
+                  headers: { 'Authorization': `Bearer ${user.token}` }
                }
-               newAllScores[rating] += 1 
-            }
-            const topSpotInfo = await handleBlog(res.data.blogs, sameCuisine)
-            const newTopSpot = topSpotInfo[0]
-            const newTopSpotScore = topSpotInfo[1]
-            // if the cuisine changed and it was only rep of that cuisine, delete cuisine
-            if (!newSpotsVisited) {
-               await axios.delete(`/api/cuisines/${cuisineId}`)
-                  .catch(() => console.log("deletion error"))
-            }
-            // otherwise, update it
-            else {
-               await axios.put(`/api/cuisines/${cuisineId}`, {
+            ).catch(() => console.log("deletion error"))
+         }
+         // otherwise, update it
+         else {
+            await axios.put(`/api/cuisines/${cuisineId}`, 
+               {
                   scoreSum: newScoreSum,
                   topSpot: newTopSpot,
                   topSpotScore: newTopSpotScore,
                   allScores: newAllScores,
                   spotsVisited: newSpotsVisited
-               })
-               .catch((e) => console.log(e))
-            }
-         })
-         .catch((e) => console.log(`failed get: ${e}`))
+               },
+               {
+                  headers: { 'Authorization': `Bearer ${user.token}` }
+               }
+            ).catch((e) => console.log(e))
+         }
+      }).catch((e) => console.log(`failed get: ${e}`))
       return sameCuisine
    }
 
@@ -122,6 +139,7 @@ const AddBlog = ({ onClose,
       e.preventDefault()
       if (buttontxt === 'Update Blog') {
          const sameCuisine = await editBlogSubmit()
+         // if the cuisine was not changed, we are done, otherwise pass through for updates
          if (sameCuisine) {
             nav('/blogs')
             return
@@ -144,41 +162,57 @@ const AddBlog = ({ onClose,
       }
       if (highlight) {
          outBoundData.blogs[0].highlight = highlight 
-      }
-      await axios.get(`/api/cuisines/cuisine/${cuisine}`)
-         .then(async function(res) {
-            await axios.put(`/api/cuisines/blog/${res.data._id}`, {
-               blog: outBoundData.blogs[0]
-            })
-               .catch((e) => console.log(e))
-            const newSpotsVisited = res.data.spotsVisited + 1
-            const newScoreSum = Number(res.data.scoreSum) + Number(rating)
-            const newAllScores = res.data.allScores
-            if (!(rating in newAllScores)) {
-               newAllScores[rating] = 0
-            }
-            newAllScores[rating] += 1
-            const newTopSpotScore = rating >= res.data.topSpotScore ? rating : res.data.topSpotScore
-            const newTopSpot = rating >= res.data.topSpotScore ? restaurant : res.data.topSpot
-            await axios.put(`/api/cuisines/${res.data._id}`, {
+      } 
+      // BELOW GET REQUEST VERIFIED
+      await axios.get(`/api/cuisines/cuisine/${cuisine}`,
+         {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+         }
+      ).then(async (res) => { // enter this block if cuisine exists for user
+         // for some reason i am adding the blog separately, then updating the cuisine
+         // BELOW VERIFIED PUT REQUEST - FOLLOW-UP UPDATE IS INCORRECT
+         await axios.put(`/api/cuisines/blog/${res.data._id}`, {
+            blog: outBoundData.blogs[0]
+         },
+         {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+         }
+         ).catch((e) => console.log(e))
+
+         const newSpotsVisited = res.data.spotsVisited + 1
+         const newScoreSum = Number(res.data.scoreSum) + Number(rating)
+         const newAllScores = res.data.allScores
+         if (!(rating in newAllScores)) {
+            newAllScores[rating] = 0
+         }
+         newAllScores[rating] += 1
+         const newTopSpotScore = rating >= res.data.topSpotScore ? rating : res.data.topSpotScore
+         const newTopSpot = rating >= res.data.topSpotScore ? restaurant : res.data.topSpot
+         // BELOW PUT REQUEST VERIFIED
+         await axios.put(`/api/cuisines/${res.data._id}`, 
+            {
                spotsVisited: newSpotsVisited,
                scoreSum: newScoreSum,
                allScores: newAllScores,
                topSpot: newTopSpot,
                topSpotScore: newTopSpotScore,
+            },
+            {
+               headers: { 'Authorization': `Bearer ${user.token}` }
+            }
+         ).then(() => 
+            clearFields()
+         ).catch((e) => console.log(e))
+      }).catch(async () => { // Enter if first post about cuisine from user
+         // POST request verified
+         await axios.post("/api/cuisines/", outBoundData, {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+         })
+            .then(() => {
+               clearFields()
             })
-               .then(() => {
-                  clearFields()
-               })
-               .catch((e) => console.log(e))
-         })
-         .catch(async () => {
-            await axios.post("/api/cuisines/", outBoundData)
-               .then(() => {
-                  clearFields()
-               })
-               .catch((e) => console.log(e))
-         })
+            .catch((e) => console.log(e))
+      })
       if (buttontxt === 'Update Blog') {
          nav('/blogs')
       } else {
@@ -256,7 +290,7 @@ const AddBlog = ({ onClose,
                   required/>
             </p>
             <p className="full-width">
-            <input type="submit" value={buttontxt} className="button btn-block"/>
+            <input type="submit" value={buttontxt} className="button btn-block" disabled={!user}/>
             </p>
          </div>
       </form>

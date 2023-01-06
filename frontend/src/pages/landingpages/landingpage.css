@@ -1,0 +1,37 @@
+.landingPage {
+   width: 20%;
+   height: 100vh;
+   margin: 0 auto;
+   padding-top: 125px;
+}
+
+.logIn {
+   background-color: #1B3A20;
+   margin-top: 20px;
+   color: white;
+   font-size: 24px;
+   padding: 4px 8px 4px 8px;
+   cursor: pointer;
+   border: none;
+   border-radius: 4px;
+   width: 100%;
+   font-family: inherit;
+}
+
+.logIn:hover {
+   filter: brightness(1.2)
+}
+
+.register {
+   font-size: 14px;
+   text-decoration: underline;
+}
+
+.landingError {
+   background-color: rgba(255, 0, 0, 0.7);
+   color: white;
+   border-radius: 4px;
+   margin-top: 8px;
+   text-align: center;
+   padding: 4px
+}
