@@ -5,7 +5,6 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 import { useEffect, useState } from 'react'
 
 const Profile = () => {
-   const pic = "images/defpic.png"
 
    const { user } = useAuthContext()
    const { logout } = useLogout()
@@ -34,7 +33,6 @@ const Profile = () => {
 
    return (
       <div className="fieldWrapper">
-         <img id="pic" src={pic} alt="" />
          <div className="fields">
             <div className="field">
                <span className="fieldName">Name</span>
@@ -45,11 +43,18 @@ const Profile = () => {
                <span>: {profile.email}</span>
             </div>
          </div>
-         <Link to="/home">
-            <button className="logout" onClick={() => handleClick()}>
-               Log Out
-            </button>
-         </Link>
+         <div className="proButtons">
+            <Link to="/home">
+               <button className="profileButton" onClick={() => handleClick()}>
+                  Log Out
+               </button>
+            </Link>
+            <Link to='/profile'>
+               <button className="profileButton">
+                  Edit Profile
+               </button>
+            </Link>
+         </div>
       </div>
    )
 }

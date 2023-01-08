@@ -46,7 +46,7 @@ import {
       plugins: {
         title: {
           display: false,
-          text: `${title} Scores`,
+          text: `${title}`,
           font: {
             size: 20,
           }
@@ -56,9 +56,16 @@ import {
         },
         datalabels: {
           color: "white",
+          font: {
+            size: 20
+          },
+          align: "end",
           display: function(context) {
             return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
-         }
+          },
+          formatter: function(value, context) {
+            return context.chart.data.labels[context.dataIndex];
+          },
         }
       },
     };

@@ -3,136 +3,36 @@ import React from 'react'
 import Pie from '../../components/graph/Pie'
 import { TbCrown } from 'react-icons/tb'
 import { FaTimes } from 'react-icons/fa'
-import axios from 'axios'
-import { useState, useEffect } from 'react'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import { useAuthContext } from '../../hooks/useAuthContext'
+import { getPieData } from '../../scripts/getPieData'
+import { useGetTopSpot } from '../../hooks/useGetTopSpot'
 
-const SummaryPost = ({ data, setVisible, visible }) => {
+const SummaryPost = ({ data, setVisible, visible, isSummary }) => {
 
-   const [topSpotInfo, setTopSpotInfo] = useState({})
    const { ref } = useOutsideClick(setVisible);
+   const { name, spotsVisited, scoreSum, topSpot, graphData, topSubCuisine } = getPieData(data)
    const { user } = useAuthContext()
-
-   const cuisToRegion = {
-      "American": "United States",
-      "Seafood": "United States",
-      "Barbecue": "Southern USA",
-      "Soul Food": "Southern USA",
-      "Mexican": "Mexico",
-      "Tacos": "Mexico",
-      "Salvadoran": "Central America",
-      "Guatemalan": "Central America",
-      "Honduran": "Central America",
-      "Nicaraguan": "Central America",
-      "Panamanian": "Central America",
-      "Venezuelan": "Venezuela",
-      "Colombian": "Colombia",
-      "Bolivian": "Bolivia",
-      "Chilean": "Chile",
-      "Brazilian": "Brazil",
-      "Churrasco": "Brazil",
-      "Argentinian": "Argentina",
-      "Haitian": "Hispaniola",
-      "Dominican": "Hispaniola",
-      "Cuban": "Cuba",
-      "Jamaican": "Jamaica",
-      "Ethiopian": "Eastern Africa",
-      "Sudanese": "Eastern Africa",
-      "Kenyan": "Eastern Africa",
-      "Nigerian": "Western Africa",
-      "Moroccan": "Northern Africa",
-      "Tunisian": "Northern Africa",
-      "Egyptian": "Northern Africa",
-      "Iranian": "Iran",
-      "Persian": "Iran",
-      "Scottish": "United Kingdom",
-      "British": "United Kingdom",
-      "Irish": "United Kingdom",
-      "Portuguese": "Portugal",
-      "Spanish": "Spain",
-      "Tapas": "Spain",
-      "Italian": "Italy",
-      "Pizza": "Italy",
-      "Greek": "Greece",
-      "Mediterranean": "Greece",
-      "Turkish": "Turkiye",
-      "Russian": "Russia",
-      "Ukrainian": "Ukraine",
-      "Polish": "Poland",
-      "German": "Germany",
-      "French": "France",
-      "Dutch": "Denmark",
-      "Swedish": "Sweden",
-      "Australian": "Australia",
-      "Japanese": "Japan",
-      "Ramen": "Japan",
-      "Sushi": "Japan",
-      "Korean": "South Korea",
-      "KBBQ": "South Korea",
-      "Peking Duck": "",
-      "Jiangsu": "",
-      "Dim Sum": "Southern China",
-      "Chinese": "Southern China",
-      "Hot Pot": "Western China",
-      "Sichuan": "Western China",
-      "Hawaiian": "Hawaii",
-      "Indian": "India",
-      "Thai": "Thailand",
-      "Cambodian": "Cambodia",
-      "Vietnamese": "Vietnam",
-      "Filipino": "Philippines",
-   }
-
-   let name = cuisToRegion[data[0].cuisine]
-   let spotsVisited = 0
-   let scoreSum = 0
-   let topSpot = null
-   const graphData = new Array(10).fill(0)
-   for (let i = 0; i < data.length; i += 1) {
-      const cur = data[i]
-      spotsVisited += cur.spotsVisited
-      scoreSum += cur.scoreSum 
-      if (!topSpot || cur.topSpotScore > topSpot.topSpotScore) {
-         topSpot = cur
-      }
-      for (const key in cur.allScores) {
-         graphData[key-1] += cur.allScores[key]
-      }
-   }
-
-   useEffect(() => {
-      const getTopSpotInfo = async () => {
-         await axios.get(`/api/cuisines/blog/${topSpot._id}/${topSpot.topSpot}`,
-            {
-               headers: { 'Authorization': `Bearer ${user.token}` }
-            }
-         ).then((res) => {
-               setTopSpotInfo(res.data)
-            }
-         ).catch((err) => {
-               console.log(`Error: ${err}`)
-            }
-         )
-      }
-      getTopSpotInfo(topSpot)
-   }, [topSpot, user])
+   const { topSpotInfo } = useGetTopSpot(topSpot, user)
 
    const averageScore = (scoreSum / spotsVisited).toFixed(2)
   
   return (
    <div ref={ref}>
       {visible && <div className="summaryPost">
-         <div className="exit" onClick={() => setVisible(false)}>
-            <FaTimes />
-         </div>
+         {!isSummary &&
+            <div className="exit" onClick={() => setVisible(false)}>
+               <FaTimes />
+            </div>
+         }
          <div className="cuisineDetails">
-            <h1>{name}</h1>
-            <div><b>Spots Visited:</b> {spotsVisited}</div>
-            <div><b>Average Score:</b> {averageScore}</div>
+            {isSummary && <h5 style={{alignSelf:"flex-start"}}>Top Cuisine...</h5>}
+            {isSummary ? <h1>{topSubCuisine[0]}</h1> : <h1>{name}</h1>}   
+            <div><b>{isSummary && "Total "}Spots Visited:</b> {spotsVisited}</div>
+            <div><b>{isSummary && "Gloabl "}Average Score:</b> {averageScore}</div>
          </div>
          <div className="postGraph">
-            <Pie data={graphData} title={"Test"}/>
+            <Pie data={graphData} title={isSummary ? "Scores" : ""}/>
          </div>
          <div className="postContent">
             <div className="winnerName">
@@ -149,6 +49,12 @@ const SummaryPost = ({ data, setVisible, visible }) => {
       </div>}
    </div>
   )
+}
+
+SummaryPost.defaultProps = {
+   isSummary: false,
+   visible: true,
+   setVisible: () => {},
 }
 
 export default SummaryPost

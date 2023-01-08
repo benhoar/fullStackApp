@@ -2,13 +2,13 @@
 .summaryPost {
    background-color: white;
    align-self: center;
-   border-radius: 8px;
    display: flex;
    align-items: center;
    justify-content: space-around;
    gap: 0px;
    padding: 10px;
    border: 2px solid #1B3A20;
+   border-radius: 8px;
    position: relative;
 }
 

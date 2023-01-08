@@ -7,7 +7,7 @@ const Map = () => {
     "USA1": {
       mapPos: ["223px", "273px"],
       primary: "United States",
-      cuisines: ["American", "Seafood", "Burgers"]
+      cuisines: ["American", "Seafood", "Burgers", "Farm to Table"]
     },
     "USA2": {
       mapPos: ["256px", "335px"],

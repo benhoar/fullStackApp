@@ -83,6 +83,38 @@ const getMe = asyncHandler(async(req, res) => {
    })
 })
 
+const updateMe = asyncHandler(async(req, res) => {
+   const user = await User.findById(req.user.id)
+   
+   if (!user) {
+      res.status(400)
+      throw new Error('User Not Found')
+   }
+
+   // ensure current user given password matches stored password
+   if (!(await bcrypt.compare(req.body.password, user.password))) {
+      res.status(403)
+      throw new Error('Incorrect Password')
+   }
+
+   // ensure the updated password and confirmed updated password match
+   if (req.body.password2 !== req.body.password3) {
+      res.status(400) 
+      throw new Error('Passwords Do Not Match')
+   }
+
+   if (req.body.password === req.body.password2) {
+      res.status(400)
+      throw new Error('Repeat Password')
+   }
+
+   const salt = await bcrypt.genSalt(10)
+   const hashedPassword = await bcrypt.hash(req.body.password2, salt)
+   user.password = hashedPassword
+   await user.save()
+   res.status(200).json(updatedUser)
+})
+
 // Generate JWT
 const generateToken = (id) => {
    return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -94,4 +126,5 @@ module.exports = {
    registerUser,
    loginUser,
    getMe,
+   updateMe, 
 }

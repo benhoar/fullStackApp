@@ -16,5 +16,5 @@ export default function useOutsideClick(setIsComponentVisible) {
        };
    });
 
-   return { ref }//, isComponentVisible, setIsComponentVisible };
+   return { ref };
 }

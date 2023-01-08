@@ -7,7 +7,7 @@ export const useLogin = () => {
    const [isLoading, setIsLoading] = useState(null) // maybe delete
    const { dispatch } = useAuthContext()
 
-   const login = async(formData) => {
+   const login = async (formData) => {
       setIsLoading(true)
       setError(null)
 

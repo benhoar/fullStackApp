@@ -4,7 +4,7 @@ import { FaHamburger } from 'react-icons/fa'
 import { CgClose } from 'react-icons/cg'
 import { useState, useEffect } from 'react'
 import { useAuthContext } from '../../hooks/useAuthContext'
-import { MdAccountCircle } from 'react-icons/md'
+import { IoIosStats } from 'react-icons/io'
 
 const NavBar = () => {
    
@@ -15,7 +15,7 @@ const NavBar = () => {
 
    useEffect(() => {
       if (user) {
-         setName(user.name)
+         setName(user.name.split(" ")[0])
       }
    }, [user])
 
@@ -37,15 +37,14 @@ const NavBar = () => {
                </a>
                <ul className="listmenu">
                   {user && <li><a href="/blogs">Blogs</a></li>}
-                  {user && <li><a href="/summary">Summary</a></li>}
                   {user && <li><a href="/about">About</a></li>}
                   {!user && <li><a href="/about">Learn More!</a></li>}
                </ul>
             </div>
             {user &&
-               <a id="profilePic" href="/profile">
-                  <MdAccountCircle size={30}/>
-                  <div id="username">{name}</div>
+               <a id="profilePic" href="/summary">
+                  <IoIosStats size={30}/>
+                  <div id="username">{name}'s Dashboard</div>
                </a>
             }
             {!user &&

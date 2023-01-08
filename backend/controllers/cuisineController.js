@@ -41,7 +41,6 @@ const getBlog = asyncHandler(async (req, res) => {
       throw new Error('Cuisine blogs for requested user not found')
    }
 
-   console.log(cuisine)
    const blog = cuisine.blogs.id(req.params.blog_id)
    
    if (!blog) {
