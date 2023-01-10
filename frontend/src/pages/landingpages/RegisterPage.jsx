@@ -17,7 +17,7 @@ const RegisterPage = () => {
 
    useEffect(() => {
       if (user) {
-         nav('/home')
+         nav('/')
       }
    }, [user, nav])
 

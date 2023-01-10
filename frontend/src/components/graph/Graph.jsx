@@ -25,7 +25,7 @@ import {
  ChartJS.defaults.font.size = 16;
  ChartJS.defaults.font.family= ['Dosis', 'sans-serif']
 
- const Graph = ({data}) => {
+ const Graph = ({data, title}) => {
 
    const labels = ["1","2","3","4","5","6","7","8","9","10"]
 

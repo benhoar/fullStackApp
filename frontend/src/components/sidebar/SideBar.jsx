@@ -4,7 +4,7 @@ import Rater from '../countrylist/CountryList'
 import SideBlog from '../sideblog/SideBlog'
 import { useState } from 'react' 
 
-const SideBar = () => {
+const SideBar = ({ cuisineTypes, setSelected }) => {
   const st1 = [{paddingLeft:'9px'}, {marginLeft:'13px'}];
   const st2 = [{paddingLeft:'16px'}, {marginLeft:'-4px'}];
   const st3 = [{paddingLeft:'9px'}, {marginLeft:'18px'}];
@@ -44,7 +44,7 @@ const SideBar = () => {
                   onClick={() => randomDinner()}
             />
         </div>}
-        {rater && <Rater onClick={() => {setRater(false)}} />}
+        {rater && <Rater cuisineTypes={cuisineTypes} onClick={() => {setRater(false)}} setSelected={setSelected}/>}
         {sideBlog && <SideBlog onClick={() => {setSideBlog(false)}}/>}
       </div>
   )

@@ -20,14 +20,13 @@ function App() {
 
   return (
     <div>
-      <div className="mainWrapper">
         <Router>
             <Routes>
               <Route path='/login' element={<LoginPage />} />
               <Route path='/register' element={<RegisterPage />} />
               {user && <Route path='/profile' element={<EditProfile />}/>}
               <Route element={<HeadAndFoot/>}>
-                <Route path='/home' element={<HomePage />}/>
+                <Route path='/' element={<HomePage />}/>
                 <Route path='/about' element={<About />}/>
                 {user && <Route path='/blogs' element={<BlogPage />}/>}
                 {user && <Route path='/blogs/edit/' element={<EditPage />}/>}
@@ -36,7 +35,6 @@ function App() {
             </Routes>
           </Router>
         </div>
-    </div>
   );
 }
 

@@ -5,7 +5,9 @@ import { Outlet } from "react-router-dom";
 export const HeadAndFoot = () => (
    <>
       <TopBar />
-      <Outlet />
+         <div className="mainWrapper">
+            <Outlet />
+         </div>
       <Footer />
    </>
  );

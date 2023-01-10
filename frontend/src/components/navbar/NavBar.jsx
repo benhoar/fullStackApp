@@ -32,7 +32,7 @@ const NavBar = () => {
       <div className="navWrapper">
          <div className="navbar">
             <div className="leftSide">
-               <a href="/home">
+               <a href="/">
                   <h1 className="title">cuisine map</h1>
                </a>
                <ul className="listmenu">

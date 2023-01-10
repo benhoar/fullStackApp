@@ -44,7 +44,7 @@ const Profile = () => {
             </div>
          </div>
          <div className="proButtons">
-            <Link to="/home">
+            <Link to="/">
                <button className="profileButton" onClick={() => handleClick()}>
                   Log Out
                </button>

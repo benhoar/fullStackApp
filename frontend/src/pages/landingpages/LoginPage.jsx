@@ -31,7 +31,7 @@ const LoginPage = () => {
 
    useEffect(() => {
       if (user) {
-         nav('/home')
+         nav('/')
       }
    }, [user, nav])
 

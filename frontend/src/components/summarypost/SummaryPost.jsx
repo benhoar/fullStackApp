@@ -7,13 +7,18 @@ import useOutsideClick from '../../hooks/useOutsideClick'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { getPieData } from '../../scripts/getPieData'
 import { useGetTopSpot } from '../../hooks/useGetTopSpot'
+import { useEffect } from 'react'
 
-const SummaryPost = ({ data, setVisible, visible, isSummary }) => {
+const SummaryPost = ({ data, name, setVisible, visible, isSummary, fromList, setSelected }) => {
 
    const { ref } = useOutsideClick(setVisible);
-   const { name, spotsVisited, scoreSum, topSpot, graphData, topSubCuisine } = getPieData(data)
+   const { spotsVisited, scoreSum, topSpot, graphData, topSubCuisine } = getPieData(data)
    const { user } = useAuthContext()
    const { topSpotInfo } = useGetTopSpot(topSpot, user)
+
+   useEffect(() => {
+      setSelected("")
+   }, [visible, setSelected])
 
    const averageScore = (scoreSum / spotsVisited).toFixed(2)
   
@@ -26,7 +31,7 @@ const SummaryPost = ({ data, setVisible, visible, isSummary }) => {
             </div>
          }
          <div className="cuisineDetails">
-            {isSummary && <h5 style={{alignSelf:"flex-start"}}>Top Cuisine...</h5>}
+            {(fromList || isSummary) && <h5 style={{alignSelf:"flex-start"}}>Top Cuisine...</h5>}
             {isSummary ? <h1>{topSubCuisine[0]}</h1> : <h1>{name}</h1>}   
             <div><b>{isSummary && "Total "}Spots Visited:</b> {spotsVisited}</div>
             <div><b>{isSummary && "Gloabl "}Average Score:</b> {averageScore}</div>
@@ -36,6 +41,7 @@ const SummaryPost = ({ data, setVisible, visible, isSummary }) => {
          </div>
          <div className="postContent">
             <div className="winnerName">
+               {isSummary && <TbCrown size={30}/>}
                <h2>Top Spot</h2>
                <TbCrown size={30}/>
             </div>
@@ -55,6 +61,8 @@ SummaryPost.defaultProps = {
    isSummary: false,
    visible: true,
    setVisible: () => {},
+   setSelected: () => {},
+   fromList: false,
 }
 
 export default SummaryPost

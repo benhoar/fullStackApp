@@ -48,3 +48,9 @@
    transition: all 250ms ease-in;
    color: #E4DEAE;
 }
+
+@media(max-width:960px) {
+   .buttonWrapper {
+      display: none;
+   }
+}
