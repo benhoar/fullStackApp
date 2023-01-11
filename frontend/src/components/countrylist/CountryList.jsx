@@ -5,7 +5,9 @@ const CountryList = ({ setRater, setSelected, cuisineTypes, selected, mapDispatc
 
    const getList = () => {
     const items = []
-    for (const cuisine in cuisineTypes) {
+    const sortedTypes = Object.keys(cuisineTypes).sort()
+    for (let i = 0; i < sortedTypes.length; i++) {
+        const cuisine = sortedTypes[i]
         items.push(<li key={cuisine}
                        onClick={() => {setSelected(cuisine); mapDispatch({ type: "SET VISIBILITY", country: cuisineTypes[cuisine], visible: true})}}
                        className={selected === cuisine ? "selectedItem" : "countryItem"}

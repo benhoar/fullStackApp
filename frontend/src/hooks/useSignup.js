@@ -11,7 +11,7 @@ export const useSignup = () => {
       setIsLoading(true)
       setError(null)
 
-      const { name, email, password, password2 } = formData
+      const { name, email, password, password2, secret } = formData
 
       try {
          const res = await axios.post('/api/users', {
@@ -19,6 +19,7 @@ export const useSignup = () => {
             email,
             password,
             password2,
+            secret
          })
          // save user to local storage
          localStorage.setItem('user', JSON.stringify(res.data))

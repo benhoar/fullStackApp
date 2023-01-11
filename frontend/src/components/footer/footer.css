@@ -1,13 +1,10 @@
 .footer {
    width: 100vw;
-   display: flex;
-   align-items: flex-start;
-   justify-content: space-between;
+   float: left;
    padding: 10px 20px 10px 20px;
    color: #1B3A20;
    font-size: 24px;
    bottom: 0;
-   position: relative;
    background-color: white;
    border-top: 2px solid #1B3A20;
 }

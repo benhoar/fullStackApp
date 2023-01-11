@@ -1,9 +1,9 @@
 Make cuisines selectable for now – can't submit custom
 
-Philippes
-Cole's
-Oui Melrose
-HiHo
+Philippes x
+Cole's x
+Oui Melrose x
+HiHo x
 Izakaya By Kastu-ya
 Katsu Sando
 Ajisai
@@ -12,3 +12,7 @@ Same Same
 Hai Di Lao (hot pot)
 Bludsoe's
 Slab
+
+Error page for illegal routes
+
+For any change to rating AND/OR name we should reset topblog

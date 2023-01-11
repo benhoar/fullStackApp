@@ -1,5 +1,5 @@
 .landingPage {
-   width: 20%;
+   width: 30%;
    height: 100vh;
    margin: 0 auto;
    padding-top: 125px;
@@ -34,4 +34,15 @@
    margin-top: 8px;
    text-align: center;
    padding: 4px
+}
+
+@media(max-width: 800px) {
+   .landingPage {
+      width: 40%
+   }
+}
+@media(max-width: 500px) {
+   .landingPage {
+      width: 70%
+   }
 }

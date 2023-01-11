@@ -1,3 +1,4 @@
+const generateSecret = require('../generateSecret')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
@@ -7,9 +8,9 @@ const User = require('../models/userModel')
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async(req, res) => {
-   const { name, email, password, password2 } = req.body
-
-   if (!name || !email || !password || !password2) {
+   const { name, email, password, password2, secret } = req.body
+   
+   if (!name || !email || !password || !password2 || !secret) {
       res.status(400)
       throw new Error('Please add all fields')
    }
@@ -25,6 +26,11 @@ const registerUser = asyncHandler(async(req, res) => {
    if (password !== password2) {
       res.status(400)
       throw new Error('Passwords do not match')
+   }
+
+   if (secret !== generateSecret(password)) {
+      res.status(400)
+      throw new Error('Contact bbhoar@gmail.com to Register')
    }
 
    // Hash password
@@ -74,6 +80,7 @@ const loginUser = asyncHandler(async(req, res) => {
 // @desc Get user data
 // @route GET /api/users/me
 // @access Private
+// I dont think this is used anywhere
 const getMe = asyncHandler(async(req, res) => {
    const { _id, name, email } = await User.findById(req.user.id)
    res.status(200).json({

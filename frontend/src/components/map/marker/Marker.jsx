@@ -5,14 +5,15 @@ const Marker = ({ country, mapState, mapDispatch, setSelected }) => {
   return (
     <div className="">
       <div className="markerWrap" 
-          style={{top: mapState[country].mapPos[0], left:mapState[country].mapPos[1]}} 
+          style={{top: country[1].mapPos[0], left: country[1].mapPos[1]}} 
       >
         <div className="marker" 
-            alt={mapState[country][0]}
-            style={mapState[country].visible ? {backgroundColor:"blue"} : {backgroundColor:"red"}}
+            alt={country[0]}
+            style={mapState[country[0]].visible ? {backgroundColor:"blue", transform:"scale(2) rotate(45deg)"} : {backgroundColor:"red"}}
             onClick={() => {
-                mapDispatch({ type: "SET VISIBILITY", country: country, visible: true })
-                setSelected(country)
+                mapDispatch({ type: "SET VISIBILITY", country: country[0], visible: true })
+                setSelected(country[0])
+
             }}>
           <div className="circle"></div>
         </div>

@@ -1,4 +1,5 @@
 .sideBlogWrapper {
+   padding-top: 10px;
    width: 180px;
    height: 90%;
    display: flex;
@@ -40,6 +41,7 @@
    background: #E3DEAE;
    color: #1B3A20;
    border: 2px solid #1B3A20;
+   max-width: 100%;
 }
 
 .sideArea:focus {

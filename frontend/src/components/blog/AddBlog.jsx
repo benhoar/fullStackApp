@@ -3,7 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import './blog.css'
 import { getTopBlog } from '../../scripts/getTopBlog'
 import { useAuthContext } from '../../hooks/useAuthContext'
+import { countries } from '../../staticdata/countries'
 
+const cuisines = new Set()
+for (const country in countries) {
+   for (let i = 0; i < countries[country].cuisines.length; i++) {
+      cuisines.add(countries[country].cuisines[i])
+   }
+}
 
 const axios = require('axios').default
 
@@ -21,6 +28,7 @@ const AddBlog = ({ onClose,
    const [location, setLocation] = useState('')
    const [highlight, setHighlight] = useState('')
    const { user } = useAuthContext()
+   const [errorMessage, setErrorMessage] = useState("")
 
    const nav = useNavigate()
 
@@ -53,6 +61,8 @@ const AddBlog = ({ onClose,
    }
 
    const handleBlog = async (blogs, sameCuisine) => {
+      const filteredBlogs = blogs.filter((blog) => blog._id !== defBlog._id)
+
       const newBlog = {
          _id: restaurant,
          restaurant: restaurant,
@@ -69,16 +79,15 @@ const AddBlog = ({ onClose,
          }
       ).catch((e) => {console.log(`failed blog delete: ${e}`)})
       if (sameCuisine) {
-         // if same cuisine, let's add the new one ine and use that for finding new top
+         // if same cuisine, let's add the new one in and use that for finding new top
          await axios.put(`/api/cuisines/blog/${cuisineId}`, {blog: newBlog},
             {
                headers: { 'Authorization': `Bearer ${user.token}` }
             }
          ).catch((e) => `Error in handle blog: ${e}`)
-         newBlog.restaurant = "new spot"
-         blogs.push(newBlog) // this NewBlog workaround is safe because newBlog has already been PUT
+         filteredBlogs.push(newBlog) // this NewBlog workaround is safe because newBlog has already been PUT
       }
-      return getTopBlog(blogs, restaurant)
+      return getTopBlog(filteredBlogs)
    }
 
    // if called from edit page, the update behavior is unique
@@ -137,6 +146,14 @@ const AddBlog = ({ onClose,
    // code duplicated in sideblog --> should look into not doing that
    const onSubmit = async (e) => {
       e.preventDefault()
+      if (!(cuisines.has(cuisine))) {
+         setErrorMessage("Please Use Existing Cuisine")
+         console.log(cuisine)
+         console.log(cuisines)
+         console.log("errer")
+         return 
+      }
+      if (cuisine)
       if (buttontxt === 'Update Blog') {
          const sameCuisine = await editBlogSubmit()
          // if the cuisine was not changed, we are done, otherwise pass through for updates
@@ -220,10 +237,20 @@ const AddBlog = ({ onClose,
       }
    }
 
+   const getOptions = () => {
+      const options =  Array.from(cuisines)
+      options.sort()
+      const tags = []
+      for (let i = 0; i < options.length; i++) {
+         tags.push(<option key={options[i]} value={options[i]} />)
+      }
+      return tags
+   }
+
    return (
       <form className="add-form" onSubmit={onSubmit} onClose={onClose}>
          <div className="form-control">
-            <p className="half-width-1">
+            <div className="half-width-1">
                <label>Restaurant</label>
                <input 
                   type="text" 
@@ -231,17 +258,21 @@ const AddBlog = ({ onClose,
                   defaultValue={defBlog ? defBlog.restaurant : ''}
                   onChange={(e) => setRestaurant(e.target.value)}   
                   required/>
-            </p>
-            <p className="half-width-2">
+            </div>
+            <div className="half-width-2">
                <label>Cuisine</label>
                <input 
-                  type="text" 
+                  list="cuisinesInput" 
                   placeholder="Input Cuisine"
                   defaultValue={defCuis}
                   onChange={(e) => setCuisine(e.target.value)}   
-                  required/>
-            </p>
-            <p className="quarter-width-1">
+                  required
+               />
+                  <datalist id="cuisinesInput">
+                     {getOptions()}
+                  </datalist>
+            </div>
+            <div className="quarter-width-1">
                <label>Location</label>
                <input 
                   type="text"
@@ -249,8 +280,8 @@ const AddBlog = ({ onClose,
                   placeholder="Input Location"
                   onChange={(e) => setLocation(e.target.value)}
                   required/>
-            </p>
-            <p className="quarter-width-2">
+            </div>
+            <div className="quarter-width-2">
                <label>Highlight</label>
                <input 
                   type="text"
@@ -258,8 +289,8 @@ const AddBlog = ({ onClose,
                   placeholder="Input Highlight"
                   onChange={(e) => setHighlight(e.target.value)}
                   />
-            </p>
-            <p className="quarter-width-3">
+            </div>
+            <div className="quarter-width-3">
                <label>Date</label>
                <input 
                   type="date"
@@ -267,8 +298,8 @@ const AddBlog = ({ onClose,
                   placeholder=""
                   onChange={(e) => setDate(e.target.value)}   
                   required/>
-            </p>
-            <p className="quarter-width-4">
+            </div>
+            <div className="quarter-width-4">
                <label>Score</label>
                <input 
                   type="number" 
@@ -278,8 +309,8 @@ const AddBlog = ({ onClose,
                   defaultValue={defBlog ? defBlog.rating : ''}
                   onChange={(e) => setRating(e.target.value)}   
                   required/>
-            </p>
-            <p className="full-width">
+            </div>
+            <div className="full-width">
                <label>Blog</label>
                <textarea 
                   name="" 
@@ -288,11 +319,16 @@ const AddBlog = ({ onClose,
                   defaultValue={defBlog ? defBlog.blog : ''}
                   onChange={(e) => setBlog(e.target.value)}   
                   required/>
-            </p>
-            <p className="full-width">
+            </div>
+            <div className="full-width">
             <input type="submit" value={buttontxt} className="button btn-block" disabled={!user}/>
-            </p>
+            </div>
          </div>
+         {errorMessage.length !== 0 && 
+            <div className="errorBlog">
+               {errorMessage}
+            </div>
+         }
       </form>
    )
 }

@@ -10,6 +10,7 @@ const RegisterPage = () => {
       email: '',
       password: '',
       password2: '', 
+      secret: '',
    })
 
    const { user } = useAuthContext() 
@@ -21,7 +22,7 @@ const RegisterPage = () => {
       }
    }, [user, nav])
 
-   const { name, email, password, password2 } = formData
+   const { name, email, password, password2, secret } = formData
    const { signup, error, isLoading } = useSignup()
 
    const onChange = (e) => {
@@ -65,12 +66,20 @@ const RegisterPage = () => {
               name='password'
               onChange={onChange}
            />
-            <label>Confirm Password</label>
+           <label>Confirm Password</label>
            <input 
               type="password"
               placeholder="Re-Enter Password"
               value={password2}
               name='password2'
+              onChange={onChange}
+           />
+           <label>Enter Secret</label>
+           <input 
+              type="password"
+              placeholder="Enter Secret"
+              value={secret}
+              name='secret'
               onChange={onChange}
            />
            <button type="submit" value="Register" className="logIn" disabled={isLoading}>
