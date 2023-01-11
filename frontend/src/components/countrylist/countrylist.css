@@ -35,7 +35,7 @@
    cursor: pointer;
  }
 
- .selectedCountry {
+ .selectedItem {
    border-bottom: 1px solid lightgray;
    text-align: center;
    background-color: rgba(122, 194, 82, 0.4);

@@ -7,34 +7,29 @@ import useOutsideClick from '../../hooks/useOutsideClick'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { getPieData } from '../../scripts/getPieData'
 import { useGetTopSpot } from '../../hooks/useGetTopSpot'
-import { useEffect } from 'react'
 
-const SummaryPost = ({ data, name, setVisible, visible, isSummary, fromList, setSelected }) => {
+const SummaryPost = ({ data, subcuisine ,country, isSummary, hide  }) => {
 
-   const { ref } = useOutsideClick(setVisible);
+   const { ref } = useOutsideClick(hide);
    const { spotsVisited, scoreSum, topSpot, graphData, topSubCuisine } = getPieData(data)
    const { user } = useAuthContext()
    const { topSpotInfo } = useGetTopSpot(topSpot, user)
-
-   useEffect(() => {
-      setSelected("")
-   }, [visible, setSelected])
 
    const averageScore = (scoreSum / spotsVisited).toFixed(2)
   
   return (
    <div ref={ref}>
-      {visible && <div className="summaryPost">
+      <div className="summaryPost">
          {!isSummary &&
-            <div className="exit" onClick={() => setVisible(false)}>
+            <div className="exit" onClick={() => hide()}>
                <FaTimes />
             </div>
          }
          <div className="cuisineDetails">
-            {(fromList || isSummary) && <h5 style={{alignSelf:"flex-start"}}>Top Cuisine...</h5>}
-            {isSummary ? <h1>{topSubCuisine[0]}</h1> : <h1>{name}</h1>}   
+            {(isSummary) && <h5 style={{alignSelf:"flex-start"}}>Top Cuisine...</h5>}
+            {isSummary ? <h1>{topSubCuisine[0]}</h1> : <h1>{subcuisine ? subcuisine : country}</h1>}   
             <div><b>{isSummary && "Total "}Spots Visited:</b> {spotsVisited}</div>
-            <div><b>{isSummary && "Gloabl "}Average Score:</b> {averageScore}</div>
+            <div><b>{isSummary && "Global "}Average Score:</b> {averageScore}</div>
          </div>
          <div className="postGraph">
             <Pie data={graphData} title={isSummary ? "Scores" : ""}/>
@@ -52,17 +47,15 @@ const SummaryPost = ({ data, name, setVisible, visible, isSummary, fromList, set
             </div>}
             <div><b>Rating:</b> {topSpotInfo.rating}</div>
          </div>
-      </div>}
+      </div>
    </div>
   )
 }
 
 SummaryPost.defaultProps = {
    isSummary: false,
-   visible: true,
-   setVisible: () => {},
-   setSelected: () => {},
-   fromList: false,
+   subcuisine: null,
+   hide: () => {}
 }
 
 export default SummaryPost

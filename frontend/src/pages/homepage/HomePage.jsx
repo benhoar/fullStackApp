@@ -1,247 +1,325 @@
 import SideBar from '../../components/sidebar/SideBar'
 import Map from '../../components/map/Map'
 import './homepage.css'
+import { useReducer } from 'react'
 import { useState } from 'react'
+import { getCuisines } from '../../scripts/getCuisines'
+import { useAuthContext } from '../../hooks/useAuthContext'
+import SummaryPost from '../../components/summarypost/SummaryPost'
+import { useEffect } from 'react'
 
 const HomePage = () => {
 
-  const [selectedCountry, setSelectedCountry] = useState("")
-  
+  const { user } = useAuthContext()
+
   const countries = {
-    "USA1": {
+    "United States": {
       mapPos: ["223px", "273px"],
-      primary: "United States",
-      cuisines: ["American", "Seafood", "Burgers", "Farm to Table"]
+      cuisines: ["American","Seafood","Burgers","Farm to Table",],
+      visible: false,
     },
-    "USA2": {
+    "Southern USA": {
       mapPos: ["256px", "335px"],
-      primary: "Southern USA",
-      cuisines: ["Barbecue", "Soul Food"]
+      cuisines: ["Barbecue","Soul Food",],
+      visible: false,
     },
     "Mexico": {
       mapPos: ["281px", "240px"],
-      primary: "Mexico",
-      cuisines: ["Mexican", "Tacos"],
+      cuisines: ["Mexican","Tacos",],
+      visible: false,
     },
-    "CAm": {
+    "Central America": {
       mapPos: ["331px", "277px"],
-      primary: "Central America",
-      cuisines: ["Salvadoran", "Guatemalan", "Honduran", "Nicaraguan", "Panamanian"]
+      cuisines: ["Salvadoran","Guatemalan","Honduran","Nicaraguan","Panamanian",],
+      visible: false,
     },
     "Venezuela": {
       mapPos: ["286px", "88px"],
-      primary: "Venezuela",
-      cuisines: ["Venezuelan"]
+      cuisines: ["Venezuelan",],
+      visible: false,
     },
     "Colombia": {
       mapPos: ["301px", "55px"],
-      primary: "Colombia",
-      cuisines: ["Colombian"]
+      cuisines: ["Colombian",],
+      visible: false,
     },
     "Bolivia": {
       mapPos: ["380px", "88px"],
-      primary: "Bolivia",
-      cuisines: ["Bolivian"]
+      cuisines: ["Bolivian",],
+      visible: false,
     },
     "Chile": {
       mapPos: ["461px", "35px"],
-      primary: "Chile",
-      cuisines: ["Chilean"]
+      cuisines: ["Chilean",],
+      visible: false,
     },
     "Brazil": {
       mapPos: ["351px", "120px"],
-      primary: "Brazil",
-      cuisines: ["Brazilian", "Churrasco"]
+      cuisines: ["Brazilian","Churrasco",],
+      visible: false,
     },
     "Argentina": {
       mapPos: ["501px", "112px"],
-      primary: "Argentina",
-      cuisines: ["Argentinian"]
+      cuisines: ["Argentinian",],
+      visible: false,
     },
     "Hispaniola": {
       mapPos: ["465px", "392px"],
-      primary: "Hispaniola",
-      cuisines: ["Haitian", "Dominican"]
+      cuisines: ["Haitian","Dominican",],
+      visible: false,
     },
     "Cuba": {
       mapPos: ["436px", "319px"],
-      primary: "Cuba",
-      cuisines: ["Cuban"]
+      cuisines: ["Cuban",],
+      visible: false,
     },
     "Jamaica": {
       mapPos: ["536px", "305px"],
-      primary: "Jamaica",
-      cuisines: ["Jamaican"]
+      cuisines: ["Jamaican",],
+      visible: false,
     },
-    "SAf": {
+    "Southern Africa": {
       mapPos: ["481px", "502px"],
-      primary: "Southern Africa",
-      cuisines: [] //fill
+      cuisines: [],
+      visible: false,
     },
-    "CAf": {
+    "Central Africa": {
       mapPos: ["411px", "490px"],
-      primary: "Central Africa",
-      cuisines: [] //fill
+      cuisines: [],
+      visible: false,
     },
-    "EAf": {
+    "Eastern Africa": {
       mapPos: ["376px", "575px"],
-      primary: "Eastern Africa",
-      cuisines: ["Ethiopian", "Sudanese", "Kenyan"]
+      cuisines: ["Ethiopian","Sudanese","Kenyan",],
+      visible: false,
     },
-    "WAf": {
+    "Western Africa": {
       mapPos: ["371px", "415px"],
-      primary: "Western Africa",
-      cuisines: ["Nigerian"]
+      cuisines: ["Nigerian",],
+      visible: false,
     },
-    "NAf": {
+    "Northern Africa": {
       mapPos: ["301px", "455px"],
-      primary: "Northern Africa",
-      cuisines: ["Moroccan", "Tunisian", "Egyptian"]
+      cuisines: ["Moroccan","Tunisian","Egyptian",],
+      visible: false,
     },
     "Iran": {
       mapPos: ["451px", "742px"],
-      primary: "Iran",
-      cuisines: ["Iranian", "Persian"]
+      cuisines: ["Iranian","Persian", "Middle Eastern"],
+      visible: false,
     },
-    "UK": {
+    "United Kingdom": {
       mapPos: ["426px", "855px"],
-      primary: "United Kingdom",
-      cuisines: ["Scottish", "British", "Irish"]
+      cuisines: ["Scottish","British","Irish",],
+      visible: false,
     },
     "Portugal": {
       mapPos: ["516px", "860px"],
-      primary: "Portugal",
-      cuisines: ["Portuguese"]
+      cuisines: ["Portuguese",],
+      visible: false,
     },
     "Spain": {
       mapPos: ["532px", "905px"],
-      primary: "Spain",
-      cuisines: ["Spanish", "Tapas"]
+      cuisines: ["Spanish","Tapas",],
+      visible: false,
     },
     "Italy": {
       mapPos: ["551px", "966px"],
-      primary: "Italy",
-      cuisines: ["Italian", "Pizza"]
+      cuisines: ["Italian","Pizza",],
+      visible: false,
     },
     "Greece": {
       mapPos: ["556px", "1021px"],
-      primary: "Greece",
-      cuisines: ["Greek", "Mediterranean"]
+      cuisines: ["Greek","Mediterranean",],
+      visible: false,
     },
     "Turkiye": {
       mapPos: ["531px", "1135px"],
-      primary: "Turkiye",
-      cuisines: ["Turkish"]
+      cuisines: ["Turkish",],
+      visible: false,
     },
     "Russia": {
       mapPos: ["431px", "1118px"],
-      primary: "Russia",
-      cuisines: ["Russian"]
+      cuisines: ["Russian",],
+      visible: false,
     },
     "Ukraine": {
       mapPos: ["461px", "1082px"],
-      primary: "Ukraine",
-      cuisines: ["Ukrainian"]
+      cuisines: ["Ukrainian",],
+      visible: false,
     },
     "Poland": {
       mapPos: ["446px", "1022px"],
-      primary: "Poland",
-      cuisines: ["Polish"]
+      cuisines: ["Polish",],
+      visible: false,
     },
     "Germany": {
       mapPos: ["458px", "972px"],
-      primary: "Germany",
-      cuisines: ["German"]
+      cuisines: ["German",],
+      visible: false,
     },
     "France": {
       mapPos: ["478px", "925px"],
-      primary: "France",
-      cuisines: ["French"]
+      cuisines: ["French",],
+      visible: false,
     },
     "Denmark": {
       mapPos: ["408px", "948px"],
-      primary: "Denmark",
-      cuisines: ["Dutch"]
+      cuisines: ["Dutch",],
+      visible: false,
     },
     "Sweden": {
       mapPos: ["346px", "999px"],
-      primary: "Sweden",
-      cuisines: ["Swedish"]
+      cuisines: ["Swedish",],
+      visible: false,
     },
     "Australia": {
       mapPos: ["101px", "1100px"],
-      primary: "Australia",
-      cuisines: ["Australian"]
+      cuisines: ["Australian",],
+      visible: false,
     },
     "Japan": {
       mapPos: ["146px", "1015px"],
-      primary: "Japan",
-      cuisines: ["Japanese", "Ramen", "Sushi"]
+      cuisines: ["Japanese","Ramen","Sushi",],
+      visible: false,
     },
     "South Korea": {
       mapPos: ["136px", "940px"],
-      primary: "South Korea",
-      cuisines: ["Korean", "KBBQ"]
+      cuisines: ["Korean","KBBQ",],
+      visible: false,
     },
-    "EChina": {
+    "Eastern China": {
       mapPos: ["146px", "845px"],
-      primary: "Eastern China",
-      cuisines: ["Peking Duck", "Jiangsu"]
+      cuisines: ["Peking Duck","Jiangsu",],
+      visible: false,
     },
-    "SChina": {
+    "Southern China": {
       mapPos: ["231px", "823px"],
-      primary: "Southern China",
-      cuisines: ["Dim Sum", "Chinese"]
+      cuisines: ["Dim Sum","Chinese",],
+      visible: false,
     },
-    "WChina": {
+    "Western China": {
       mapPos: ["181px", "713px"],
-      primary: "Western China",
-      cuisines: ["Hot Pot", "Sichuan"]
+      cuisines: ["Hot Pot","Sichuan",],
+      visible: false,
     },
     "Hawaii": {
       mapPos: ["119px", "565px"],
-      primary: "Hawaii",
-      cuisines: ["Hawaiian"]
+      cuisines: ["Hawaiian",],
+      visible: false,
     },
     "India": {
       mapPos: ["229px", "630px"],
-      primary: "India",
-      cuisines: ["Indian"]
+      cuisines: ["Indian",],
+      visible: false,
     },
     "Thailand": {
       mapPos: ["284px", "774px"],
-      primary: "Thailand",
-      cuisines: ["Thai"]
+      cuisines: ["Thai",],
+      visible: false,
     },
     "Cambodia": {
       mapPos: ["304px", "790px"],
-      primary: "Cambodia",
-      cuisines: ["Cambodian"]
+      cuisines: ["Cambodian",],
+      visible: false,
     },
     "Vietnam": {
       mapPos: ["291px", "827px"],
-      primary: "Vietnam",
-      cuisines: ["Vietnamese"]
+      cuisines: ["Vietnamese",],
+      visible: false,
     },
     "Philippines": {
       mapPos: ["344px", "857px"],
-      primary: "Philippines",
-      cuisines: ["Filipino"]
+      cuisines: ["Filipino",],
+      visible: false,
     },
   }
+  const cuisineToCountry = {}
+  for (const country in countries) {
+    const cur = countries[country]
+    for (let i = 0; i < cur.cuisines.length; i++) {
+      cuisineToCountry[cur.cuisines[i]] = country
+    }
+  }
 
-  const cuisines = {}
+  const mapReducer = (state, directions) => {
+    switch (directions.type) {
+      case 'SET VISIBILITY':
+        const country = directions.country
+        return { 
+          ...state, 
+          [country]: { ...state[country], visible: directions.visible}
+        }
+      default:
+        return state
+    }
+  }
+  
+  const [mapState, mapDispatch] = useReducer(mapReducer, countries)
 
-  Object.entries(countries).map(([k, v]) =>
-    v.cuisines.forEach((cuisine) => {
-      cuisines[cuisine] = v.primary
-    })
-  )
+  const [selected, setSelected] = useState("")
+  const [notFound, setNotFound] = useState(false)
+  const [popData, setPopData] = useState([])
+  const [hidepop, setHidepop] = useState(true)
+
+  useEffect(() => {
+
+    const getPopup = async () => {
+      let cuisines = []
+      if (selected in mapState) {
+        cuisines = mapState[selected].cuisines
+      } else {
+        cuisines = [selected]
+      }
+      const res = await getCuisines(cuisines, user)
+      if (res) {
+        setPopData(res)
+        setHidepop(false)
+      } else {
+        setNotFound(true)
+      }
+    }
+    if (user && selected.length !== 0) {
+      getPopup()
+    }
+  }, [user, selected, mapState])
+
+  const hide = () => {
+    setHidepop(true)
+    setSelected("")
+    let toSilence = selected
+    if (!(selected in countries)) {
+      toSilence = cuisineToCountry[selected]
+    }
+    mapDispatch({ type: "SET VISIBILITY", country: toSilence, visible: false })
+  }
+
+  const hideError = () => {
+    setTimeout(() => {setNotFound(false); hide()}, 2000)
+  }
 
   return (
     <div className="hero">
-      <SideBar setSelected={setSelectedCountry} cuisineTypes={countries}/>
-      <Map markers={countries} setSelected={setSelectedCountry} selected={selectedCountry}/>
+      <SideBar setSelected={setSelected} 
+               cuisineTypes={cuisineToCountry} 
+               selected={selected} mapDispatch={mapDispatch}
+      />
+      <Map mapState={mapState} 
+           mapDispatch={mapDispatch} 
+           setSelected={setSelected}/>
+      {!hidepop &&
+      <div className="containSummary">
+        <div className="summaryPop">
+          <SummaryPost data={popData} country={selected} hide={hide}/>
+        </div>
+      </div>
+      }
+      {notFound && 
+        <div className="notFound">
+          No {selected} Data Yet!
+          {hideError()}
+        </div>
+      }
     </div>
   )
 }

@@ -3,3 +3,41 @@
    background-color: #00A9C7;
    position: relative;
 }
+
+.notFound {
+   background-color: white;
+   border: 2px solid #1B3A20;
+   text-align: center;
+   border-radius: 10px;
+   padding: 10px;
+   font-size: 24px;
+   position: absolute;
+   top: 2%;
+   right: 5%;
+}
+
+.containSummary {
+   width: 100%;
+   position: absolute;
+   top: 1vh;
+   z-index: 101;
+   width: 100%;
+}
+
+.summaryPop {
+   /* left: 30vw; */
+   margin: 0 auto;
+   width: min-content;
+}
+
+@media(max-width: 960px) {
+   .summaryPop {
+      left: 15vw;
+   }
+}
+
+@media(max-width: 690px) {
+   .summaryPop {
+      left: 27vw;
+   }
+}

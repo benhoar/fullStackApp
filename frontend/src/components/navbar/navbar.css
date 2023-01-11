@@ -9,7 +9,6 @@
 .navbar {
    /* background-color: rgb(42, 44, 122); */
    background-color: white;
-   margin: 0;
    padding: 0px 30px;
    box-sizing: border-box;
    display: flex;
@@ -103,7 +102,7 @@ a:hover {
    }
 
    .menu-item {
-      margin: 8px 40px;
+      margin: 8px 0;
    }
 
    .menu-item > a {
