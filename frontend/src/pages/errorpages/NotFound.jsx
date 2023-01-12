@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import './notfound.css'
 import { useLocation } from 'react-router-dom';
 
+// ben's secret
+
 const getLettuce = (minshift) => {
    let lettuces = []
    const getRandInt = (val) => {
