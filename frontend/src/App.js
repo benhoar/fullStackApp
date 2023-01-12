@@ -6,17 +6,18 @@ import EditPage from './pages/editpage/EditPage'
 import LoginPage from './pages/landingpages/LoginPage'
 import RegisterPage from './pages/landingpages/RegisterPage'
 import EditProfile from './pages/landingpages/EditProfile'
-import { useAuthContext } from './hooks/useAuthContext'
+import NotFound from './pages/errorpages/NotFound'
 import { HeadAndFoot } from './layout/HeadAndFoot'
+import { ProtectedRoute } from './scripts/routprotecter'
 
 import { 
         BrowserRouter as Router,
         Routes, 
-        Route, 
+        Route,
+        Navigate,
 } from 'react-router-dom'
 
 function App() {
-  const { user } = useAuthContext()
 
   return (
     <div>
@@ -24,13 +25,15 @@ function App() {
             <Routes>
               <Route path='/login' element={<LoginPage />} />
               <Route path='/register' element={<RegisterPage />} />
-              {user && <Route path='/profile' element={<EditProfile />}/>}
+              <Route path='/profile' element={<ProtectedRoute><EditProfile /></ProtectedRoute>}/>
               <Route element={<HeadAndFoot/>}>
                 <Route path='/' element={<HomePage />}/>
                 <Route path='/about' element={<About />}/>
-                {user && <Route path='/blogs' element={<BlogPage />}/>}
-                {user && <Route path='/blogs/edit/' element={<EditPage />}/>}
-                {user && <Route path='/summary' element={<SummaryPage />}/>}
+                <Route path='/blogs' element={<ProtectedRoute><BlogPage /></ProtectedRoute>}/>
+                <Route path='/blogs/edit/' element={<ProtectedRoute><EditPage /></ProtectedRoute>}/>
+                <Route path='/summary' element={<ProtectedRoute><SummaryPage /></ProtectedRoute>}/>
+                <Route path='/lostdiner' element={<NotFound />}/>
+                <Route path={'*'} element={<Navigate to="/lostdiner" replace />}/>
               </Route>
             </Routes>
           </Router>

@@ -12,7 +12,6 @@ const Profile = () => {
    const [profile, setProfile] = useState({
       name: '',
       email: '',
-      joined: ''
    })
 
    const handleClick = () => {

@@ -22,9 +22,11 @@ const SummaryPage = () => {
   return (
     <div className="summaryWrapper">
         <div className="tableWrapper">
-        <div className="preTable">
-          <SummaryPost data={data.cuisines} isSummary={true}/>
-        </div>
+        {data.cuisines.length !== 0 &&
+          <div className="preTable">
+            <SummaryPost data={data.cuisines} isSummary={true}/>
+          </div>
+        }
         {getCuisineSummaries()}
         <div className="preTable" style={{marginTop:"20px", marginBottom:"0px"}}>
         <Profile />

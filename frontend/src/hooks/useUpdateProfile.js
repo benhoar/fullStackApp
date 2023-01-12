@@ -27,7 +27,7 @@ export const useUpdateProfile = () => {
          // update the auth context
          localStorage.removeItem('user')
          dispatch({type: "LOGOUT"})
-         nav('/home')
+         nav('/')
       } catch (e) {
          setError(String(e.response.data.message))
          setTimeout(() => {setIsLoading(false)}, 2500)

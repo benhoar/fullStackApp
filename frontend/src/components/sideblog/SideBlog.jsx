@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import { useAuthContext } from '../../hooks/useAuthContext'
+import { getOptions, cuisines } from '../../scripts/getOptions'
 import './sideblog.css'
 
 const axios = require('axios').default
@@ -14,6 +15,13 @@ const SideBlog = ({ onClick }) => {
    const [location, setLocation] = useState('')
    const [highlight, setHighlight] = useState('')
    const { user } = useAuthContext()
+   const [errorMessage, setErrorMessage] = useState('')
+
+   useEffect(() => {
+      if (errorMessage) {
+         setTimeout(() => {setErrorMessage('')}, 2000)
+      }
+   }, [errorMessage])
 
    // reset state after blog submission
    const clearFields = () => {
@@ -28,6 +36,10 @@ const SideBlog = ({ onClick }) => {
 
    const onSubmit = async (e) => {
       e.preventDefault()
+      if (!(cuisines.has(cuisine))) {
+         setErrorMessage("Please Use Cuisine From List")
+         return 
+      }
       const outBoundData = {
          cuisine: cuisine,
          topSpot: restaurant,
@@ -112,11 +124,15 @@ const SideBlog = ({ onClick }) => {
          <div className="inputWrap">
             <label className="sideLabel">Cuisine</label>
             <input 
-               className="sideArea"
-               type="text" 
+               list="cuisinesInput" 
                placeholder="Input Cuisine"
+               className="sideArea"
                onChange={(e) => setCuisine(e.target.value)}   
-               required/>
+               required
+            />
+               <datalist id="cuisinesInput">
+                  {getOptions()}
+               </datalist>
          </div>
          <div className="inputWrap">
             <label className="sideLabel">Location</label>
@@ -164,7 +180,14 @@ const SideBlog = ({ onClick }) => {
                onChange={(e) => setBlog(e.target.value)}   
                required/>
          </div>
-         <input type="submit" value="Submit" className="sideSubmit"/>
+         {errorMessage.length === 0 && 
+            <input type="submit" value="Submit" className="sideSubmit"/>
+         }
+         {errorMessage.length !== 0 && 
+            <div className="errorBlog" style={{marginBottom:"10px"}}>
+               {errorMessage}
+            </div>
+         }
       </form>
     </div>
   )

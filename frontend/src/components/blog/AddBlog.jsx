@@ -3,14 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import './blog.css'
 import { getTopBlog } from '../../scripts/getTopBlog'
 import { useAuthContext } from '../../hooks/useAuthContext'
-import { countries } from '../../staticdata/countries'
-
-const cuisines = new Set()
-for (const country in countries) {
-   for (let i = 0; i < countries[country].cuisines.length; i++) {
-      cuisines.add(countries[country].cuisines[i])
-   }
-}
+import { getOptions, cuisines } from '../../scripts/getOptions'
 
 const axios = require('axios').default
 
@@ -147,10 +140,7 @@ const AddBlog = ({ onClose,
    const onSubmit = async (e) => {
       e.preventDefault()
       if (!(cuisines.has(cuisine))) {
-         setErrorMessage("Please Use Existing Cuisine")
-         console.log(cuisine)
-         console.log(cuisines)
-         console.log("errer")
+         setErrorMessage("Please Use Cuisine From List")
          return 
       }
       if (cuisine)
@@ -237,15 +227,6 @@ const AddBlog = ({ onClose,
       }
    }
 
-   const getOptions = () => {
-      const options =  Array.from(cuisines)
-      options.sort()
-      const tags = []
-      for (let i = 0; i < options.length; i++) {
-         tags.push(<option key={options[i]} value={options[i]} />)
-      }
-      return tags
-   }
 
    return (
       <form className="add-form" onSubmit={onSubmit} onClose={onClose}>

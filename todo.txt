@@ -16,3 +16,7 @@ Slab
 Error page for illegal routes
 
 For any change to rating AND/OR name we should reset topblog
+
+Button disabling
+
+Cleaning up of form – it is a mess

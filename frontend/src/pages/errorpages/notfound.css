@@ -1,0 +1,72 @@
+.notFoundWrapper {
+   margin: 0 auto 0 auto;
+   position: relative;
+   background: linear-gradient(to bottom, #CD7F32 0%,#FCB54D 70%);
+   height: 300px;
+   width: 400px;
+   border-radius: 50% 50% 10% 10%;
+}
+
+.cheese {
+   top: 55%;
+   position: absolute;
+   width: 0; 
+   height: 0; 
+   border-left: 80px solid transparent;
+   border-right: 80px solid transparent;
+   border-top: 20px solid yellow;
+   z-index: 5;
+   left: 50px;
+}
+
+.cheese:first-child {
+   left: 10px;
+}
+
+.cheese:last-child {
+   left: 200px;
+}
+
+.lettuce {
+   width: 24px;
+   height: 30px;
+   position: absolute;
+   background-color: green;
+   border-radius: 50%;
+}
+
+.tomato {
+   width: 420px;
+   height: 25px;
+   top: 48%;
+   left: -10px;
+   position: absolute;
+   background-color: red;
+   border-radius: 10px;
+}
+
+.meat {
+   width: 420px;
+   height: 70px;
+   top: 55%;
+   left: -10px;
+   position: absolute;
+   background-color: #6E260E;
+   border-radius: 10px;
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+}
+
+.lostMessage {
+   position: relative;
+   color: white;
+   font-size: 24px;
+   margin-top: 5px;
+}
+
+.findself {
+   position: absolute;
+   bottom: -10%;
+   left: 8%;
+}
