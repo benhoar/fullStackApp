@@ -13,7 +13,7 @@ const getLettuce = (minshift) => {
 
    for (let i = 0; i < 62; i++) {
       const upshift = String(getRandInt(4) + minshift) + '%'
-      const leftshift = String((i * 7)-20) + 'px'
+      const leftshift = String((i * 7)-23) + 'px'
       lettuces.push(<div className='lettuce' 
                          style={{left:leftshift, top:upshift}}
                          key={i}>

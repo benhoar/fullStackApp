@@ -36,7 +36,7 @@ const HomePage = () => {
   const [mapState, mapDispatch] = useReducer(mapReducer, countries)
 
   const [selected, setSelected] = useState("")
-  const [notFound, setNotFound] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
   const [popData, setPopData] = useState([])
   const [hidepop, setHidepop] = useState(true)
 
@@ -54,7 +54,8 @@ const HomePage = () => {
         setPopData(res)
         setHidepop(false)
       } else {
-        setNotFound(true)
+        const t = selected
+        setErrorMessage(`No ${t} Data Found!`)
       }
     }
     if (user && selected.length !== 0) {
@@ -64,16 +65,13 @@ const HomePage = () => {
 
   const hide = () => {
     setHidepop(true)
+    setErrorMessage("")
     setSelected("")
     let toSilence = selected
     if (!(selected in countries)) {
       toSilence = cuisineToCountry[selected]
     }
     mapDispatch({ type: "SET VISIBILITY", country: toSilence, visible: false })
-  }
-
-  const hideError = () => {
-    setTimeout(() => {setNotFound(false); hide()}, 2000)
   }
 
   return (
@@ -87,19 +85,19 @@ const HomePage = () => {
       <div style={{zIndex:'99'}}>
         <Map mapState={mapState} 
             mapDispatch={mapDispatch} 
-            setSelected={setSelected}/>
+            setSelected={setSelected}
+            hide={hide}/>
       </div>
       {!hidepop &&
-      <div className="containSummary">
-        <div className="summaryPop">
-          <SummaryPost data={popData} country={selected} hide={hide}/>
+        <div className="containSummary">
+          <div className="summaryPop">
+            <SummaryPost data={popData} country={selected} hide={hide}/>
+          </div>
         </div>
-      </div>
       }
-      {notFound && 
+      {errorMessage && 
         <div className="notFound">
-          No {selected} Data Yet!
-          {hideError()}
+          {errorMessage}!
         </div>
       }
     </div>

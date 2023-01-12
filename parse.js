@@ -355,3 +355,8 @@ const countries = {
   Object.entries(test).map((entry) => {
     console.log(entry[0])
   })
+
+  const emp = "sdfsf"
+  if (emp) {
+    console.log("HEY")
+  }

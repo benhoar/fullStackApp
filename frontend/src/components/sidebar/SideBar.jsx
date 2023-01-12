@@ -7,7 +7,7 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 const axios = require('axios').default
 
 const SideBar = ({ cuisineTypes, setSelected, selected, mapDispatch }) => {
-  const st1 = [{paddingLeft:'9px'}, {marginLeft:'23px'}];
+  const st1 = [{paddingLeft:'9px'}, {marginLeft:'23px'}, {zIndex:'105'}];
   const st2 = [{paddingLeft:'16px'}, {marginLeft:'-16px'}];
   const st3 = [{paddingLeft:'9px'}, {marginLeft:'4px'}];
   const st4 = [{paddingLeft:'12px'}, {marginLeft:'0px'}];

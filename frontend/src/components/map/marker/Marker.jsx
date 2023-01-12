@@ -1,9 +1,10 @@
 import './marker.css'
+import useOutsideClick from '../../../hooks/useOutsideClick'
 
-const Marker = ({ country, mapState, mapDispatch, setSelected }) => {
-
+const Marker = ({ country, mapState, mapDispatch, setSelected, hide }) => {
+  const { ref } = useOutsideClick(hide);
   return (
-    <div className="">
+    <div ref={ref} className="">
       <div className="markerWrap" 
           style={{top: country[1].mapPos[0], left: country[1].mapPos[1]}} 
       >
