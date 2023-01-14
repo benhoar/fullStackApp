@@ -4,7 +4,7 @@ import Pie from '../../components/graph/Pie'
 import { TbCrown } from 'react-icons/tb'
 import { FaTimes } from 'react-icons/fa'
 import useOutsideClick from '../../hooks/useOutsideClick'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { getPieData } from '../../scripts/getPieData'
 import { useGetTopSpot } from '../../hooks/useGetTopSpot'
 

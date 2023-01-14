@@ -1,7 +1,7 @@
 import AddBlog from "../../components/blog/AddBlog"
 import { useState, useEffect } from 'react'
 import {useLocation} from 'react-router-dom'
-import { useAuthContext } from "../../hooks/useAuthContext"
+import { useAuthContext } from "../../hooks/authHooks/useAuthContext"
 const axios = require('axios').default
 
 

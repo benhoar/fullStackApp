@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './blog.css'
 import { getTopBlog } from '../../scripts/getTopBlog'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { getOptions, cuisines } from '../../scripts/getOptions'
 
 const axios = require('axios').default
@@ -143,7 +143,6 @@ const AddBlog = ({ onClose,
          setErrorMessage("Please Use Cuisine From List")
          return 
       }
-      if (cuisine)
       if (buttontxt === 'Update Blog') {
          const sameCuisine = await editBlogSubmit()
          // if the cuisine was not changed, we are done, otherwise pass through for updates

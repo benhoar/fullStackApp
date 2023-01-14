@@ -1,11 +1,11 @@
 import Button from './Button'
 import './blog.css'
 
-const Header = ({ onAdd, text }) => {
+const Header = ({ buttonAction, text }) => {
   return (
     <div className='header'>
       <h1>Restaurant Blog</h1>
-      <Button text={text} onClick={onAdd}/>
+      <Button text={text} onClick={() => buttonAction()}/>
     </div>
   )
 }

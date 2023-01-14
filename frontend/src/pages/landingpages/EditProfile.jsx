@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useUpdateProfile } from '../../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../../hooks/authHooks/useUpdateProfile'
 import './landingpage.css'
 
 const EditProfile = () => {

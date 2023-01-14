@@ -3,7 +3,7 @@ import Button from './Button'
 import Rater from '../countrylist/CountryList'
 import SideBlog from '../sideblog/SideBlog'
 import { useState, useEffect } from 'react' 
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 const axios = require('axios').default
 
 const SideBar = ({ cuisineTypes, setSelected, selected, mapDispatch }) => {

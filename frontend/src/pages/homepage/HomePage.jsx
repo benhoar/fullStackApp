@@ -1,12 +1,10 @@
 import SideBar from '../../components/sidebar/SideBar'
 import Map from '../../components/map/Map'
 import './homepage.css'
-import { useReducer } from 'react'
-import { useState } from 'react'
+import { useReducer, useState, useEffect } from 'react'
 import { getCuisines } from '../../scripts/getCuisines'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import SummaryPost from '../../components/summarypost/SummaryPost'
-import { useEffect } from 'react'
 import { countries } from '../../staticdata/countries'
 const HomePage = () => {
 

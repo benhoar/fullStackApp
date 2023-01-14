@@ -1,12 +1,18 @@
 import Blog from './Blog'
 import './blog.css'
 
-const Blogs = ({ blogs, onUpdate, getTopBlog }) => {
-
+const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, setBlogUpdated }) => {
+   
    return (
       <div className="blogs">
-         {blogs.map((blog) => (
-            <Blog  key={blog._id} blog={blog} onUpdate={onUpdate} getTopBlog={getTopBlog}/>
+         {blogs.map((blog, i) => (
+            <Blog  key={blog._id + i} 
+                   blog={blog} 
+                   setAmEditing={setAmEditing}
+                   setShowAddBlog={setShowAddBlog}
+                   setCurData={setCurData}
+                   setBlogUpdated={setBlogUpdated}
+            />
          ))}
       </div>
    )

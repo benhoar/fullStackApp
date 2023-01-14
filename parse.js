@@ -360,3 +360,12 @@ const countries = {
   if (emp) {
     console.log("HEY")
   }
+
+const t = [
+  {'t':1},
+  {'b':2},
+  {'c':4},
+]
+
+t.map((v, i) => {console.log(v, i)})
+

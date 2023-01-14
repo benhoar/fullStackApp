@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAuthContext } from './useAuthContext'
+import { useAuthContext } from './authHooks/useAuthContext'
 const axios = require('axios').default
 
 export const useGetBlogs = () => {

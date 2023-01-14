@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { getOptions, cuisines } from '../../scripts/getOptions'
+import { addBlog } from '../../scripts/blogScripts/addBlog'
 import './sideblog.css'
 
-const axios = require('axios').default
-
 const SideBlog = ({ onClick }) => {
-   const [restaurant, setRestaurant] = useState('')
-   const [cuisine, setCuisine] = useState('')
-   const [date, setDate] = useState('')
-   const [rating, setRating] = useState('')
-   const [blog, setBlog] = useState('')
-   const [location, setLocation] = useState('')
-   const [highlight, setHighlight] = useState('')
+   const [formData, setFormData] = useState({
+      _id: '',
+      restaurant: '',
+      cuisine: '',
+      location: '',
+      highlight: '',
+      date: '',
+      rating: '',
+      blog: ''
+   })
    const { user } = useAuthContext()
    const [errorMessage, setErrorMessage] = useState('')
 
@@ -23,87 +25,26 @@ const SideBlog = ({ onClick }) => {
       }
    }, [errorMessage])
 
-   // reset state after blog submission
-   const clearFields = () => {
-      setBlog('')
-      setDate('')
-      setCuisine('')
-      setRating('')
-      setRestaurant('')
-      setLocation('')
-      setHighlight('')
+   const onChange = (e) => {
+      setFormData((prevState) => ({
+         ...prevState,
+         [e.target.name]: e.target.value
+      }))
    }
 
    const onSubmit = async (e) => {
       e.preventDefault()
-      if (!(cuisines.has(cuisine))) {
+      if (!(cuisines.has(formData.cuisine))) {
          setErrorMessage("Please Use Cuisine From List")
          return 
       }
-      const outBoundData = {
-         cuisine: cuisine,
-         topSpot: restaurant,
-         topSpotScore: rating,
-         blogs: [
-            {
-               _id: restaurant,
-               restaurant: restaurant,
-               rating: rating,
-               location: location,
-               date: date,
-               blog: blog
-            }
-         ]
+      const res = await addBlog(formData, user)
+      if (res !== "SUCCESS") {
+         setErrorMessage(res)
+         setTimeout(() => {setErrorMessage("")}, 2000)
+         return
       }
-      if (highlight) {
-         outBoundData.blogs[0].highlight = highlight 
-      }
-      await axios.get(`/api/cuisines/cuisine/${cuisine}`,
-         {
-            headers: { 'Authorization': `Bearer ${user.token}` }
-         }
-      ).then(async function(res) {
-         await axios.put(`/api/cuisines/blog/${res.data._id}`, 
-            {
-               blog: outBoundData.blogs[0]
-            }
-         ).catch((e) => console.log(e))
-         const newSpotsVisited = res.data.spotsVisited + 1
-         const newScoreSum = Number(res.data.scoreSum) + Number(rating)
-         const newAllScores = res.data.allScores
-         if (!(rating in newAllScores)) {
-            newAllScores[rating] = 0
-         }
-         newAllScores[rating] += 1
-         const newTopSpotScore = rating >= res.data.topSpotScore ? rating : res.data.topSpotScore
-         const newTopSpot = rating >= res.data.topSpotScore ? restaurant : res.data.topSpot
-         await axios.put(`/api/cuisines/${res.data._id}`, 
-            {
-               spotsVisited: newSpotsVisited,
-               scoreSum: newScoreSum,
-               allScores: newAllScores,
-               topSpot: newTopSpot,
-               topSpotScore: newTopSpotScore,
-            },
-            {
-               headers: { 'Authorization': `Bearer ${user.token}` }
-            }
-         ).then(() => {
-               clearFields()
-               onClick()
-            }
-         ).catch((e) => console.log(e))
-      }).catch(async () => {
-         await axios.post("/api/cuisines/", outBoundData,
-            {
-               headers: { 'Authorization': `Bearer ${user.token}` }
-            }
-         ).then(() => {
-               clearFields()
-               onClick()
-            }
-         ).catch((e) => console.log(e))
-      })
+      onClick()
    }
 
   return (
@@ -118,7 +59,8 @@ const SideBlog = ({ onClick }) => {
                className="sideArea"
                type="text" 
                placeholder="Input Restaurant"
-               onChange={(e) => setRestaurant(e.target.value)}   
+               onChange={onChange}  
+               name="restaurant"
                required/>
          </div>
          <div className="inputWrap">
@@ -127,7 +69,8 @@ const SideBlog = ({ onClick }) => {
                list="cuisinesInput" 
                placeholder="Input Cuisine"
                className="sideArea"
-               onChange={(e) => setCuisine(e.target.value)}   
+               onChange={onChange}   
+               name="cuisine"
                required
             />
                <datalist id="cuisinesInput">
@@ -140,7 +83,8 @@ const SideBlog = ({ onClick }) => {
                className="sideArea"
                type="text" 
                placeholder="Input Location"
-               onChange={(e) => setLocation(e.target.value)}   
+               onChange={onChange}    
+               name="location"
                required/>
          </div>
          <div className="inputWrap">
@@ -149,7 +93,8 @@ const SideBlog = ({ onClick }) => {
                className="sideArea"
                type="text" 
                placeholder="Input Highlight"
-               onChange={(e) => setHighlight(e.target.value)}   
+               onChange={onChange}    
+               name="highlight"
             />
          </div>
          <div className="inputWrap">
@@ -158,7 +103,8 @@ const SideBlog = ({ onClick }) => {
                className="sideArea"
                type="Date"
                placeholder=""
-               onChange={(e) => setDate(e.target.value)}   
+               onChange={onChange}   
+               name="date"
                required/>
          </div>
          <div className="inputWrap">
@@ -169,7 +115,8 @@ const SideBlog = ({ onClick }) => {
                min="1" 
                max="10" 
                placeholder="Rate Experience"
-               onChange={(e) => setRating(e.target.value)}   
+               onChange={onChange}    
+               name="rating"
                required/>
          </div>
          <div className="inputWrap">
@@ -177,7 +124,8 @@ const SideBlog = ({ onClick }) => {
             <textarea 
                className="sideArea"
                placeholder=""
-               onChange={(e) => setBlog(e.target.value)}   
+               onChange={onChange} 
+               name="blog"   
                required/>
          </div>
          {errorMessage.length === 0 && 

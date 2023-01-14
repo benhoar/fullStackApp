@@ -1,5 +1,5 @@
 import './navbar.css'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 
 const PopMenu = () => {
   const { user } = useAuthContext()

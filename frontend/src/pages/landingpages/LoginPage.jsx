@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useLogin } from '../../hooks/useLogin'
+import { useLogin } from '../../hooks/authHooks/useLogin'
 import { useNavigate } from 'react-router-dom'
 import './landingpage.css'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 
 const LoginPage = () => {
 

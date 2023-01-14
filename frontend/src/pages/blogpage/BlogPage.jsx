@@ -1,10 +1,9 @@
 import Header from '../../components/blog/Header'
 import Blogs from '../../components/blog/Blogs'
-import AddBlog from '../../components/blog/AddBlog'
 import './blogpage.css'
-// this is a hook called useState
 import { useEffect, useState } from 'react'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
+import BlogForm from '../../components/blog/BlogForm'
 const axios = require('axios').default
 
 const BlogPage = () => {
@@ -12,8 +11,9 @@ const BlogPage = () => {
   const [showAddBlog, setShowAddBlog] = useState(false)
   const [blogs, setBlogs] = useState([])
   const [blogUpdated, setBlogUpdated] = useState(false)
+  const [curData, setCurData] = useState({})
+  const [amEditing, setAmEditing] = useState(false)
   const { user } = useAuthContext()
-
 
   // Get Blogs
   useEffect(() => {
@@ -41,21 +41,37 @@ const BlogPage = () => {
     }
   }, [blogUpdated, user]) 
 
-  const hideBlog = () => {
-      setShowAddBlog(false)
-      setBlogUpdated(true)
+  // Get raw form or edit form pre-filled with user data
+  const getForm = () => {
+    if (amEditing) {
+      return <BlogForm setBlogUpdated={setBlogUpdated} blogData={curData} isEdit={true} setShowAddBlog={setShowAddBlog}/>
+    }
+    else {
+      return <BlogForm setBlogUpdated={setBlogUpdated} setShowAddBlog={setShowAddBlog}/>
+    }
   }
 
   return (
     <div style={{paddingTop:"20px"}}>
       <Header 
-        onAdd={() => setShowAddBlog(!showAddBlog)}
+        buttonAction={() => {
+          setShowAddBlog(!showAddBlog)
+          setAmEditing(false)
+          setCurData({})
+        }}
         text={showAddBlog ? 'Close' : 'Add'}
       />
-      {showAddBlog && <AddBlog onClose={hideBlog}/>}
-      <Blogs blogs={blogs} onUpdate={() => hideBlog()}/>
+      {showAddBlog && 
+        getForm()
+      }
+      <Blogs blogs={blogs} 
+             setAmEditing={setAmEditing} 
+             setShowAddBlog={setShowAddBlog} 
+             setCurData={setCurData}
+             setBlogUpdated={setBlogUpdated}
+      />
     </div>
-  );
+  )
 }
 
 export default BlogPage

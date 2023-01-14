@@ -1,7 +1,7 @@
 import './profile.css'
-import { useLogout } from '../../hooks/useLogout'
+import { useLogout } from '../../hooks/authHooks/useLogout'
 import { Link } from 'react-router-dom'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { useEffect, useState } from 'react'
 
 const Profile = () => {

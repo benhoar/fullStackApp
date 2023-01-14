@@ -6,7 +6,7 @@ export const countries = {
    },
    "Southern USA": {
      mapPos: ["256px", "335px"],
-     cuisines: ["Barbecue","Soul Food",],
+     cuisines: ["Barbecue","Soul Food", "Cajun"],
      visible: false,
    },
    "Mexico": {

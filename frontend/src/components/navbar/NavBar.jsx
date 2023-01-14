@@ -3,7 +3,7 @@ import PopMenu from './PopMenu'
 import { FaHamburger } from 'react-icons/fa'
 import { CgClose } from 'react-icons/cg'
 import { useState, useEffect } from 'react'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { IoIosStats } from 'react-icons/io'
 
 const NavBar = () => {
