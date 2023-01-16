@@ -37,7 +37,6 @@ app.use(errorHandler)
 
 app.listen(port, () => {
    console.log(process.env.NODE_ENV)
-   console.log(process.env.MONGO_URI)
    console.log(`Server started on port ${port}`)
 })
 
