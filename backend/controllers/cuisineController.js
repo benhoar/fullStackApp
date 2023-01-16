@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 
-const Cuisine = require('../models/CuisineModel')
+const Cuisine = require('../models/cuisineModel')
 const User = require('../models/userModel')
 
 // @desc get all Cuisines
