@@ -1,6 +1,15 @@
+import { countries } from '../staticdata/countries'
+
 const axios = require('axios').default
 
-const getCuisines = async (cuisines, user) => {
+const getCuisines = async (cuisine, user) => {
+
+  let cuisines = [cuisine]
+
+  if (cuisine in countries) {
+    cuisines = countries[cuisine].cuisines
+  }
+
   const cuisData = []
   for (let i = 0; i < cuisines.length; i++) {
       const cuisine = cuisines[i]

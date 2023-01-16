@@ -23,13 +23,15 @@ const BlogPage = () => {
           headers: { 'Authorization': `Bearer ${user.token}` }
         })
         const allBlogs = []
-        res.data.forEach((cuisine) => 
-          cuisine.blogs.forEach((blog) => {
+        for (let i = 0; i < res.data.length; i++) {
+          const cuisine = res.data[i]
+          for (let j = 0; j < cuisine.blogs.length; j++) {
+            const blog = cuisine.blogs[j]
             blog["cuisine"] = cuisine.cuisine
             blog["cuisine_id"] = cuisine._id
             allBlogs.push(blog)
-         })
-        )
+         }
+        }
         setBlogs(allBlogs)
       } catch (err) {
         console.log(err)

@@ -1,4 +1,3 @@
-
 .summaryPost {
    background-color: white;
    align-self: center;
@@ -59,9 +58,38 @@
    z-index: 100;
 }
 
+.subcuisinesWrapper {
+   display: flex;
+   flex-direction: column;
+   width: fit-content;
+   align-items: center;
+}
+
+.ropes {
+   border-left: 5px solid #351E1B;
+   border-right: 5px solid #351E1B;
+   height: 20px;
+   width: 85%;
+}
+
+.subcuisines {
+   color: white;
+   padding-left: 8px;
+   font-size: 20px;
+   background-color: #BE975B;
+   width: fit-content;
+   border-radius: 4px;
+   padding: 3px 6px;
+   border: 2px solid #351E1B;
+}
+
 @media(max-width: 690px) {
    .summaryPost {
       flex-direction: column;
       gap: 20px;
+   }
+
+   .subcuisines {
+      font-size: 14px;
    }
 }

@@ -1,8 +1,5 @@
 import { FaTimes, FaEdit } from 'react-icons/fa'
 import './blog.css'
-//import { useNavigate } from 'react-router-dom'
-//import axios from 'axios'
-//import { getTopBlog } from '../../scripts/getTopBlog.js'
 import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { deleteBlog } from '../../scripts/blogScripts/deleteBlog'
 import { updateBlogDependants } from '../../scripts/blogScripts/updateBlogDependants'
@@ -10,7 +7,6 @@ import { updateBlogDependants } from '../../scripts/blogScripts/updateBlogDepend
 const Blog = ({ blog, setCurData, setAmEditing, setShowAddBlog, setBlogUpdated }) => {
 
   const { user } = useAuthContext()
-  //const navigate = useNavigate()
 
   return (
     <div className="blog">

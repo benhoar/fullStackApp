@@ -1,4 +1,4 @@
-export const countries = {
+const countries = {
    "United States": {
      mapPos: ["223px", "273px"],
      cuisines: ["American","Seafood","Burgers","Farm to Table", "Sandwich",],
@@ -220,3 +220,5 @@ export const countries = {
      visible: false,
    },
  }
+
+ export { countries }

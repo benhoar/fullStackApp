@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+//const uri = `mongodb+srv://benjaminhoar:${process.env.MONGO_PASSWORD}@cuisinemap.zzvxwlt.mongodb.net/?retryWrites=true&w=majority`;
 
 const connectDB = async () => {
    try {

@@ -7,8 +7,9 @@ import useOutsideClick from '../../hooks/useOutsideClick'
 import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { getPieData } from '../../scripts/getPieData'
 import { useGetTopSpot } from '../../hooks/useGetTopSpot'
+import { countries } from '../../staticdata/countries'
 
-const SummaryPost = ({ data, subcuisine ,country, isSummary, hide  }) => {
+const SummaryPost = ({ data, subcuisine, country, isSummary, hide  }) => {
 
    const { ref } = useOutsideClick(hide);
    const { spotsVisited, scoreSum, topSpot, graphData, topSubCuisine } = getPieData(data)
@@ -16,10 +17,34 @@ const SummaryPost = ({ data, subcuisine ,country, isSummary, hide  }) => {
    const { topSpotInfo } = useGetTopSpot(topSpot, user)
 
    const averageScore = (scoreSum / spotsVisited).toFixed(2)
+
+   const getSubCuisines = () => {
+      let cuisines = ""
+      if (country in countries) {
+         if (countries[country].cuisines.length === 1) {
+            return
+         }
+         for (let i = 0; i < countries[country].cuisines.length; i++) {
+            const cuis = countries[country].cuisines[i]
+            cuisines += cuis
+            if (i !== countries[country].cuisines.length - 1) {
+               cuisines += ", "
+            }
+         }
+      }
+      return (
+         <div className="subcuisinesWrapper">
+            <div className="ropes"></div>
+            <div className="subcuisines">
+               {cuisines}
+            </div>
+         </div>
+      )
+   }
   
   return (
    <div ref={ref}>
-      <div className="summaryPost">
+      <div className="summaryPost" style={!isSummary ? {border:"2px solid #351E1B"} : {}}>
          {!isSummary &&
             <div className="exit" onClick={() => hide()}>
                <FaTimes />
@@ -48,6 +73,9 @@ const SummaryPost = ({ data, subcuisine ,country, isSummary, hide  }) => {
             <div><b>Rating:</b> {topSpotInfo.rating}</div>
          </div>
       </div>
+      {!isSummary && country in countries && 
+         getSubCuisines()
+      }
    </div>
   )
 }

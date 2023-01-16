@@ -41,13 +41,7 @@ const HomePage = () => {
   useEffect(() => {
 
     const getPopup = async () => {
-      let cuisines = []
-      if (selected in mapState) {
-        cuisines = mapState[selected].cuisines
-      } else {
-        cuisines = [selected]
-      }
-      const res = await getCuisines(cuisines, user)
+      const res = await getCuisines(selected, user)
       if (res) {
         setPopData(res)
         setHidepop(false)
@@ -95,7 +89,7 @@ const HomePage = () => {
       }
       {errorMessage && 
         <div className="notFound">
-          {errorMessage}!
+          {errorMessage}
         </div>
       }
     </div>

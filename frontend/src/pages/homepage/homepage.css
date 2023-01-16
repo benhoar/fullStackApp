@@ -2,6 +2,7 @@
    display: flex;
    background-color: #00A9C7;
    position: relative;
+   overflow: scroll;
 }
 
 .notFound {
@@ -19,7 +20,7 @@
 
 .containSummary {
    width: 100%;
-   position: absolute;
+   position: fixed;
    top: 1vh;
    z-index: 101;
    width: 100%;
@@ -28,7 +29,7 @@
 
 .summaryPop {
    /* left: 30vw; */
-   margin: 0 auto;
+   margin: 70px auto;
    width: min-content;
 }
 

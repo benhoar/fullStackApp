@@ -1,4 +1,3 @@
-const generateSecret = require('../generateSecret')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
@@ -28,7 +27,8 @@ const registerUser = asyncHandler(async(req, res) => {
       throw new Error('Passwords do not match')
    }
 
-   if (secret !== generateSecret(password)) {
+   if (secret !== process.env.REGISTER_SECRET) {
+      console.log(secret, process.env.REGISTER_SECRET)
       res.status(400)
       throw new Error('Contact bbhoar@gmail.com to Register')
    }

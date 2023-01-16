@@ -5,7 +5,6 @@ export default function useOutsideClick(hide) {
 
    const handleClickOutside = (event) => {
        if (ref.current && !ref.current.contains(event.target)) {
-            console.log(ref.current)
             hide()
        }
    };
