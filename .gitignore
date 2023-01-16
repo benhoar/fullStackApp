@@ -1,3 +1,4 @@
 node_modules
 .env
 parse.js
+.DS_Store
