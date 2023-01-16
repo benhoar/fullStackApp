@@ -10,7 +10,7 @@ const {
          getBlog, 
          deleteBlog,
          addBlog
-      } = require('../controllers/CuisineController')
+      } = require('../controllers/cuisineController')
 
 //router.get('/blog/:cuisine/:restaurant', protect, getBlog)
 //router.get('/:id', protect, getCuisine)
