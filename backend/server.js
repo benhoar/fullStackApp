@@ -23,6 +23,7 @@ app.use('/api/cuisines', require('./routes/cuisineRoutes'))
 app.use('/api/users', require('./routes/userRoutes'))
 
 if (process.env.NODE_ENV === 'production') {
+   console.log('process.env.NODE_ENV')
    app.use(express.static(path.join(__dirname, '../frontend/build')))
    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')))
 } app.get('/', (req, res) => res.send('Please set to production'))
@@ -34,7 +35,10 @@ if (process.env.NODE_ENV === 'production') {
 // because we are focused on the POST request
 app.use(errorHandler)
 
-app.listen(port, () => console.log(`Server started on port ${port}`))
+app.listen(port, () => {
+   console.log(`Server started on port ${port}`)
+   console.log(process.env.NODE_ENV)
+})
 
 /*
    Routing refers to how to get an application to respond to a request (e.g. GET) to a specific endpount (e.g. URI, path)
