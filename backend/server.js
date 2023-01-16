@@ -38,6 +38,9 @@ app.use(errorHandler)
 app.listen(port, () => {
    console.log(`Server started on port ${port}`)
    console.log(process.env.NODE_ENV)
+   console.log(process.env.JWT_SECRET)
+   console.log(process.env.REGISTER_SECRET)
+   console.log(process.env.MONGO_URI)
 })
 
 /*
