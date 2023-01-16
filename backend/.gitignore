@@ -1,4 +1,0 @@
-node_modules
-.env
-generateSecret.js
-../parse.js
