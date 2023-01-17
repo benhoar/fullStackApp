@@ -18,6 +18,7 @@ const SideBlog = ({ onClick }) => {
    })
    const { user } = useAuthContext()
    const [errorMessage, setErrorMessage] = useState('')
+   //const [isLoading, setIsLoading] = useState(false)
 
    useEffect(() => {
       if (errorMessage) {
@@ -34,16 +35,26 @@ const SideBlog = ({ onClick }) => {
 
    const onSubmit = async (e) => {
       e.preventDefault()
+      //setIsLoading(true)
       if (!(cuisines.has(formData.cuisine))) {
          setErrorMessage("Please Use Cuisine From List")
+         //setIsLoading(false)
          return 
       }
+
+      if (!user) {
+         setErrorMessage("Please Login!")
+         //setIsLoading(false)
+         return 
+      }
+      
       const res = await addBlog(formData, user)
       if (res !== "SUCCESS") {
          setErrorMessage(res)
          setTimeout(() => {setErrorMessage("")}, 2000)
          return
       }
+      //setIsLoading(false)
       onClick()
    }
 

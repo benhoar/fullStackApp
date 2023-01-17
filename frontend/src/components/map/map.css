@@ -1,6 +1,9 @@
 .wrapper {
    position: relative;
    overflow-x: auto;
+   overflow-y: hidden;
+   height: fit-content;
+   width: fit-content;
 }
 
 .map {
