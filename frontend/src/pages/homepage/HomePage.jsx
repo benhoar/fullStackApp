@@ -87,6 +87,9 @@ const HomePage = () => {
     if (user && selected.length !== 0 && popSource) {
       getPopup()
     }
+    if (!user && selected.length !== 0) {
+      setErrorMessage(`No ${selected} Data Found!`)
+    }
   }, [user, selected, mapState, popSource])
 
   const hide = () => {

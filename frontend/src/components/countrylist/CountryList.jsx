@@ -17,14 +17,14 @@ const CountryList = ({ setRater, setSelected, cuisineTypes, selected, mapDispatc
    }
 
    return (
-      <form className="formWrapper">
+      <div className="formWrapper">
         <ul className="countriesList">
           <div className="headerCancel">
               <FaTimes className="cancelBlog" style={{color:"#1B3A20"}} onClick={() => {setRater(false); setSelected("")}}/>
           </div>
           {getList()}
         </ul>
-      </form>
+      </div>
    )
 }
 

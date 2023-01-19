@@ -5,6 +5,11 @@
    overflow: scroll;
 }
 
+.homeButtons {
+   height: calc(100vh - 118px);
+   min-height: 600px;
+}
+
 
 .notFound {
    background-color: white;
@@ -31,16 +36,4 @@
    /* left: 30vw; */
    margin: 70px auto;
    width: min-content;
-}
-
-@media(max-width: 960px) {
-   .summaryPop {
-      left: 15vw;
-   }
-}
-
-@media(max-width: 690px) {
-   .summaryPop {
-      left: 27vw;
-   }
 }
