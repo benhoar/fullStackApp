@@ -2,10 +2,11 @@
 
 .blogs {
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .container {
-  width: 80vw;
+  width: 100%;
   margin: 0px auto;
 }
 
@@ -13,8 +14,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 auto 20px auto;
-  width: 70vw;
+  margin: 0 auto 10px auto;
+  width: 100%;
   padding: 8px 16px;
   border-radius: 5px;
   border: 2px solid #1B3A20;
@@ -58,7 +59,7 @@
   border-radius: 5px;
   border: 2px solid #1B3A20;
   margin: 10px auto;
-  width: 70vw;
+  width: 100%;
   padding: 5px 8px;
   text-align: justify;
 }
@@ -93,7 +94,7 @@
 }
 
 .add-form {
-  width: 70vw;
+  width: 100%;
   margin: 0px auto;
   margin-bottom: 20px;
 }
@@ -177,21 +178,19 @@ textarea:focus {
    padding: 4px;
 }
 
-@media(max-width: 1000px) {
+/* @media(max-width: 1000px) {
   .header {
-    margin: 10px auto 10px auto; 
-    width: 80vw;
+    width: 70vw;
   }
 
   .blog {
-    margin: 10px auto; 
-    width: 80vw;
+    width: 70vw;
   }
 
   .add-form {
-    width: 80vw;
+    width: 70vw;
   }
-}
+} */
 
 @media(max-width: 560px) {
   .form-control {

@@ -39,6 +39,7 @@ const HomePage = () => {
   const [popData, setPopData] = useState([])
   const [hidepop, setHidepop] = useState(true)
   const [popSource, setPopSource] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const populateData = async () => {
@@ -62,6 +63,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const getPopup = async () => {
+      setIsLoading(true)
       let cuisines = [selected]
 
       if (selected in countries) {
@@ -86,6 +88,7 @@ const HomePage = () => {
     }
     if (user && selected.length !== 0 && popSource) {
       getPopup()
+      setIsLoading(false)
     }
     if (!user && selected.length !== 0) {
       setErrorMessage(`No ${selected} Data Found!`)
@@ -117,7 +120,7 @@ const HomePage = () => {
             setSelected={setSelected}
             hide={hide}/>
       </div>
-      {!hidepop &&
+      {!hidepop && !isLoading &&
         <div className="containSummary">
           <div className="summaryPop">
             <SummaryPost data={popData} country={selected} hide={hide}/>

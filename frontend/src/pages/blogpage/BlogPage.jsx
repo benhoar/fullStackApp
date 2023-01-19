@@ -14,6 +14,7 @@ const BlogPage = () => {
   const [blogUpdated, setBlogUpdated] = useState(false)
   const [curData, setCurData] = useState({})
   const [amEditing, setAmEditing] = useState(false)
+  const [sortKey, setSortKey] = useState("Newest")
   const { user } = useAuthContext()
 
   // Get Blogs
@@ -33,6 +34,7 @@ const BlogPage = () => {
             allBlogs.push(blog)
          }
         }
+        allBlogs.sort((a, b) =>  b.date.replaceAll(/\D/g, '') - a.date.replaceAll(/\D/g, ''))
         setBlogs(allBlogs)
       } catch (err) {
         console.log(err)
@@ -47,15 +49,27 @@ const BlogPage = () => {
   // Update form type and data for edit vs add blog
   useEffect(() => {
     if (amEditing) {
-      setFormType(<BlogForm setBlogUpdated={setBlogUpdated} blogData={curData} isEdit={true} setShowAddBlog={setShowAddBlog}/>)
+      setFormType(<BlogForm setBlogUpdated={setBlogUpdated} blogData={curData} isEdit={true} setShowAddBlog={setShowAddBlog} setCurData={setCurData}/>)
     }
     else {
       setFormType(<BlogForm setBlogUpdated={setBlogUpdated} setShowAddBlog={setShowAddBlog}/>)
     }
   }, [curData, amEditing])
 
+  // Sorting options for user
+  const getSortKeys = () => {
+    const keys = ["Newest", "Oldest", "Name A-Z", "Name Z-A", "Cuisine A-Z", "Cuisine Z-A", "Weakest", "Strongest"]
+    const options = []
+    for (let i = 0; i < keys.length; i++) {
+      options.push(<option key={keys[i]} onClick={() => {setSortKey(keys[i])}}>
+                    {keys[i]}
+                   </option>)
+    }
+    return options
+  }
+
   return (
-    <div style={{paddingTop:"20px"}}>
+    <div className="blogPage">
       <Header 
         buttonAction={() => {
           setShowAddBlog(!showAddBlog)
@@ -67,11 +81,20 @@ const BlogPage = () => {
       {showAddBlog && 
         formType
       }
+      <div className="sortSelector">
+        <label style={{marginRight:"5px"}}>Sort Blogs</label>
+        <select list="sortKeys"
+                className="sortKeySelector"
+        >
+          {getSortKeys()}
+        </select>
+      </div>
       <Blogs blogs={blogs} 
              setAmEditing={setAmEditing} 
              setShowAddBlog={setShowAddBlog} 
              setCurData={setCurData}
              setBlogUpdated={setBlogUpdated}
+             sortKey={sortKey}
       />
     </div>
   )

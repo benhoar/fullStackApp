@@ -1,3 +1,41 @@
-body {
-   background-color: white !important;
+.blogPage {
+   padding-top: 20px;
+   width: 50vw;
+   margin: 0 auto;
+   display: flex;
+   flex-direction: column;
+}
+
+.sortSelector {
+   display: flex;
+   width: fit-content;
+   align-self: flex-end;
+   font-weight: bold;
+   margin-right: 10px;
+}
+
+.sortKeySelector {
+   background-color: #1B3A20;
+   color: white;
+   border: none;
+   border-radius: 4px;
+   padding: 2px 4px;
+}
+
+@media(max-width: 1200px) {
+   .blogPage {
+      width: 70vw;
+   }
+}
+
+@media(max-width: 800px) {
+   .blogPage {
+      width: 80vw;
+   }
+}
+
+@media(max-width: 600px) {
+   .blogPage {
+      width: 90vw;
+   }
 }

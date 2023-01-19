@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { addBlog } from '../../scripts/blogScripts/addBlog'
 import { deleteBlog } from '../../scripts/blogScripts/deleteBlog'
@@ -6,11 +6,15 @@ import { updateBlogDependants } from '../../scripts/blogScripts/updateBlogDepend
 import { getOptions, cuisines } from '../../scripts/getOptions'
 import './blog.css'
 
-const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog }) => {
+const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog, setCurData }) => {
    const { user } = useAuthContext()
-   const [formData, setFormData] = useState(blogData)
+   const [formData, setFormData] = useState() //should be updated local blogData
    const [isLoading, setIsLoading] = useState(false)
    const [errorMessage, setErrorMessage] = useState("")
+
+   useEffect(() => {
+      setFormData(blogData)
+   }, [blogData])
 
    const onChange = (e) => {
       setFormData((prevState) => ({
@@ -48,6 +52,7 @@ const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog }) => {
             break 
 
          case 'BLOG EDIT':
+            console.log(formData, blogData)
             res = await deleteBlog(blogData.cuisine_id, blogData.restaurant, user)
             if (res !== "SUCCESS") {
                setErrorMessage(res)
@@ -78,6 +83,7 @@ const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog }) => {
       setFormData(BlogForm.defaultProps.blogData)
       setBlogUpdated(true)
       setShowAddBlog(false)
+      setCurData(formData)
    }
 
    return (
