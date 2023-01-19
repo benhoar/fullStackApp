@@ -1,6 +1,7 @@
 .buttonWrapper {
    height: 100%;
    z-index: 102;
+   height: calc(100vh - 130px);
 }
 
 .buttons {
@@ -9,7 +10,7 @@
    align-items: center;
    justify-content: space-between;
    flex-shrink: 0;
-   height: calc(100vh - 118px);
+   height: calc(100vh - 130px);
    min-height: 600px;
    width: 180px;
    padding: 30px 10px;

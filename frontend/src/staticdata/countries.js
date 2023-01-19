@@ -111,12 +111,12 @@ const countries = {
 		cuisines: ["Spanish","Tapas",]
 	},
 	"Italy": {
-		mapPos: ["87.5%", "83.4%"],
+		mapPos: ["87.5%", "81.1%"],
 		visible: false,
 		cuisines: ["Italian","Pizza",]
 	},
 	"Greece": {
-		mapPos: ["91.3%", "87.0%"],
+		mapPos: ["91.3%", "85.0%"],
 		visible: false,
 		cuisines: ["Greek","Mediterranean",]
 	},
@@ -151,7 +151,7 @@ const countries = {
 		cuisines: ["French",]
 	},
 	"Denmark": {
-		mapPos: ["67.0%", "80.0%"],
+		mapPos: ["67.0%", "79.0%"],
 		visible: false,
 		cuisines: ["Dutch",]
 	},

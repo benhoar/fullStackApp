@@ -1,5 +1,10 @@
+.positioner {
+   height: 100%;
+   display: flex;
+   align-items: center;
+}
+
 .sideBlogWrapper {
-   padding-top: 10px;
    width: 180px;
    height: 90%;
    display: flex;
