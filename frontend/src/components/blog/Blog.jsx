@@ -22,7 +22,6 @@ const Blog = ({ blog, setCurData, setAmEditing, setShowAddBlog, setBlogUpdated }
                     setAmEditing(true)
                     setShowAddBlog(true)
                     setCurData(blog)
-                    setBlogUpdated(true)
                   }}/>
           {/* Delete and update cycle here is working correctly */}
           <FaTimes style={{cursor:'pointer'}}

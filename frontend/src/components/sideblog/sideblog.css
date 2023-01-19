@@ -1,12 +1,8 @@
-.positioner {
-   height: 100%;
-   display: flex;
-   align-items: center;
-}
-
 .sideBlogWrapper {
    width: 180px;
-   height: 90%;
+   height: 100%;
+   padding-bottom: 5%;
+   padding-top: 5%;
    display: flex;
    align-items: center;
    justify-content: space-around;

@@ -2,7 +2,6 @@ import HomePage from './pages/homepage/HomePage'
 import BlogPage from './pages/blogpage/BlogPage'
 import About from './pages/aboutpage/About'
 import SummaryPage from './pages/summarypage/SummaryPage'
-import EditPage from './pages/editpage/EditPage'
 import LoginPage from './pages/landingpages/LoginPage'
 import RegisterPage from './pages/landingpages/RegisterPage'
 import EditProfile from './pages/landingpages/EditProfile'
@@ -30,7 +29,6 @@ function App() {
                 <Route path='/' element={<HomePage />}/>
                 <Route path='/about' element={<About />}/>
                 <Route path='/blogs' element={<ProtectedRoute><BlogPage /></ProtectedRoute>}/>
-                <Route path='/blogs/edit/' element={<ProtectedRoute><EditPage /></ProtectedRoute>}/>
                 <Route path='/summary' element={<ProtectedRoute><SummaryPage /></ProtectedRoute>}/>
                 <Route path='/lostdiner' element={<NotFound />}/>
                 <Route path={'*'} element={<Navigate to="/lostdiner" replace />}/>

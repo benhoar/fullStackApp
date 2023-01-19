@@ -1,7 +1,6 @@
 .buttonWrapper {
    height: 100%;
    z-index: 102;
-   height: calc(100vh - 130px);
 }
 
 .buttons {

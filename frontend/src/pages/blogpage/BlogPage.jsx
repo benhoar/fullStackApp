@@ -9,6 +9,7 @@ const axios = require('axios').default
 const BlogPage = () => {
   // state is blogs and setBlogs is used to update state
   const [showAddBlog, setShowAddBlog] = useState(false)
+  const [formType, setFormType] = useState()
   const [blogs, setBlogs] = useState([])
   const [blogUpdated, setBlogUpdated] = useState(false)
   const [curData, setCurData] = useState({})
@@ -43,15 +44,15 @@ const BlogPage = () => {
     }
   }, [blogUpdated, user]) 
 
-  // Get raw form or edit form pre-filled with user data
-  const getForm = () => {
+  // Update form type and data for edit vs add blog
+  useEffect(() => {
     if (amEditing) {
-      return <BlogForm setBlogUpdated={setBlogUpdated} blogData={curData} isEdit={true} setShowAddBlog={setShowAddBlog}/>
+      setFormType(<BlogForm setBlogUpdated={setBlogUpdated} blogData={curData} isEdit={true} setShowAddBlog={setShowAddBlog}/>)
     }
     else {
-      return <BlogForm setBlogUpdated={setBlogUpdated} setShowAddBlog={setShowAddBlog}/>
+      setFormType(<BlogForm setBlogUpdated={setBlogUpdated} setShowAddBlog={setShowAddBlog}/>)
     }
-  }
+  }, [curData, amEditing])
 
   return (
     <div style={{paddingTop:"20px"}}>
@@ -64,7 +65,7 @@ const BlogPage = () => {
         text={showAddBlog ? 'Close' : 'Add'}
       />
       {showAddBlog && 
-        getForm()
+        formType
       }
       <Blogs blogs={blogs} 
              setAmEditing={setAmEditing} 
