@@ -61,7 +61,7 @@ const BlogPage = () => {
     const keys = ["Newest", "Oldest", "Name A-Z", "Name Z-A", "Cuisine A-Z", "Cuisine Z-A", "Weakest", "Strongest"]
     const options = []
     for (let i = 0; i < keys.length; i++) {
-      options.push(<option key={keys[i]} onClick={() => {setSortKey(keys[i])}}>
+      options.push(<option key={keys[i]}>
                     {keys[i]}
                    </option>)
     }
@@ -82,9 +82,11 @@ const BlogPage = () => {
         formType
       }
       <div className="sortSelector">
-        <label style={{marginRight:"5px"}}>Sort Blogs</label>
-        <select list="sortKeys"
+        <label htmlFor="sortKeys" style={{marginRight:"5px"}}>Sort Blogs</label>
+        <select name="sortKeys"
                 className="sortKeySelector"
+                autoComplete="off"
+                onChange={(e) => setSortKey(e.target.value)}
         >
           {getSortKeys()}
         </select>
