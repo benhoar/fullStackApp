@@ -2,11 +2,12 @@ import Blog from './Blog'
 import { useState, useEffect } from 'react'
 import './blog.css'
 
-const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, setBlogUpdated, sortKey }) => {
+const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, setBlogUpdated, sortKey, blogIndex }) => {
    
-   const [toShow, setToShow] = useState([])
+    const [toShow, setToShow] = useState([])
+    const [visibleBlogs, setVisibleBlogs] = useState()
 
-   useEffect(() => {
+    useEffect(() => {
       const sortBlogs = () => {
         let toret = []
         switch (sortKey) {
@@ -39,17 +40,25 @@ const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, setBlogUpdated
       setToShow(sortBlogs())
     }, [sortKey, blogs])
 
+    useEffect(() => {
+      const cur = []
+      for (let i = blogIndex*15; i < (blogIndex*15)+15 && i < toShow.length; i++) {
+        const blog = toShow[i]
+        console.log(i, blogIndex)
+        cur.push(<Blog  key={blog._id + i} 
+                        blog={blog} 
+                        setAmEditing={setAmEditing}
+                        setShowAddBlog={setShowAddBlog}
+                        setCurData={setCurData}
+                        setBlogUpdated={setBlogUpdated}
+                />)
+      }
+      setVisibleBlogs(cur)
+    }, [blogIndex, toShow, setAmEditing, setBlogUpdated, setCurData, setShowAddBlog])
+
    return (
       <div className="blogs">
-         {toShow.map((blog, i) => (
-            <Blog  key={blog._id + i} 
-                   blog={blog} 
-                   setAmEditing={setAmEditing}
-                   setShowAddBlog={setShowAddBlog}
-                   setCurData={setCurData}
-                   setBlogUpdated={setBlogUpdated}
-            />
-         ))}
+         {visibleBlogs}
       </div>
    )
 }

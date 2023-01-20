@@ -3,6 +3,7 @@ import Blogs from '../../components/blog/Blogs'
 import './blogpage.css'
 import { useEffect, useState } from 'react'
 import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
+import { FaPizzaSlice } from 'react-icons/fa'
 import BlogForm from '../../components/blog/BlogForm'
 const axios = require('axios').default
 
@@ -15,6 +16,7 @@ const BlogPage = () => {
   const [curData, setCurData] = useState({})
   const [amEditing, setAmEditing] = useState(false)
   const [sortKey, setSortKey] = useState("Newest")
+  const [blogIndex, setBlogIndex] = useState(0)
   const { user } = useAuthContext()
 
   // Get Blogs
@@ -68,6 +70,13 @@ const BlogPage = () => {
     return options
   }
 
+  const pizzaClick = (direction) => {
+    let val = blogIndex + direction
+    val = Math.min(val, Math.ceil(blogs.length/15)-1)
+    val = Math.max(val, 0)
+    setBlogIndex(val)
+  }
+
   return (
     <div className="blogPage">
       <Header 
@@ -97,7 +106,13 @@ const BlogPage = () => {
              setCurData={setCurData}
              setBlogUpdated={setBlogUpdated}
              sortKey={sortKey}
+             blogIndex={blogIndex}
       />
+      <div className="pageSlider">
+        <FaPizzaSlice size={20} style={{transform:"rotate(45deg)", cursor:"pointer"}} onClick={() => pizzaClick(-1)}/>
+        <p>{blogIndex + 1}</p>
+        <FaPizzaSlice size={20} style={{transform:"rotate(225deg)", cursor:"pointer"}} onClick={() => pizzaClick(1)}/>
+      </div>
     </div>
   )
 }
