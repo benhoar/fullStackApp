@@ -129,7 +129,7 @@ const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog, setCurData
                type="text"
                defaultValue={isEdit ? blogData.highlight : ''}
                name="highlight"
-               placeholder="Input Highlight"
+               placeholder="Input Highlight (optional)"
                onChange={onChange}
                />
          </div>
@@ -149,7 +149,7 @@ const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog, setCurData
                type="number" 
                min="1" 
                max="10" 
-               placeholder="Rate Your Experience"
+               placeholder="10"
                defaultValue={isEdit ? blogData.rating : ''}
                name="rating"
                onChange={onChange}   
@@ -159,7 +159,7 @@ const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog, setCurData
             <label>Blog</label>
             <textarea 
                id=""
-               placeholder=""
+               placeholder="How'd it go?"
                defaultValue={isEdit ? blogData.blog : ''}
                name="blog"
                onChange={onChange}
