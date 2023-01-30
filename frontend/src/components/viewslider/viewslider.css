@@ -1,0 +1,15 @@
+.viewSlider {
+   cursor: pointer;
+   display: flex;
+   height: fit-content;
+   width: fit-content;
+   background-color: #1B3A20;
+   color: white;
+   border-radius: 8px;
+   margin-right: 20px;
+}
+
+.viewOption {
+   padding: 2px 4px;
+   border-radius: 8px;
+}

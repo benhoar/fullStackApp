@@ -79,7 +79,7 @@ const SideBar = ({ cuisineTypes, setSelected, selected, mapDispatch }) => {
                   text={"Find a Meal!"} 
                   style={st4}
                   onClick={() => randomDinner()}
-            />
+            />  
         </div>}
         {rater && <Rater cuisineTypes={cuisineTypes} setRater={setRater} setSelected={setSelected} selected={selected} mapDispatch={mapDispatch}/>}
         {sideBlog && <SideBlog onClick={() => {setSideBlog(false)}}/>}

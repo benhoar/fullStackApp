@@ -3,6 +3,15 @@ const asyncHandler = require('express-async-handler')
 const Cuisine = require('../models/cuisineModel')
 const User = require('../models/userModel')
 
+const getPublicData = asyncHandler(async (req, res) => {
+   const cuisines = await Cuisine.find({})
+   if (!cuisines) {
+      res.status(400)
+      throw new Error('No cuisines found')
+   }
+   res.status(200).json(cuisines)
+})
+
 // @desc get all Cuisines
 // @route GET /api/cuisines
 // CHECKED
@@ -181,6 +190,7 @@ const deleteBlog = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
+   getPublicData,
    getCuisines,
    postCuisine,
    updateCuisine,

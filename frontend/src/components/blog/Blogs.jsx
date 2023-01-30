@@ -44,7 +44,6 @@ const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, setBlogUpdated
       const cur = []
       for (let i = blogIndex*15; i < (blogIndex*15)+15 && i < toShow.length; i++) {
         const blog = toShow[i]
-        console.log(i, blogIndex)
         cur.push(<Blog  key={blog._id + i} 
                         blog={blog} 
                         setAmEditing={setAmEditing}

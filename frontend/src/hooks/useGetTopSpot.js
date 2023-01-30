@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from 'axios'
 
-export const useGetTopSpot = (topSpot, user) => {
+export const useGetTopSpot = (topSpot, user, publicView) => {
 
    const [topSpotInfo, setTopSpotInfo] = useState({})
 
@@ -19,10 +19,10 @@ export const useGetTopSpot = (topSpot, user) => {
             }
          )
       }
-      if (user && topSpot) {
+      if (user && topSpot && !publicView) {
          getTopSpotInfo(topSpot)
       }
-   }, [topSpot, user])
+   }, [topSpot, user, publicView])
 
    return { topSpotInfo }
 }

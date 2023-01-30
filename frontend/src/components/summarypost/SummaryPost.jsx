@@ -9,12 +9,12 @@ import { getPieData } from '../../scripts/getPieData'
 import { useGetTopSpot } from '../../hooks/useGetTopSpot'
 import { countries } from '../../staticdata/countries'
 
-const SummaryPost = ({ data, subcuisine, country, isSummary, hide  }) => {
+const SummaryPost = ({ data, subcuisine, country, isSummary, hide, publicView  }) => {
 
    const { ref } = useOutsideClick(hide);
    const { spotsVisited, scoreSum, topSpot, graphData, topSubCuisine } = getPieData(data)
    const { user } = useAuthContext()
-   const { topSpotInfo } = useGetTopSpot(topSpot, user)
+   const { topSpotInfo } = useGetTopSpot(topSpot, user, publicView)
 
    const averageScore = (scoreSum / spotsVisited).toFixed(2)
 
@@ -59,7 +59,7 @@ const SummaryPost = ({ data, subcuisine, country, isSummary, hide  }) => {
          <div className="postGraph">
             <Pie data={graphData} title={isSummary ? "Scores" : ""}/>
          </div>
-         <div className="postContent">
+         {!publicView && <div className="postContent">
             <div className="winnerName">
                {isSummary && <TbCrown size={30}/>}
                <h2>Top Spot</h2>
@@ -71,7 +71,7 @@ const SummaryPost = ({ data, subcuisine, country, isSummary, hide  }) => {
                <div><b>Highlight:</b> {topSpotInfo.highlight}
             </div>}
             <div><b>Rating:</b> {topSpotInfo.rating}</div>
-         </div>
+         </div>}
       </div>
       {!isSummary && country in countries && 
          getSubCuisines()
@@ -82,6 +82,7 @@ const SummaryPost = ({ data, subcuisine, country, isSummary, hide  }) => {
 
 SummaryPost.defaultProps = {
    isSummary: false,
+   publicView: false, 
    subcuisine: null,
    hide: () => {}
 }

@@ -6,10 +6,17 @@
 }
 
 .homeButtons {
-   height: calc(100vh - 118px);
+   height: calc(100vh - 150px);
    min-height: 600px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: space-around;
 }
 
+.sliderHolder {
+   margin-left: 16px;
+}
 
 .notFound {
    background-color: white;
@@ -36,4 +43,10 @@
    /* left: 30vw; */
    margin: 70px auto;
    width: min-content;
+}
+
+@media(max-width:960px) {
+   .sliderHolder {
+      display: none;
+   }
 }

@@ -23,9 +23,14 @@ const BlogPage = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try { // BELOW GET REQUEST VERIFIED
-        const res = await axios.get("/api/cuisines/", {
-          headers: { 'Authorization': `Bearer ${user.token}` }
-        })
+        let res = {}
+        if (user) {
+          res = await axios.get("/api/cuisines/", {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+          })
+        } else {
+          res = await axios.get("/api/cuisines/public")
+        }
         const allBlogs = []
         for (let i = 0; i < res.data.length; i++) {
           const cuisine = res.data[i]
@@ -42,10 +47,9 @@ const BlogPage = () => {
         console.log(err)
       }
     }
-    if (user) {
-      fetchBlogs()
-      setBlogUpdated(false)
-    }
+    fetchBlogs()
+    setBlogUpdated(false)
+    
   }, [blogUpdated, user]) 
 
   // Update form type and data for edit vs add blog
@@ -108,11 +112,11 @@ const BlogPage = () => {
              sortKey={sortKey}
              blogIndex={blogIndex}
       />
-      <div className="pageSlider">
+      {user && <div className="pageSlider">
         <FaPizzaSlice size={20} style={{transform:"rotate(45deg)", cursor:"pointer"}} onClick={() => pizzaClick(-1)}/>
         <p>{blogIndex + 1}</p>
         <FaPizzaSlice size={20} style={{transform:"rotate(225deg)", cursor:"pointer"}} onClick={() => pizzaClick(1)}/>
-      </div>
+      </div>}
     </div>
   )
 }
