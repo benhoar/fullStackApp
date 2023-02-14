@@ -77,7 +77,7 @@ const RegisterPage = () => {
            <label>Enter Secret</label>
            <input 
               type="password"
-              placeholder="Enter Secret"
+              placeholder="Email bbhoar@gmail.com for the secret!"
               value={secret}
               name='secret'
               onChange={onChange}

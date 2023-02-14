@@ -48,6 +48,8 @@ const BlogPage = () => {
     const fetchBlogs = async () => {
       try { 
         let res = {}
+        res = await axios.get("/api/cuisines/public")
+        storeBlogs(res, "public")
         if (user) {
           res = await axios.get("/api/cuisines/", {
             headers: { 'Authorization': `Bearer ${user.token}` }
@@ -55,8 +57,6 @@ const BlogPage = () => {
           storeBlogs(res, "private")
           setPublicView(false)
         }
-        res = await axios.get("/api/cuisines/public")
-        storeBlogs(res, "public")
       } catch (err) {
         console.log(err)
       }
@@ -109,7 +109,7 @@ const BlogPage = () => {
         formType
       }
       <div className="containSelectors">
-          <ViewSlider publicView={publicView} sliderClick={() => {setPublicView(!publicView)}}/>
+          <ViewSlider publicView={publicView} sliderClick={user ? () => {setPublicView(!publicView)} : () => {}}/>
           <label htmlFor="sortKeys" style={{marginRight:"5px"}}>Sort Blogs</label>
           <select name="sortKeys"
                   className="sortKeySelector"

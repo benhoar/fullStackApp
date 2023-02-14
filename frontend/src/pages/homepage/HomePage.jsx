@@ -114,7 +114,7 @@ const HomePage = () => {
   }, [user])
 
   useEffect(() => {
-    const getPopup = async () => {
+    const getPopup = () => {
       setIsLoading(true)
       let cuisines = [selected]
 
@@ -138,7 +138,7 @@ const HomePage = () => {
         setErrorMessage(`No ${t} Data Found!`)
       }
     }
-    if (user && selected.length !== 0 && popSource) {
+    if (selected.length !== 0 && popSource) {
       getPopup()
       setIsLoading(false)
     }
