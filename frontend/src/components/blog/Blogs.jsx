@@ -1,5 +1,5 @@
 import Blog from './Blog'
-import { useState, useEffect } from 'react'
+import { useState, useLayoutEffect, useEffect } from 'react'
 import './blog.css'
 
 const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, setBlogUpdated, sortKey, blogIndex }) => {
@@ -40,7 +40,7 @@ const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, setBlogUpdated
       setToShow(sortBlogs())
     }, [sortKey, blogs])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       const cur = []
       for (let i = blogIndex*15; i < (blogIndex*15)+15 && i < toShow.length; i++) {
         const blog = toShow[i]

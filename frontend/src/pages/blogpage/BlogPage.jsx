@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { FaPizzaSlice } from 'react-icons/fa'
 import BlogForm from '../../components/blog/BlogForm'
+import ViewSlider from '../../components/viewslider/ViewSlider'
 const axios = require('axios').default
 
 const BlogPage = () => {
@@ -12,44 +13,56 @@ const BlogPage = () => {
   const [showAddBlog, setShowAddBlog] = useState(false)
   const [formType, setFormType] = useState()
   const [blogs, setBlogs] = useState([])
+  const [publicBlogs, setPublicBlogs] = useState([])
   const [blogUpdated, setBlogUpdated] = useState(false)
   const [curData, setCurData] = useState({})
   const [amEditing, setAmEditing] = useState(false)
   const [sortKey, setSortKey] = useState("Newest")
   const [blogIndex, setBlogIndex] = useState(0)
   const { user } = useAuthContext()
+  const [publicView, setPublicView] = useState(true)
 
   // Get Blogs
   useEffect(() => {
+
+    const storeBlogs = (res, privacy) => {
+      const allBlogs = []
+      for (let i = 0; i < res.data.length; i++) {
+        const cuisine = res.data[i]
+        for (let j = 0; j < cuisine.blogs.length; j++) {
+          const blog = cuisine.blogs[j]
+          blog["cuisine"] = cuisine.cuisine
+          blog["cuisine_id"] = cuisine._id
+          blog["user_id"] = cuisine.user
+          allBlogs.push(blog)
+       }
+      }
+      allBlogs.sort((a, b) =>  b.date.replaceAll(/\D/g, '') - a.date.replaceAll(/\D/g, ''))
+      if (privacy === "public") {
+        setPublicBlogs(allBlogs)
+      } else {
+        setBlogs(allBlogs)
+      }
+    }
+    
     const fetchBlogs = async () => {
-      try { // BELOW GET REQUEST VERIFIED
+      try { 
         let res = {}
         if (user) {
           res = await axios.get("/api/cuisines/", {
             headers: { 'Authorization': `Bearer ${user.token}` }
           })
-        } else {
-          res = await axios.get("/api/cuisines/public")
+          storeBlogs(res, "private")
+          setPublicView(false)
         }
-        const allBlogs = []
-        for (let i = 0; i < res.data.length; i++) {
-          const cuisine = res.data[i]
-          for (let j = 0; j < cuisine.blogs.length; j++) {
-            const blog = cuisine.blogs[j]
-            blog["cuisine"] = cuisine.cuisine
-            blog["cuisine_id"] = cuisine._id
-            allBlogs.push(blog)
-         }
-        }
-        allBlogs.sort((a, b) =>  b.date.replaceAll(/\D/g, '') - a.date.replaceAll(/\D/g, ''))
-        setBlogs(allBlogs)
+        res = await axios.get("/api/cuisines/public")
+        storeBlogs(res, "public")
       } catch (err) {
         console.log(err)
       }
     }
     fetchBlogs()
     setBlogUpdated(false)
-    
   }, [blogUpdated, user]) 
 
   // Update form type and data for edit vs add blog
@@ -76,7 +89,8 @@ const BlogPage = () => {
 
   const pizzaClick = (direction) => {
     let val = blogIndex + direction
-    val = Math.min(val, Math.ceil(blogs.length/15)-1)
+    const numBlogs = publicView ? publicBlogs.length : blogs.length
+    val = Math.min(val, Math.ceil(numBlogs/15)-1)
     val = Math.max(val, 0)
     setBlogIndex(val)
   }
@@ -94,29 +108,42 @@ const BlogPage = () => {
       {showAddBlog && 
         formType
       }
-      <div className="sortSelector">
-        <label htmlFor="sortKeys" style={{marginRight:"5px"}}>Sort Blogs</label>
-        <select name="sortKeys"
-                className="sortKeySelector"
-                autoComplete="off"
-                onChange={(e) => setSortKey(e.target.value)}
-        >
-          {getSortKeys()}
-        </select>
+      <div className="containSelectors">
+          <ViewSlider publicView={publicView} sliderClick={() => {setPublicView(!publicView)}}/>
+          <label htmlFor="sortKeys" style={{marginRight:"5px"}}>Sort Blogs</label>
+          <select name="sortKeys"
+                  className="sortKeySelector"
+                  autoComplete="off"
+                  onChange={(e) => setSortKey(e.target.value)}
+          >
+            {getSortKeys()}
+          </select>
       </div>
-      <Blogs blogs={blogs} 
-             setAmEditing={setAmEditing} 
-             setShowAddBlog={setShowAddBlog} 
-             setCurData={setCurData}
-             setBlogUpdated={setBlogUpdated}
-             sortKey={sortKey}
-             blogIndex={blogIndex}
-      />
-      {user && <div className="pageSlider">
+      {!publicView &&
+        <Blogs blogs={blogs} 
+              setAmEditing={setAmEditing} 
+              setShowAddBlog={setShowAddBlog} 
+              setCurData={setCurData}
+              setBlogUpdated={setBlogUpdated}
+              sortKey={sortKey}
+              blogIndex={blogIndex}
+        />
+      }
+      {publicView &&
+        <Blogs blogs={publicBlogs} 
+              setAmEditing={setAmEditing} 
+              setShowAddBlog={setShowAddBlog} 
+              setCurData={setCurData}
+              setBlogUpdated={setBlogUpdated}
+              sortKey={sortKey}
+              blogIndex={blogIndex}
+        />
+      }
+      <div className="pageSlider">
         <FaPizzaSlice size={20} style={{transform:"rotate(45deg)", cursor:"pointer"}} onClick={() => pizzaClick(-1)}/>
         <p>{blogIndex + 1}</p>
         <FaPizzaSlice size={20} style={{transform:"rotate(225deg)", cursor:"pointer"}} onClick={() => pizzaClick(1)}/>
-      </div>}
+      </div>
     </div>
   )
 }

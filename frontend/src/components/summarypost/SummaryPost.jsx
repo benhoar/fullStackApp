@@ -1,13 +1,14 @@
 import './summarypost.css'
 import React from 'react'
 import Pie from '../../components/graph/Pie'
-import { TbCrown } from 'react-icons/tb'
 import { FaTimes } from 'react-icons/fa'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { getPieData } from '../../scripts/getPieData'
 import { useGetTopSpot } from '../../hooks/useGetTopSpot'
 import { countries } from '../../staticdata/countries'
+import PrivateInfo from './PrivateInfo'
+import PublicInfo from './PublicInfo'
 
 const SummaryPost = ({ data, subcuisine, country, isSummary, hide, publicView  }) => {
 
@@ -59,19 +60,8 @@ const SummaryPost = ({ data, subcuisine, country, isSummary, hide, publicView  }
          <div className="postGraph">
             <Pie data={graphData} title={isSummary ? "Scores" : ""}/>
          </div>
-         {!publicView && <div className="postContent">
-            <div className="winnerName">
-               {isSummary && <TbCrown size={30}/>}
-               <h2>Top Spot</h2>
-               <TbCrown size={30}/>
-            </div>
-            <div><b>Restaurant:</b> {topSpotInfo.restaurant}</div>
-            <div><b>Location:</b> {topSpotInfo.location}</div>
-            {"highlight" in topSpotInfo && topSpotInfo.highlight.length !== 0 &&
-               <div><b>Highlight:</b> {topSpotInfo.highlight}
-            </div>}
-            <div><b>Rating:</b> {topSpotInfo.rating}</div>
-         </div>}
+         {!publicView && <PrivateInfo data={topSpotInfo} isSummary={isSummary}/>}
+         {publicView && <PublicInfo data={data}/>}
       </div>
       {!isSummary && country in countries && 
          getSubCuisines()

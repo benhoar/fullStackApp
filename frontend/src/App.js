@@ -28,7 +28,7 @@ function App() {
               <Route element={<HeadAndFoot/>}>
                 <Route path='/' element={<HomePage />}/>
                 <Route path='/about' element={<About />}/>
-                <Route path='/blogs' element={<ProtectedRoute><BlogPage /></ProtectedRoute>}/>
+                <Route path='/blogs' element={<BlogPage />}/>
                 <Route path='/summary' element={<ProtectedRoute><SummaryPage /></ProtectedRoute>}/>
                 <Route path='/lostdiner' element={<NotFound />}/>
                 <Route path={'*'} element={<Navigate to="/lostdiner" replace />}/>

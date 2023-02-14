@@ -36,9 +36,8 @@ const NavBar = () => {
                   <h1 className="title">cuisine map</h1>
                </a>
                <ul className="listmenu">
-                  {user && <li><a href="/blogs">Blogs</a></li>}
-                  {user && <li><a href="/about">About</a></li>}
-                  {!user && <li><a href="/about">Learn More! – Email bbhoar@gmail.com to Register!</a></li>}
+                  <li><a href="/blogs">Blogs</a></li>
+                  <li><a href="/about">About</a></li>
                </ul>
             </div>
             {user &&

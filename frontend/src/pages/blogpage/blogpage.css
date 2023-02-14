@@ -7,7 +7,7 @@
    align-items: center;
 }
 
-.sortSelector {
+.containSelectors {
    display: flex;
    width: fit-content;
    align-self: flex-end;
@@ -21,6 +21,7 @@
    border: none;
    border-radius: 4px;
    padding: 2px 4px;
+   cursor: pointer;
 }
 
 .pageSlider {
