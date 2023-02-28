@@ -1,4 +1,4 @@
-import { countries } from '../staticdata/countries' 
+import countries from '../staticdata/countries' 
 
 const cuisines = new Set()
 for (const country in countries) {

@@ -1,24 +1,33 @@
-import SideBar from '../../components/sidebar/SideBar'
 import Map from '../../components/map/Map'
 import './homepage.css'
-import { useReducer, useState, useEffect } from 'react'
+import { useReducer, useState, useEffect, useMemo } from 'react'
 import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import SummaryPost from '../../components/summarypost/SummaryPost'
-import { countries } from '../../staticdata/countries'
+import staticCountries from '../../staticdata/countries'
 import ViewSlider from '../../components/viewslider/ViewSlider'
-const axios = require('axios').default
+import { useSelectedContext } from '../../context/SelectedContext'
+import { useVisibility } from '../../context/VisibilityContext'
+import { useData } from '../../context/DataContext'
+import { Buttons } from '../../components/buttons/Buttons'
+import useCuisineTranslator from '../../hooks/useCuisineTranslator'
+import useWindowWidth from '../../hooks/useWindowWidth'
+import BlogForm from '../../components/blog/BlogForm'
+import { FaTimes } from 'react-icons/fa'
 
 const HomePage = () => {
 
+  const { selected, setSelected } = useSelectedContext()
+  const { publicView, togglePublicView } = useVisibility()
+  const { privateData, publicData } = useData()
   const { user } = useAuthContext()
+  const [errorMessage, setErrorMessage] = useState("")
+  const [popData, setPopData] = useState([])
+  const [hidepop, setHidepop] = useState(true)
+  const [sideBlog, setSideBlog] = useState(false)
+  const { cuisineToCountry } = useCuisineTranslator()
+  const { innerWidth } = useWindowWidth()
 
-  const cuisineToCountry = {}
-  for (const country in countries) {
-    const cur = countries[country]
-    for (let i = 0; i < cur.cuisines.length; i++) {
-      cuisineToCountry[cur.cuisines[i]] = country
-    }
-  }
+  const countries = useMemo(() => { return staticCountries }, [])
 
   const mapReducer = (state, directions) => {
     switch (directions.type) {
@@ -32,120 +41,50 @@ const HomePage = () => {
         return state
     }
   }
+
+  const [mapState, mapDispatch] = useReducer(mapReducer, staticCountries)
   
-  const [mapState, mapDispatch] = useReducer(mapReducer, countries)
-
-  const [selected, setSelected] = useState("")
-  const [errorMessage, setErrorMessage] = useState("")
-  const [popData, setPopData] = useState([])
-  const [hidepop, setHidepop] = useState(true)
-  const [publicDataSource, setPublicDataSource] = useState({})
-  const [userDataSource, setUserDataSource] = useState({})
-  const [popSource, setPopSource] = useState({})
-  const [isLoading, setIsLoading] = useState(false)
-  const [publicView, setPublicView] = useState(true)
-
   useEffect(() => {
-
-    const merge = (hostEntry, newEntry) => {
-      hostEntry.topSpotScore = newEntry.topSpotScore > hostEntry.topSpotScore ? newEntry.topSpotScore : hostEntry.topSpotScore
-      hostEntry.topSpot = newEntry.topSpotScore > hostEntry.topSpotScore ? newEntry.topSpot : hostEntry.topSpot
-      if (newEntry.topSpotScore > hostEntry.topSpotScore) {
-        let location = ""
-        for (let i = 0; i < newEntry.blogs; i++) {
-          if (newEntry.blogs[i].restaurant === newEntry.topSpot) {
-            location = newEntry.blogs[i].location
-          }
+    function getPopData(source) {
+      if (selected.length !== 0) {
+        let cuisines = [selected]
+        if (selected in countries) {
+          cuisines = countries[selected].cuisines
         }
-        hostEntry.location = location
-      }
-      hostEntry.spotsVisited += newEntry.spotsVisited
-      hostEntry.scoreSum += newEntry.scoreSum
-      for (const score in newEntry.allScores) {
-        if (!(score in hostEntry.allScores)) {
-          hostEntry.allScores[score] = 0
+        const dataObject = {
+          spotsVisited: 0,
+          allScores: {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0}
         }
-        hostEntry.allScores[score] += newEntry.allScores[score]
-      }
-      hostEntry.blogs.push(...newEntry.blogs)
-    }
-
-    const populateData = async () => {
-      try {
-        const res = await axios.get("/api/cuisines/public/")
-        let blogsFromCuisine = {}
-        res.data.forEach((datum) => {
-          if (!(datum.cuisine in blogsFromCuisine)) {
-            blogsFromCuisine[datum.cuisine] = datum
-            let location = ""
-            for (let i = 0; i < datum.blogs; i++) {
-              if (datum.blogs[i].restaurant === datum.topSpot) {
-                location = datum.blogs[i].location
-              }
+        const blogs = []
+        let scoreSum = 0
+        cuisines.forEach(cuisine => {
+          if (cuisine in source) {
+            const cuisineData = source[cuisine]
+            dataObject.spotsVisited += cuisineData.spotsVisited
+            for (const score in cuisineData.allScores) {
+              dataObject.allScores[score] += cuisineData.allScores[score]
+              scoreSum += cuisineData.allScores[score]*score
             }
-            blogsFromCuisine["location"] = location
-          } else {
-            merge(blogsFromCuisine[datum.cuisine], datum)
+            blogs.push(...cuisineData.blogs)
           }
         })
-        setPopSource(blogsFromCuisine)
-        setPublicDataSource(blogsFromCuisine)
-      } catch {
-        console.log("something went wrong getting public data")
-      }
-      if (user) {
-        setPublicView(false)
-        try {
-          const res = await axios.get("/api/cuisines/", {
-            headers: { 'Authorization': `Bearer ${user.token}` }
-          })
-          let blogsFromCuisine = {}
-          res.data.forEach((datum) => {
-            blogsFromCuisine[datum.cuisine] = datum
-          })
-          setPopSource(blogsFromCuisine)
-          setUserDataSource(blogsFromCuisine)
-        } catch {
-          console.log("something went wrong")
-        }
-      } 
-    }
-    populateData()
-  }, [user])
-
-  useEffect(() => {
-    const getPopup = () => {
-      setIsLoading(true)
-      let cuisines = [selected]
-
-      if (selected in countries) {
-        cuisines = countries[selected].cuisines
-      }
-
-      const data = []
-      for (let i = 0; i < cuisines.length; i++) {
-        const cur = cuisines[i]
-        if (cur in popSource) {
-          data.push(popSource[cur])
+        if (blogs.length === 0) {
+          setErrorMessage(`No ${selected} Data Found!`)
+        } else {
+          blogs.sort((a, b) => b.rating - a.rating)
+          dataObject.averageScore = (scoreSum / dataObject.spotsVisited).toFixed(2)
+          dataObject.blogs = blogs
+          dataObject.subcuisines = cuisines
+          setPopData(dataObject)
+          setHidepop(false)
         }
       }
+    }
 
-      if (data.length !== 0) {
-        setPopData(data)
-        setHidepop(false)
-      } else {
-        const t = selected
-        setErrorMessage(`No ${t} Data Found!`)
-      }
-    }
-    if (selected.length !== 0 && popSource) {
-      getPopup()
-      setIsLoading(false)
-    }
-    // if (!user && selected.length !== 0) {
-    //   setErrorMessage(`No ${selected} Data Found!`)
-    // }
-  }, [user, selected, mapState, popSource])
+    const source = publicView ? publicData : privateData
+    getPopData(source)
+
+  }, [selected, countries, privateData, publicData, publicView, innerWidth])
 
   const hide = () => {
     setHidepop(true)
@@ -163,50 +102,60 @@ const HomePage = () => {
       setErrorMessage("No user data!")
       return
     }
-    if (publicView) {
-      setPublicView(false)
-      setPopSource(userDataSource)
-    } else {
-      setPublicView(true)
-      setPopSource(publicDataSource)
-    }
+    togglePublicView()
   }
 
   return (
-    <div className="hero">
-      <div style={{zIndex:'98'}} className="homeButtons">
-        <SideBar setSelected={setSelected} 
-                 cuisineTypes={cuisineToCountry} 
-                 selected={selected}
-                 mapDispatch={mapDispatch}
-                 sliderClick={sliderClick}
-                 publicView={publicView}
-        />
-        <div className='sliderHolder'>
-          <ViewSlider sliderClick={sliderClick} publicView={publicView}/>
-        </div>
-      </div>
-      <div style={{zIndex:'99'}} className="homeMap">
-        <Map mapState={mapState} 
-            mapDispatch={mapDispatch} 
-            setSelected={setSelected}
-            hide={hide}/>
-      </div>
-      {!hidepop && !isLoading &&
-        <div className="containSummary">
-          <div className="summaryPop">
-            <SummaryPost data={popData} country={selected} hide={hide} publicView={publicView}/>
+      <div className="hero">
+        <div className="smallWindowButtonsContainer">
+          <div className="smallWindowButtons">
+            <Buttons cuisineTypes={cuisineToCountry} 
+                    mapDispatch={mapDispatch}
+                    errorMessage={errorMessage}
+                    setSideBlog={setSideBlog}
+            />
           </div>
         </div>
-      }
-      {errorMessage && 
-        <div className="containSummary">
-          <div className="notFound">
-            {errorMessage}
+        <div className="homeButtons">
+          <Buttons cuisineTypes={cuisineToCountry} 
+                  mapDispatch={mapDispatch}
+                  errorMessage={errorMessage}
+                  setSideBlog={setSideBlog}
+          />
+          <div className='sliderHolder'>
+            <ViewSlider sliderClick={sliderClick}/>
           </div>
         </div>
-      }
-    </div>
+        <div className="homeMap">
+          <Map mapState={mapState} 
+              mapDispatch={mapDispatch} 
+              hide={hide}/>
+        </div>
+        {!hidepop &&
+          <div className="containSummary">
+            <div className="summaryPop">
+              <SummaryPost data={popData} hide={hide}/>
+            </div>
+          </div>
+        }
+        {sideBlog &&
+          <div className="home-blog-positioner">
+            <div className="home-blog">
+                <div className="close-blog" onClick={() => {setSideBlog(prevState => !prevState)}}>
+                  <FaTimes />
+                </div>
+                <BlogForm onClick={() => {setSideBlog(prevState => !prevState)}}/>
+            </div>
+          </div>
+        }
+        {errorMessage && 
+          <div className={innerWidth <= 960 ? "containError" : "containSummary"}>
+            <div className="notFound">
+              {errorMessage}
+            </div>
+          </div>
+        }
+      </div>
   )
 }
 

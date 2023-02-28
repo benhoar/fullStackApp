@@ -2,10 +2,10 @@ import Blog from './Blog'
 import { useState, useLayoutEffect, useEffect } from 'react'
 import './blog.css'
 
-const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, setBlogUpdated, sortKey, blogIndex }) => {
+const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, sortKey, blogIndex }) => {
    
     const [toShow, setToShow] = useState([])
-    const [visibleBlogs, setVisibleBlogs] = useState()
+    const [visibleBlogs, setVisibleBlogs] = useState([])
 
     useEffect(() => {
       const sortBlogs = () => {
@@ -49,11 +49,10 @@ const Blogs = ({ blogs, setAmEditing, setShowAddBlog, setCurData, setBlogUpdated
                         setAmEditing={setAmEditing}
                         setShowAddBlog={setShowAddBlog}
                         setCurData={setCurData}
-                        setBlogUpdated={setBlogUpdated}
                 />)
       }
       setVisibleBlogs(cur)
-    }, [blogIndex, toShow, setAmEditing, setBlogUpdated, setCurData, setShowAddBlog])
+    }, [blogIndex, toShow, setAmEditing, setCurData, setShowAddBlog])
 
    return (
       <div className="blogs">

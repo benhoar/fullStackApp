@@ -1,7 +1,8 @@
-import React from 'react'
+import { useVisibility } from '../../context/VisibilityContext'
 import './viewslider.css'
 
-const ViewSlider = ({sliderClick, publicView}) => {
+const ViewSlider = ({sliderClick}) => {
+  const { publicView } = useVisibility()
   return (
    <div className="viewSliderHolder">
       <div className="viewSlider" onClick={() => sliderClick()}>

@@ -1,7 +1,10 @@
 import './marker.css'
 import useOutsideClick from '../../../hooks/useOutsideClick'
+import { useSelectedContext } from '../../../context/SelectedContext'
 
-const Marker = ({ country, mapState, mapDispatch, setSelected, hide }) => {
+const Marker = ({ country, mapState, mapDispatch, hide }) => {
+  const { setSelected } = useSelectedContext()
+
   const { ref } = useOutsideClick(hide);
   return (
     <div ref={ref} className="markerWrap" style={{position:"absolute", top: country[1].mapPos[0], left: country[1].mapPos[1]}} >
@@ -11,7 +14,6 @@ const Marker = ({ country, mapState, mapDispatch, setSelected, hide }) => {
           onClick={() => {
               mapDispatch({ type: "SET VISIBILITY", country: country[0], visible: true })
               setSelected(country[0])
-
           }}>
         <div className="circle"></div>
       </div>

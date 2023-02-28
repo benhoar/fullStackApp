@@ -9,10 +9,10 @@
 
 .containSelectors {
    display: flex;
-   width: fit-content;
-   align-self: flex-end;
+   width: 100%;
+   justify-content: space-between;
    font-weight: bold;
-   margin-right: 10px;
+   padding: 10px;
 }
 
 .sortKeySelector {

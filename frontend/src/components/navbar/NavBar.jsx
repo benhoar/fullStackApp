@@ -38,6 +38,7 @@ const NavBar = () => {
                <ul className="listmenu">
                   <li><a href="/blogs">Blogs</a></li>
                   <li><a href="/about">About</a></li>
+                  {!user && <li><a href="/summary">Dashboard</a></li>}
                </ul>
             </div>
             {user &&

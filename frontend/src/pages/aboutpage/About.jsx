@@ -1,6 +1,7 @@
 import './about.css'
 
 const About = () => {
+
   return (
     <div className="aboutPost">
       <h1 style={{alignSelf:"flex-start"}}>About Cuisine Map</h1>

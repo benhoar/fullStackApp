@@ -3,13 +3,15 @@ const asyncHandler = require('express-async-handler')
 const Cuisine = require('../models/cuisineModel')
 const User = require('../models/userModel')
 
+// desc get public data
+// @rout GET /api/cuisines/public 
 const getPublicData = asyncHandler(async (req, res) => {
-   const cuisines = await Cuisine.find({})
-   if (!cuisines) {
+   // publicDataMiddleware called!
+   if (!res.filtered_cuisines) {
       res.status(400)
       throw new Error('No cuisines found')
    }
-   res.status(200).json(cuisines)
+   res.status(200).json(res.filtered_cuisines)
 })
 
 // @desc get all Cuisines
@@ -17,7 +19,6 @@ const getPublicData = asyncHandler(async (req, res) => {
 // CHECKED
 const getCuisines = asyncHandler(async (req, res) => {
    const cuisines = await Cuisine.find({ user: req.user.id })
-
    if (!cuisines) {
       res.status(400)
       throw new Error('No cuisines found for user')
@@ -169,7 +170,6 @@ const deleteCuisine = asyncHandler(async (req, res) => {
 })
 
 // delete a blog
-// DEFINITELY WILL NOT WORK AS IS
 const deleteBlog = asyncHandler(async (req, res) => {
    await Cuisine.findOne({ user:req.user.id, _id:req.params.cuisine_id })
       .then((cuisine) => {

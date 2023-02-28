@@ -1,0 +1,124 @@
+.hover-button {
+  position: relative;
+  width: 100%; /* adjust this value based on your image width */
+  height: 110px; /* adjust this value based on your image height */
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.button-img-container {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: fit-content;
+  width: 100%;
+}
+
+.button-image {
+  height: 100px;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.slide-out {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.button-container {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.slide-button {
+  opacity: 0;
+  width: fit-content; /* adjust this value based on your button width */
+  padding: 10px 5px 10px 5px;
+  height: fit-content;
+  background-color: lightgray;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in;
+  transform: translateX(100%);
+  border: none;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: 24px;
+  color: #E4DEAE;
+  cursor: pointer;
+  word-wrap: none;
+  white-space: nowrap;
+}
+
+.slide-in {
+  transform: translateX(0);
+}
+
+.hover-button:hover .button-image {
+  opacity: 0;
+}
+
+.hover-button:hover .slide-button {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+
+@media(max-width: 960px) {
+  .hover-button {
+    margin: 0;
+    padding: 0;
+    height: min-content;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-right: solid 2px white;
+  }
+  .hover-button:last-child {
+    border: none
+  }
+  .button-img-container {
+    display: none;
+    position: relative;
+    width: min-content;
+    margin-left: 30px;
+  }
+  .button-container {
+    position: relative;
+    justify-content: flex-start;
+    min-width: fit-content;
+  }
+  .slide-button {
+    opacity: 1;
+    transform: translateX(0%);
+    font-size: 16px;
+    width: 100%;
+    color: white;
+    font-weight: bold;
+  }
+  .slide-button:hover {
+    color: #7AC252;
+  }
+  .slide-out {
+    display: none;
+    transform: none;
+  }
+  .button-image {
+    display: none;
+    height: 30px;
+  }
+  .hover-button:hover .button-image {
+    opacity: 1;
+  }
+}
+
+@media(max-width: 600px) {
+  .slide-button {
+    font-size: 12px;
+    font-weight: normal;
+  }
+}

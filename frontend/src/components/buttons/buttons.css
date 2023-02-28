@@ -1,0 +1,26 @@
+.sidebar-buttons-container {
+   height: 95%;
+   width: 180px;
+   z-index: 102;
+}
+
+.sidebar-buttons {
+   height: 100%;
+   min-height: fit-content;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-around;
+}
+
+
+@media(max-width: 960px) {
+   .sidebar-buttons {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-between;
+   }
+   .sidebar-buttons-container {
+      width: 100%;
+      height: min-content
+   }
+}

@@ -8,6 +8,9 @@ import EditProfile from './pages/landingpages/EditProfile'
 import NotFound from './pages/errorpages/NotFound'
 import { HeadAndFoot } from './layout/HeadAndFoot'
 import { ProtectedRoute } from './scripts/routprotecter'
+import { SelectedProvider } from './context/SelectedContext'
+import { VisibilityProvider } from './context/VisibilityContext'
+import { DataProvider } from './context/DataContext'
 
 import { 
         BrowserRouter as Router,
@@ -19,23 +22,41 @@ import {
 function App() {
 
   return (
-    <div>
-        <Router>
+      <div>
+        <VisibilityProvider>
+          <Router>
             <Routes>
               <Route path='/login' element={<LoginPage />} />
               <Route path='/register' element={<RegisterPage />} />
               <Route path='/profile' element={<ProtectedRoute><EditProfile /></ProtectedRoute>}/>
               <Route element={<HeadAndFoot/>}>
-                <Route path='/' element={<HomePage />}/>
-                <Route path='/about' element={<About />}/>
-                <Route path='/blogs' element={<BlogPage />}/>
-                <Route path='/summary' element={<ProtectedRoute><SummaryPage /></ProtectedRoute>}/>
+                <Route path='/' element={
+                  <DataProvider>
+                      <SelectedProvider>
+                          <HomePage />
+                      </SelectedProvider>
+                  </DataProvider>
+                }/>
+                <Route path='/about' element={<SelectedProvider><About /></SelectedProvider>}/>
+                <Route path='/blogs' element={
+                  <DataProvider>
+                    <BlogPage />
+                  </DataProvider>
+                }/>
+                <Route path='/summary' element={
+                    <DataProvider>
+                      <SelectedProvider>
+                        <SummaryPage />
+                      </SelectedProvider>
+                    </DataProvider>
+                }/>
                 <Route path='/lostdiner' element={<NotFound />}/>
                 <Route path={'*'} element={<Navigate to="/lostdiner" replace />}/>
               </Route>
             </Routes>
           </Router>
-        </div>
+        </VisibilityProvider>
+      </div>
   );
 }
 

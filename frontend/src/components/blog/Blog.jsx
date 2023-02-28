@@ -4,7 +4,7 @@ import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { deleteBlog } from '../../scripts/blogScripts/deleteBlog'
 import { updateBlogDependants } from '../../scripts/blogScripts/updateBlogDependants'
 
-const Blog = ({ blog, setCurData, setAmEditing, setShowAddBlog, setBlogUpdated }) => {
+const Blog = ({ blog, setCurData, setAmEditing, setShowAddBlog }) => {
 
   const { user } = useAuthContext()
   return (
@@ -28,7 +28,6 @@ const Blog = ({ blog, setCurData, setAmEditing, setShowAddBlog, setBlogUpdated }
                     onClick={async () => { 
                         await deleteBlog(blog.cuisine_id, blog.restaurant, user)
                         await updateBlogDependants(blog.cuisine, blog.cuisine_id, user) 
-                        setBlogUpdated(true)
                     }}
             />
           </div>

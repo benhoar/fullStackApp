@@ -1,27 +1,14 @@
 import { TbCrown, TbStar } from 'react-icons/tb'
 import './cuisinesummary.css'
 
-const CuisineSummary = ({ cuisine }) => {
-  
-
-   const getTopSpot = () => {
-      let topSpot = null
-      cuisine.blogs.forEach((b) => {
-        if (!topSpot || b.rating > topSpot.rating) {
-          topSpot = b
-        }
-      })
-      let av = (cuisine.scoreSum / cuisine.blogs.length).toFixed(2)
-      return { topSpot, av }
-   }
-
-   const { topSpot, av } = getTopSpot()
-
+const CuisineSummary = ({ data }) => {
+   const topSpot = data.blogs[0]
+   const av = (data.scoreSum / data.spotsVisited).toFixed(2)
    return (
    <div style={{marginTop:"20px"}} className="cuisineSummary">
       <div className="cuisineGeneral">
-         <div className="cuisineName">{cuisine.cuisine}</div>
-         <p>Spots Visited: {cuisine.spotsVisited}</p>
+         <div className="cuisineName">{data.cuisine}</div>
+         <p>Spots Visited: {data.spotsVisited}</p>
       </div>
       <div className="cuisineWinner">
          <div>

@@ -8,6 +8,13 @@
 
 .map {
    margin-top: 10px;
-   height: calc(100vh - 130px);
    min-height: 600px;
+   height: calc(100vh - 130px);
+   z-index: 1;
+}
+
+@media(max-width: 960px) {
+   .map {
+      height: calc(100vh - 166px);
+   }
 }

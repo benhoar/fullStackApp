@@ -1,7 +1,7 @@
 import './countrylist.css'
 import { FaTimes } from 'react-icons/fa'
 
-const CountryList = ({ setRater, setSelected, cuisineTypes, selected, mapDispatch }) => {
+const CountryList = ({ setRater, setSelected, cuisineTypes, selected, mapDispatch, errorMessage }) => {
 
    const getList = () => {
     const items = []
@@ -10,7 +10,7 @@ const CountryList = ({ setRater, setSelected, cuisineTypes, selected, mapDispatc
         const cuisine = sortedTypes[i]
         items.push(<li key={cuisine}
                        onClick={() => {setSelected(cuisine); mapDispatch({ type: "SET VISIBILITY", country: cuisineTypes[cuisine], visible: true})}}
-                       className={selected === cuisine ? "selectedItem" : "countryItem"}
+                       className={selected === cuisine ? (errorMessage ? "countryItem errorItem" :  "countryItem selectedItem") : "countryItem"}
                    >{cuisine}</li>)
     }
     return items

@@ -3,34 +3,31 @@ import React from 'react'
 import Pie from '../../components/graph/Pie'
 import { FaTimes } from 'react-icons/fa'
 import useOutsideClick from '../../hooks/useOutsideClick'
-import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
-import { getPieData } from '../../scripts/getPieData'
-import { useGetTopSpot } from '../../hooks/useGetTopSpot'
-import { countries } from '../../staticdata/countries'
+import countries from '../../staticdata/countries'
 import PrivateInfo from './PrivateInfo'
 import PublicInfo from './PublicInfo'
+import { useVisibility } from '../../context/VisibilityContext'
+import { useSelectedContext } from '../../context/SelectedContext'
 
-const SummaryPost = ({ data, subcuisine, country, isSummary, hide, publicView  }) => {
-
-   const { ref } = useOutsideClick(hide);
-   const { spotsVisited, scoreSum, topSpot, graphData, topSubCuisine } = getPieData(data)
-   const { user } = useAuthContext()
-   const { topSpotInfo } = useGetTopSpot(topSpot, user, publicView)
-
-   const averageScore = (scoreSum / spotsVisited).toFixed(2)
+const SummaryPost = ({ data, isSummary, hide  }) => {
+   const { publicView } = useVisibility()
+   const { selected } = useSelectedContext()
+   const { ref } = useOutsideClick(hide)
+   const { spotsVisited, averageScore, blogs, allScores } = data
+   const topSpot = blogs[0]
+   //console.log(topSpot)
+   const graphData = new Array(10).fill(0)
+   for (let i = 0; i < 10; i++) {
+      graphData[i] = allScores[i+1]
+   }
 
    const getSubCuisines = () => {
       let cuisines = ""
-      if (country in countries) {
-         if (countries[country].cuisines.length === 1) {
-            return
-         }
-         for (let i = 0; i < countries[country].cuisines.length; i++) {
-            const cuis = countries[country].cuisines[i]
-            cuisines += cuis
-            if (i !== countries[country].cuisines.length - 1) {
-               cuisines += ", "
-            }
+      for (let i = 0; i < data.subcuisines.length; i++) {
+         const cuis = data.subcuisines[i]
+         cuisines += cuis
+         if (i !== data.subcuisines.length - 1) {
+            cuisines += ", "
          }
       }
       return (
@@ -53,17 +50,17 @@ const SummaryPost = ({ data, subcuisine, country, isSummary, hide, publicView  }
          }
          <div className="cuisineDetails">
             {(isSummary) && <h5 style={{alignSelf:"flex-start"}}>Top Cuisine...</h5>}
-            {isSummary ? <h1>{topSubCuisine[0]}</h1> : <h1>{subcuisine ? subcuisine : country}</h1>}   
+            {isSummary ? <h1>{data.winner}</h1> : <h1>{selected}</h1>}
             <div><b>{isSummary && "Total "}Spots Visited:</b> {spotsVisited}</div>
             <div><b>{isSummary && "Global "}Average Score:</b> {averageScore}</div>
          </div>
          <div className="postGraph">
             <Pie data={graphData} title={isSummary ? "Scores" : ""}/>
          </div>
-         {!publicView && <PrivateInfo data={topSpotInfo} isSummary={isSummary}/>}
+         {!publicView && <PrivateInfo data={topSpot} isSummary={isSummary}/>}
          {publicView && <PublicInfo data={data}/>}
       </div>
-      {!isSummary && country in countries && 
+      {!isSummary && selected in countries && 
          getSubCuisines()
       }
    </div>
@@ -73,7 +70,6 @@ const SummaryPost = ({ data, subcuisine, country, isSummary, hide, publicView  }
 SummaryPost.defaultProps = {
    isSummary: false,
    publicView: false, 
-   subcuisine: null,
    hide: () => {}
 }
 

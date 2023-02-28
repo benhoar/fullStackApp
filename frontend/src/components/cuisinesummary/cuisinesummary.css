@@ -1,7 +1,7 @@
 .cuisineSummary {
    width: 100%;
    min-width: fit-content;
-   background-color: rgba(175, 180, 211, 0.1);
+   background-color: rgba(175, 180, 211, 0.15);
    border-radius: 8px;
    display: flex;
    align-items: center;
@@ -26,7 +26,7 @@
 }
 
 .cuisineScore {
-   background-color:rgba(175, 180, 211, 0.2);
+   background-color:rgba(175, 180, 211, 0.25);
    color:#7AC252;
    border-radius: 8px;
    padding: 16px;
@@ -37,7 +37,7 @@
 }
 
 @media(max-width: 690px) {
-   .cuisieSummary {
+   .cuisineSummary {
       padding: 4px 10px 4px 10px;
    }
    .cuisineName {
