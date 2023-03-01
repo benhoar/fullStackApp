@@ -52,8 +52,8 @@
 }
 
 .containError {
-   position: absolute;
-   bottom: 2%;
+   position: fixed;
+   bottom: 7%;
    left: 2%;
 }
 
