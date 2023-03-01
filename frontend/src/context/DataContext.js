@@ -15,6 +15,7 @@ export const DataProvider = ({ children }) => {
    // they can, which results in many re-renders in context consumers
    const [publicData, setPublicData] = useState({})
    const [privateData, setPrivateData] = useState({})
+   const [dataUpdated, setDataUpdated] = useState(false)
    const { user } = useAuthContext()
 
    const merge = useCallback((host, guest) => {
@@ -48,7 +49,7 @@ export const DataProvider = ({ children }) => {
       if (user) {
          getPrivateData()
       }
-   }, [user])
+   }, [user, dataUpdated])
 
    // get public data
    useEffect(() => {
@@ -85,7 +86,7 @@ export const DataProvider = ({ children }) => {
    }, [merge, user])
  
    return (
-      <DataContext.Provider value={{privateData, publicData}}>
+      <DataContext.Provider value={{privateData, publicData, setDataUpdated}}>
             { children }
       </DataContext.Provider>
    )

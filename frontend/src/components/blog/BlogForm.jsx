@@ -5,10 +5,12 @@ import { deleteBlog } from '../../scripts/blogScripts/deleteBlog'
 import { updateBlogDependants } from '../../scripts/blogScripts/updateBlogDependants'
 import { getOptions, cuisines } from '../../scripts/getOptions'
 import { useNavigate } from 'react-router-dom'
+import { useData } from '../../context/DataContext'
 import './blog.css'
 
-const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog, setCurData }) => {
+const BlogForm = ({ blogData, isEdit, setShowAddBlog, setCurData }) => {
    const { user } = useAuthContext()
+   const { setDataUpdated } = useData()
    const [formData, setFormData] = useState() //should be updated local blogData
    const [isLoading, setIsLoading] = useState(false)
    const [errorMessage, setErrorMessage] = useState("")
@@ -52,12 +54,12 @@ const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog, setCurData
             if (res !== "SUCCESS") {
                setErrorMessage(res)
                setIsLoading(false)
+               setDataUpdated(prevState => !prevState)
                return
             }
             break 
 
          case 'BLOG EDIT':
-            console.log(formData, blogData)
             res = await deleteBlog(blogData.cuisine_id, blogData.restaurant, user)
             if (res !== "SUCCESS") {
                setErrorMessage(res)
@@ -78,15 +80,13 @@ const BlogForm = ({ blogData, isEdit, setBlogUpdated, setShowAddBlog, setCurData
                setIsLoading(false)
                return
             }
-
             break
          default:
             setErrorMessage('Unknown Blog Error')
       }
-
+      setDataUpdated(prevState => !prevState)
       setIsLoading(false)
       setFormData(BlogForm.defaultProps.blogData)
-      setBlogUpdated(true)
       setShowAddBlog(false)
       setCurData(formData)
    }

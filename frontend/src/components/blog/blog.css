@@ -96,7 +96,7 @@
 .add-form {
   width: 100%;
   margin: 0px auto;
-  padding: 10px 0;
+  padding: 10px 2px;
   max-height: fit-content;
   overflow-y: scroll;
 }

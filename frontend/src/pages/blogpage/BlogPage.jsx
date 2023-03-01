@@ -51,12 +51,7 @@ const BlogPage = () => {
 
   // Update form type and data for edit vs add blog
   useEffect(() => {
-    if (amEditing) {
-      setFormType(<BlogForm blogData={curData} isEdit={true} setShowAddBlog={setShowAddBlog} setCurData={setCurData}/>)
-    }
-    else {
-      setFormType(<BlogForm setShowAddBlog={setShowAddBlog}/>)
-    }
+    setFormType(<BlogForm blogData={curData} isEdit={amEditing} setShowAddBlog={setShowAddBlog} setCurData={setCurData}/>)
   }, [curData, amEditing])
 
   useEffect(() => {
@@ -82,6 +77,10 @@ const BlogPage = () => {
     val = Math.max(val, 0)
     setBlogIndex(val)
   }
+
+  useEffect(() => {
+    setBlogIndex(0)
+  }, [sortKey])
 
   return (
     <div className="blogPage">

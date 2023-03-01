@@ -3,10 +3,13 @@ import './blog.css'
 import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { deleteBlog } from '../../scripts/blogScripts/deleteBlog'
 import { updateBlogDependants } from '../../scripts/blogScripts/updateBlogDependants'
+import { useData } from '../../context/DataContext'
 
 const Blog = ({ blog, setCurData, setAmEditing, setShowAddBlog }) => {
 
   const { user } = useAuthContext()
+  const { setDataUpdated } = useData()
+
   return (
     <div className="blog">
       <div className="restaurant">
@@ -28,6 +31,7 @@ const Blog = ({ blog, setCurData, setAmEditing, setShowAddBlog }) => {
                     onClick={async () => { 
                         await deleteBlog(blog.cuisine_id, blog.restaurant, user)
                         await updateBlogDependants(blog.cuisine, blog.cuisine_id, user) 
+                        setDataUpdated(prevState => !prevState)
                     }}
             />
           </div>

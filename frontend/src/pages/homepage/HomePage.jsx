@@ -144,7 +144,9 @@ const HomePage = () => {
                 <div className="close-blog" onClick={() => {setSideBlog(prevState => !prevState)}}>
                   <FaTimes />
                 </div>
-                <BlogForm onClick={() => {setSideBlog(prevState => !prevState)}}/>
+                <BlogForm 
+                  setShowAddBlog={setSideBlog}
+                />
             </div>
           </div>
         }

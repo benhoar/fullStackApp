@@ -81,7 +81,7 @@ const SummaryPage = () => {
     <div className="summaryWrapper">
         <div className="tableWrapper">
           <div className="preTable">
-            {publicView ? publicSummary : privateSummary}
+            {publicView ? publicSummary : (Object.keys(privateData).length !== 0 ? privateSummary : <h2>No Data Yet!</h2>)}
           </div>
           <div className="preList">
             <ViewSlider sliderClick={togglePublicView}/>
