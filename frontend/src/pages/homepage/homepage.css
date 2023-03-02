@@ -3,6 +3,27 @@
    background-color: #00A9C7;
    position: relative;
    overflow: scroll;
+   min-height: 600px;
+   height: calc(100vh - 118px);
+   --sidebarwidth: 180px;
+}
+
+.homeButtons {
+   position: absolute;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 20px;
+   width: var(--sidebarwidth);
+   background-color: transparent;
+   min-height: 600px;
+   height: calc(100vh - 118px);
+}
+
+.homeMap {
+   height: 100%;
+   overflow: scroll;
+   padding-left: var(--sidebarwidth);
 }
 
 .smallWindowButtonsContainer {
@@ -15,19 +36,6 @@
 .smallWindowButtons {
    background-color: #1B3A20;
    color: white;
-}
-
-.homeButtons {
-   height: calc(100vh - 150px);
-   min-height: 600px;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: space-around;
-}
-
-.sliderHolder {
-   margin-left: 16px;
 }
 
 .notFound {
@@ -64,7 +72,7 @@
 
 .home-blog-positioner {
    position: absolute;
-   top: 8%;
+   top: 9%;
    width: 100%;
    padding: 20px 25% 0 25%;
    pointer-events: none;
@@ -87,6 +95,7 @@
    top: 3%;
    cursor: pointer;
 }
+
 
 @media(max-width:960px) {
    .hero {
@@ -115,5 +124,8 @@
    }
    .close-blog {
       color: black;
+   }
+   .homeMap {
+      padding-left: 0;
    }
 }

@@ -174,12 +174,12 @@ const deleteBlog = asyncHandler(async (req, res) => {
    await Cuisine.findOne({ user:req.user.id, _id:req.params.cuisine_id })
       .then((cuisine) => {
          cuisine.blogs.pull(req.params.restaurant)
+         cuisine.markModified('blogs')
          cuisine.save(function (err) {
             if (err) {
                console.log(`Blog deletion error: ${err}`)
                return
             };
-            console.log('the blog was removed');
           });
          res.status(200).json({msg: "Blog deleted"})
        })

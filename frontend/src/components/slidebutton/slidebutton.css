@@ -1,7 +1,7 @@
 .hover-button {
   position: relative;
   width: 100%; /* adjust this value based on your image width */
-  height: 110px; /* adjust this value based on your image height */
+  height: 100px; /* adjust this value based on your image height */
   margin: 20px 0;
   overflow: hidden;
 }
@@ -50,8 +50,7 @@
   font-size: 24px;
   color: #E4DEAE;
   cursor: pointer;
-  word-wrap: none;
-  white-space: nowrap;
+  font-size: 22px;;
 }
 
 .slide-in {
@@ -98,7 +97,7 @@
     font-size: 16px;
     width: 100%;
     color: white;
-    font-weight: bold;
+
   }
   .slide-button:hover {
     color: #7AC252;
@@ -120,5 +119,6 @@
   .slide-button {
     font-size: 12px;
     font-weight: normal;
+    white-space: nowrap;
   }
 }

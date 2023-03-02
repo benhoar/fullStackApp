@@ -1,7 +1,7 @@
 .summaryWrapper {
    padding: 10px 0 10px 0;
    color: #1B3A20;
-   width: 50%;
+   width: 40%;
    margin: 0 auto;
 }
 
@@ -36,15 +36,15 @@
    margin: 0 auto;
 }
 
-@media(max-width: 1200px) {
+@media(max-width: 1500px) {
    .summaryWrapper {
-      width: 60%;
+      width: 50%;
    }
 }
 
-@media(max-width: 1000px) {
+@media(max-width: 1200px) {
    .summaryWrapper {
-      width: 70%;
+      width: 60%;
    }
 }
 

@@ -1,20 +1,10 @@
 .wrapper {
    position: relative;
-   overflow-x: auto;
-   overflow-y: hidden;
    height: fit-content;
    width: fit-content;
 }
 
 .map {
-   margin-top: 10px;
-   min-height: 600px;
-   height: calc(100vh - 130px);
+   overflow: scroll;
    z-index: 1;
-}
-
-@media(max-width: 960px) {
-   .map {
-      height: calc(100vh - 166px);
-   }
 }

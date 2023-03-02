@@ -15,8 +15,8 @@ const PopMenu = () => {
       {!user && 
         <ul className="drop-menu">
           <li className="menu-item"><a href="/about">About</a></li>
-          <li className="menu-item"><a href="/summary">Blogs</a></li>
-          <li className="menu-item"><a href="/blogs">Dashboard</a></li>
+          <li className="menu-item"><a href="/blogs">Blogs</a></li>
+          <li className="menu-item"><a href="/summary">Dashboard</a></li>
           <li className="menu-item"><a href="/login">Log in</a></li>
           <li className="menu-item"><a href="/register">Register</a></li>
         </ul>

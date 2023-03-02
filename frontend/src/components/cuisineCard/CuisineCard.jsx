@@ -10,7 +10,7 @@ const CuisineCard = ({ data }) => {
 
   return (
    <div className="countryCardWrapper">
-      <div className="cardCuisine"><em>{data.cuisine}</em></div>
+      <div className="cardCuisine">{data.cuisine}</div>
       <div className="countryCard">
          <div className="cardHalf leftCard">
             <div>Score</div>

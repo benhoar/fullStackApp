@@ -5,13 +5,16 @@ import { useVisibility } from '../../context/VisibilityContext'
 import { useData } from '../../context/DataContext'
 import { useState } from 'react'
 import { useSelectedContext } from '../../context/SelectedContext'
-import useWindowWidth from '../../hooks/useWindowWidth'
+import useWindowWidth from '../../hooks/useWindowSize'
+import ViewSlider from '../viewslider/ViewSlider'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 
-export const Buttons = ({ cuisineTypes, mapDispatch, errorMessage, setSideBlog }) => {
+export const Buttons = ({ cuisineTypes, mapDispatch, errorMessage, setSideBlog, setErrorMessage }) => {
    const [rater, setRater] = useState(false)
    const { selected, setSelected } = useSelectedContext()
    const { publicView, togglePublicView } = useVisibility()
    const { innerWidth } = useWindowWidth()
+   const { user } = useAuthContext()
    const { privateData, publicData } = useData()
 
    const setBlue = () => {
@@ -63,6 +66,14 @@ export const Buttons = ({ cuisineTypes, mapDispatch, errorMessage, setSideBlog }
          onClick: () => togglePublicView()
       }
    }
+
+   const sliderClick = () => {
+      if (!user) {
+        setErrorMessage("No user data!")
+        return
+      }
+      togglePublicView()
+    }
    
    return (
    <div className="sidebar-buttons-container">
@@ -74,6 +85,11 @@ export const Buttons = ({ cuisineTypes, mapDispatch, errorMessage, setSideBlog }
                return innerWidth < 960 ? <SlideButton key={key} details={val}/> : null
             }
          })}
+         {innerWidth > 960 &&
+            <div className='slider-holder'>
+               <ViewSlider sliderClick={sliderClick}/>
+            </div>
+         }
       </div>}
       {rater && <CountryList cuisineTypes={cuisineTypes} setRater={setRater} setSelected={setSelected} selected={selected} mapDispatch={mapDispatch} errorMessage={errorMessage}/>}
    </div>

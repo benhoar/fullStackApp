@@ -1,25 +1,22 @@
 import Map from '../../components/map/Map'
 import './homepage.css'
 import { useReducer, useState, useEffect, useMemo } from 'react'
-import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import SummaryPost from '../../components/summarypost/SummaryPost'
 import staticCountries from '../../staticdata/countries'
-import ViewSlider from '../../components/viewslider/ViewSlider'
 import { useSelectedContext } from '../../context/SelectedContext'
 import { useVisibility } from '../../context/VisibilityContext'
 import { useData } from '../../context/DataContext'
 import { Buttons } from '../../components/buttons/Buttons'
 import useCuisineTranslator from '../../hooks/useCuisineTranslator'
-import useWindowWidth from '../../hooks/useWindowWidth'
+import useWindowWidth from '../../hooks/useWindowSize'
 import BlogForm from '../../components/blog/BlogForm'
 import { FaTimes } from 'react-icons/fa'
 
 const HomePage = () => {
 
   const { selected, setSelected } = useSelectedContext()
-  const { publicView, togglePublicView } = useVisibility()
+  const { publicView } = useVisibility()
   const { privateData, publicData } = useData()
-  const { user } = useAuthContext()
   const [errorMessage, setErrorMessage] = useState("")
   const [popData, setPopData] = useState([])
   const [hidepop, setHidepop] = useState(true)
@@ -97,13 +94,6 @@ const HomePage = () => {
     mapDispatch({ type: "SET VISIBILITY", country: toSilence, visible: false })
   }
 
-  const sliderClick = () => {
-    if (!user) {
-      setErrorMessage("No user data!")
-      return
-    }
-    togglePublicView()
-  }
 
   return (
       <div className="hero">
@@ -111,6 +101,7 @@ const HomePage = () => {
           <div className="smallWindowButtons">
             <Buttons cuisineTypes={cuisineToCountry} 
                     mapDispatch={mapDispatch}
+                    setErrorMessage={setErrorMessage}
                     errorMessage={errorMessage}
                     setSideBlog={setSideBlog}
             />
@@ -121,15 +112,13 @@ const HomePage = () => {
                   mapDispatch={mapDispatch}
                   errorMessage={errorMessage}
                   setSideBlog={setSideBlog}
+                  setErrorMessage={setErrorMessage}
           />
-          <div className='sliderHolder'>
-            <ViewSlider sliderClick={sliderClick}/>
-          </div>
         </div>
         <div className="homeMap">
           <Map mapState={mapState} 
-              mapDispatch={mapDispatch} 
-              hide={hide}/>
+               mapDispatch={mapDispatch} 
+               hide={hide}/>
         </div>
         {!hidepop &&
           <div className="containSummary">
