@@ -1,0 +1,147 @@
+.countryCardWrapper {
+   display: flex;
+   flex-direction: column;
+   --parentWidth: 100%;
+   width: var(--parentWidth);
+}
+
+.countryCardWrapper:hover > .cardCuisine {
+   background-color: #7AC252;;
+}
+
+.countryCard {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   gap: 20px;
+   border: 2px solid #1B3A20;
+   padding: 12px 18px;
+   width: 100%;
+   border-radius: 0px 8px 8px 8px;
+   --shadowColor: 187 60% 40%;
+	background: white;
+	box-shadow: 0.3rem 0.3rem 0 #1B3A20;
+}
+
+.countryCard:hover {
+   box-shadow: 0.3rem 0.3rem 0 #7AC252;
+}
+
+.cardCuisine {
+   font-size: 28px;
+   font-weight: 900;
+   background-color: #1B3A20;
+   color: white;
+   width: 40%;
+   min-width: fit-content;
+   padding: 0px 8px;
+   white-space: nowrap;
+   text-align: center;
+   border-radius: 8px 8px 0 0;
+}
+
+.cardHeader {
+   display: flex;
+   align-items: center;
+}
+
+.cardScore {
+   background-color:rgba(175, 180, 211, 0.25);
+   color:#7AC252;
+   border-radius: 50%;
+   padding: 16px;
+   font-size: 28px;
+   font-weight: bolder;
+   text-align: center;
+}
+
+.cardHalf {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+}
+
+.leftCard {
+   align-items: center;
+   width: 100px;
+   font-size: 32px;
+}
+
+.rightCard {
+   align-items: flex-start;
+   justify-content: space-between;
+   height: 100%;
+   overflow: hidden;
+}
+
+.cardItem {
+   display: flex;
+   align-items: center;
+   font-size: 22px;
+   width: 100%;
+   overflow: scroll;
+   white-space: nowrap;
+   text-overflow: ellipsis;
+}
+
+.fieldWrap {
+   padding-left: 5px;
+   overflow: scroll;
+   white-space: nowrap;
+   text-overflow: ellipsis;
+}
+
+.fi {
+   --flag-width: 90px;
+   font-size: var(--flag-width);
+}
+
+.flag {
+   width: fit-content;
+}
+
+@media(max-width: 600px) {
+   .countryCard {
+      gap: 5px;
+   }
+   .leftCard {
+      width: 50px;
+   }
+   .fi {
+      font-size: 50px;
+   }
+   .fieldLabel {
+      display: none;
+   }
+   .cardCuisine {
+      font-size: 24px;
+   }
+
+   .leftCard {
+      font-size: 24px;
+   }
+
+   .cardScore {
+      font-size: 18px;
+      font-weight: bolder;
+      padding: 12px;
+   }
+
+   .cardItem {
+      font-size: 18px;
+   }
+}
+
+@media(max-width: 400px) {
+   .leftCard {
+      font-size: 18px;
+   }
+   .cardScore {
+      font-size: 16px;
+      font-weight: bolder;
+      padding: 8px;
+   }
+   .cardItem {
+      font-size: 14px;
+   }
+}

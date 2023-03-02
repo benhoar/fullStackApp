@@ -13,9 +13,15 @@ const Blog = ({ blog, setCurData, setAmEditing, setShowAddBlog }) => {
   return (
     <div className="blog">
       <div className="restaurant">
-        <h3>
-          {`${blog.restaurant} (${blog.cuisine}) – ${blog.rating}/10`}
-        </h3>
+        <div className="blogHeading">
+          <div className="blogRestaurant">
+            <b>{`${blog.restaurant} `}</b><em>{blog.cuisine}</em>
+          </div>
+          <div className="blogCuisine">
+            {`${blog.location} – `} 
+            <span style={{color:"#7AC252"}}>{`${blog.rating}/10`}</span>
+          </div>
+        </div>
         {user && user._id === blog.user_id && 
           <div className="icons">
             <FaEdit style={{cursor:'pointer'}} 
@@ -30,15 +36,16 @@ const Blog = ({ blog, setCurData, setAmEditing, setShowAddBlog }) => {
             <FaTimes style={{cursor:'pointer'}}
                     onClick={async () => { 
                         await deleteBlog(blog.cuisine_id, blog.restaurant, user)
-                        await updateBlogDependants(blog.cuisine, blog.cuisine_id, user) 
                         setDataUpdated(prevState => !prevState)
+                        await updateBlogDependants(blog.cuisine, blog.cuisine_id, user) 
                     }}
             />
           </div>
         }
       </div>
-      <p>{`${blog.blog}
-           ${new Date(blog.date).toDateString()}`}
+      <p className="blogText">
+        {blog.blog}
+        <em> {new Date(blog.date).toDateString()}</em>
       </p>
     </div>
   )

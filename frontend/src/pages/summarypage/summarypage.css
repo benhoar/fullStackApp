@@ -1,7 +1,7 @@
 .summaryWrapper {
    padding: 10px 0 10px 0;
    color: #1B3A20;
-   width: 60%;
+   width: 50%;
    margin: 0 auto;
 }
 
@@ -17,10 +17,16 @@
    width: 100%;
    min-height: fit-content;
    margin-bottom: 15px;
-   background-color: rgba(175, 180, 211, 0.25);
+   border: 2px solid #1B3A20;
    padding: 10px;
    border-radius: 8px;
    gap: 10px;
+   --shadowColor: 187 60% 40%;
+	box-shadow: 0.3rem 0.3rem 0 #1B3A20;
+}
+
+.preTable:hover {
+   box-shadow: 0.3rem 0.3rem 0 #7AC252;;
 }
 
 .tableWrapper {
@@ -30,18 +36,20 @@
    margin: 0 auto;
 }
 
-.summariesWrapper {
-   width: 100%;
-}
-
 @media(max-width: 1200px) {
    .summaryWrapper {
-      width: 80%;
+      width: 60%;
+   }
+}
+
+@media(max-width: 1000px) {
+   .summaryWrapper {
+      width: 70%;
    }
 }
 
 @media(max-width: 800px) {
    .summaryWrapper {
-      width: 95%;
+      width: 90%;
    }
 }

@@ -53,6 +53,26 @@
   transform: scale(0.98);
 }
 
+.blogHeading {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 20px;
+}
+
+.blogRestaurant {
+  gap: 5px;
+  font-size: 24px;
+}
+
+.blogCuisine {
+  font-size: 18px;
+}
+
+.blogText {
+  font-size: 18px;
+}
+
 .blog {
   background-color: white;
   color:#1B3A20;
@@ -79,6 +99,7 @@
 
 .icons {
   display: flex;
+  align-self: center;
   align-items: center;
   justify-content: space-between;
   column-gap: 10px;
@@ -180,10 +201,28 @@ textarea:focus {
    padding: 4px;
 }
 
+@media(max-width: 960px) {
+  .blogHeading {
+    font-size: 22px;
+  }
+}
+
 @media(max-width: 560px) {
   .form-control {
     display: flex;
     flex-direction: column;
+  }
+  .blogRestaurant {
+    width: 250px;
+    overflow: scroll;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .blogCuisine {
+    width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 

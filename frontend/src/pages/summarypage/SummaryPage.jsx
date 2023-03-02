@@ -6,9 +6,8 @@ import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import ViewSlider from '../../components/viewslider/ViewSlider'
 import SummaryPost from '../../components/summarypost/SummaryPost'
 import Profile from '../../components/profile/Profile'
-import CuisineSummary from '../../components/cuisinesummary/CuisineSummary'
+import CuisineCard from '../../components/cuisineCard/CuisineCard'
 import CuisineSummaries from '../../components/cuisinesummary/CuisineSummaries'
-
 
 const SummaryPage = () => {
 
@@ -40,7 +39,7 @@ const SummaryPage = () => {
           summaryData.allScores[score] += cur.allScores[score]
         }
         source[cuisine].cuisine = cuisine
-        posts.push(<CuisineSummary key={cuisine} data={source[cuisine]}/>)
+        posts.push(<CuisineCard key={cuisine} data={source[cuisine]}/>)
         const curav = cur.scoreSum / cur.spotsVisited
         if (curav > winner[1]) {
           winner = [cuisine, curav]
@@ -97,9 +96,7 @@ const SummaryPage = () => {
               </select>
             </div>
           </div>
-          <div className="summariesWrapper">
-            <CuisineSummaries posts={publicView ? publicPosts : privatePosts} sortKey={sortKey}/>
-          </div>
+          <CuisineSummaries posts={publicView ? publicPosts : privatePosts} sortKey={sortKey}/>
           {user &&
             <div className="preTable" style={{marginTop:"20px", marginBottom:"0px"}}>
               <Profile />

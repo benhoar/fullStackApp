@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useData } from '../../context/DataContext'
 import { useVisibility } from '../../context/VisibilityContext'
+import './cuisinesummaries.css'
+
 
 const CuisineSummaries = ({ posts, sortKey }) => {
 
@@ -29,7 +31,7 @@ const CuisineSummaries = ({ posts, sortKey }) => {
    }, [sortKey, posts, privateData, publicData, publicView])
 
    return (
-      <div>
+      <div className="cardWrapper">
          {curPosts}
       </div>
    )

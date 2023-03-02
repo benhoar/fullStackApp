@@ -195,7 +195,8 @@ BlogForm.defaultProps = {
       rating: '',
       blog: ''
    },
-   isEdit: false
+   isEdit: false,
+   setCurData: () => {}
 }
 
 export default BlogForm
