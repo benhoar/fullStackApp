@@ -42,7 +42,7 @@ const SummaryPost = ({ data, isSummary, hide  }) => {
   
   return (
    <div ref={ref}>
-      <div className="summaryPost" style={!isSummary ? {border:"2px solid #351E1B"} : {}}>
+      <div className="summaryPost" style={isSummary ? {boxShadow:'none'} : {border:"2px solid #351E1B"}}>
          {!isSummary &&
             <div className="exit" onClick={() => hide()}>
                <FaTimes />

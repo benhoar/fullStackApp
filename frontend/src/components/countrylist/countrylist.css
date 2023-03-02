@@ -5,6 +5,7 @@
    align-items: center;
    justify-content: space-around;
    height: 100%;
+   
 }
 
 .countriesList {
@@ -18,6 +19,8 @@
    list-style: none;
    height: 90%;
    scrollbar-width: none;
+   --shadowColor: 187 60% 40%;
+   box-shadow:  0.3rem 0.3rem 0 rgba(0, 0, 0, 0.6);
 }
 
 .selectHeader {

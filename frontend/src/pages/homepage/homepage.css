@@ -77,6 +77,8 @@
    position: relative;
    pointer-events: all;
    margin-bottom: 8%;
+   --shadowColor: 187 60% 40%;
+	box-shadow:  0.5rem 0.5rem 0 rgba(0, 0, 0, 0.6);
 }
 
 .close-blog {
