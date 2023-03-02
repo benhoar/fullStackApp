@@ -20,21 +20,21 @@ const CuisineCard = ({ data }) => {
             <div className="cardItem">
                <TbCrown style={{flexShrink:"0", color:"#7AC252"}}/>
                <div className="fieldWrap">
-               <span className="fieldLabel">Favorite</span> Spot:  {topSpot.restaurant}
+               <span style={{fontWeight:"bold"}}><span className="fieldLabel">Favorite</span>  Spot:</span>  {topSpot.restaurant}
                </div>
             </div>
             {topSpot.highlight && topSpot.highlight.length !== 0 &&
             <div className="cardItem">
                <TbStar style={{flexShrink:"0", color:"#7AC252"}}/>
                <div className="fieldWrap">
-                  <span className="fieldLabel">Best</span> Meal: {topSpot.highlight}
+                  <span style={{fontWeight:"bold"}}><span className="fieldLabel">Best</span>  Meal:</span> {topSpot.highlight}
                </div>
             </div>
             }
             <div className="cardItem">
                <BsHouseDoor style={{flexShrink:"0", color:"#7AC252"}}/>
                <div className="fieldWrap">
-                  <span className="fieldLabel">Places</span>  Visited: {data.spotsVisited}
+                 <span style={{fontWeight:"bold"}}><span className="fieldLabel">Places</span>  Visited:</span> {data.spotsVisited}
                </div>
             </div>
          </div>
