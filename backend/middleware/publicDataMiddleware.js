@@ -5,7 +5,7 @@ const ObjectId = require('mongodb').ObjectId
 
 const publicFetch = asyncHandler(async (req, res, next) => {
    const token = req.params.user_token
-   let decoded_object
+   let decoded_object = new ObjectId()
    if (token !== "0000") {
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
       decoded_object = new ObjectId(decoded)

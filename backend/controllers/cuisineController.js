@@ -1,17 +1,32 @@
 const asyncHandler = require('express-async-handler')
-
+const jwt = require('jsonwebtoken')
 const Cuisine = require('../models/cuisineModel')
 const User = require('../models/userModel')
+const ObjectId = require('mongodb').ObjectId
 
-// desc get public data
-// @rout GET /api/cuisines/public 
+// desc get public data with no user logged in
+// @route GET /api/cuisines/public 
 const getPublicData = asyncHandler(async (req, res) => {
-   // publicDataMiddleware called!
-   if (!res.filtered_cuisines) {
+   const Cuisines = await Cuisine.find().limit(1000)
+   if (!Cuisines) {
       res.status(400)
       throw new Error('No cuisines found')
    }
-   res.status(200).json(res.filtered_cuisines)
+   res.status(200).json(Cuisines)
+})
+
+// desc get public data with user logged in
+// @route GET /api/cuisines/public/:user_token
+const getPublicDataUser = asyncHandler(async (req, res) => {
+   const token = req.params.user_token
+   const decoded = jwt.verify(token, process.env.JWT_SECRET)
+   const decoded_object = new ObjectId(decoded)
+   const Cuisines = await Cuisine.find({ user: { $ne : decoded_object } }).limit(1000)
+   if (!Cuisines) {
+      res.status(400)
+      throw new Error('No cuisines found')
+   }
+   res.status(200).json(Cuisines)
 })
 
 // @desc get all Cuisines
@@ -31,7 +46,6 @@ const getCuisines = asyncHandler(async (req, res) => {
 // CHECKED
 const getCuisine = asyncHandler(async (req, res) => {
    const cuisine = await Cuisine.findOne({ user: req.user.id, cuisine: req.params.cuisine })
-
    if (!cuisine) {
       res.status(400)
       throw new Error('Cuisine not found for user')
@@ -191,6 +205,7 @@ const deleteBlog = asyncHandler(async (req, res) => {
 
 module.exports = {
    getPublicData,
+   getPublicDataUser,
    getCuisines,
    postCuisine,
    updateCuisine,

@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const { protect } = require('../middleware/authMiddleware')
-const { publicFetch } = require('../middleware/publicDataMiddleware')
 const {    
          getPublicData,
+         getPublicDataUser,
          getCuisines, 
          postCuisine, 
          updateCuisine, 
@@ -16,7 +16,8 @@ const {
 
 //router.get('/blog/:cuisine/:restaurant', protect, getBlog)
 //router.get('/:id', protect, getCuisine)
-router.get('/public/:user_token', publicFetch, getPublicData)
+router.get('/public/:user_token', getPublicDataUser)
+router.get('/public/', getPublicData)
 router.get('/', protect, getCuisines) // WEBSITE√
 router.get('/cuisine/:cuisine', protect, getCuisine) // WEBSITE√ 
 router.get('/blog/:cuisine_id/:blog_id', protect, getBlog) //√
