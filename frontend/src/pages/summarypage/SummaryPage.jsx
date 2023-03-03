@@ -97,6 +97,7 @@ const SummaryPage = () => {
             </div>
           </div>
           <CuisineSummaries posts={publicView ? publicPosts : privatePosts} sortKey={sortKey}/>
+
           {user &&
             <div className="preTable" style={{marginTop:"20px", marginBottom:"0px"}}>
               <Profile />

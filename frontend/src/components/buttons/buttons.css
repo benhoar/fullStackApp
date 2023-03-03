@@ -24,6 +24,7 @@
       width: 100%;
       flex-direction: row;
       justify-content: space-between;
+      overflow: scroll;
    }
    .sidebar-buttons-container {
       width: 100%;

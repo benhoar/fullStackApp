@@ -34,8 +34,8 @@
 }
 
 .smallWindowButtons {
-   background-color: #1B3A20;
-   color: white;
+   background-color: transparent;
+   backdrop-filter: blur(6px);
 }
 
 .notFound {
@@ -109,9 +109,6 @@
    }
    .smallWindowButtonsContainer {
       display: block
-   }
-   .homeMap {
-      margin-top: 41px;
    }
    .summaryPop {
       margin: 150px auto;

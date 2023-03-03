@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import useWindowSize from "../../hooks/useWindowSize";
 import "./slidebutton.css";
 
-function SlideButton({ details }) {
+function SlideButton({ key, details }) {
   const [isHovering, setIsHovering] = useState(false);
   const { image, text, alt, onClick } = details
+  const { innerWidth } = useWindowSize()
 
   const handleHover = () => {
     setIsHovering(true);
@@ -23,6 +25,9 @@ function SlideButton({ details }) {
         />
       </div>
       <div className="button-container">
+        {innerWidth <= 960 && image !== null && 
+          <img src={image} alt={alt} className="miniIcon"/>
+        }
         <button onClick={onClick} className={`slide-button ${isHovering ? "slide-in" : ""}`}>
           {text}
         </button>

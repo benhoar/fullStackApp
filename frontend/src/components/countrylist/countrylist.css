@@ -79,6 +79,7 @@
       background-color: white;
       color:#1B3A20;
       border: none;
+      border-radius: 0;
     }
     .countryItem {
       border-bottom: none;
@@ -86,6 +87,7 @@
       width: fit-content;
       white-space: nowrap;
       text-align: center;
+      font-size: 14px;
       padding: 2px 6px 2px 4px;
     }
     .selectedItem {

@@ -4,6 +4,7 @@
   height: 100px; /* adjust this value based on your image height */
   margin: 20px 0;
   overflow: hidden;
+  min-width: fit-content;
 }
 
 .button-img-container {
@@ -115,10 +116,24 @@
   }
 }
 
-@media(max-width: 600px) {
+@media(max-width: 960px) {
+  .button-container {
+    justify-content: space-around;
+    gap: 5px;
+    width: fit-content;
+    padding: 10px;
+  }
+  
   .slide-button {
-    font-size: 12px;
     font-weight: normal;
     white-space: nowrap;
+    color: white;
+    padding: 0px;
+    width: fit-content;
   }
+
+  .miniIcon {
+    height: 20px;
+  }
+
 }
