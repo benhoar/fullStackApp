@@ -53,11 +53,16 @@ export const DataProvider = ({ children }) => {
 
    // get public data
    useEffect(() => {
-      const getPublicData = async (token) => {
+      const getPublicData = async () => {
          try {
-            const res = await axios.get(`/api/cuisines/public/${token}`)
+            let res
+            if (user !== null && user !== undefined) {
+               res = await axios.get(`/api/cuisines/public/${user.token}`)
+            } else {
+               res = await axios.get(`/api/cuisines/public/`)
+            }
             const public_data = {}
-            if (res.data) {
+            if (res.data !== null && res.data !== undefined) {
                res.data.forEach((datum) => {
                   if (datum.cuisine in public_data) {
                      merge(public_data[datum.cuisine], datum)
@@ -75,14 +80,7 @@ export const DataProvider = ({ children }) => {
          }
       }
       // workaround, investigate why using ternary with user context value for "user" can't se token
-      const curUser = localStorage.getItem('user')
-      let token
-      if (curUser) {
-         token = JSON.parse(curUser).token
-      } else {
-         token = "0000"
-      }
-      getPublicData(token)
+      getPublicData()
    }, [merge, user])
  
    return (
