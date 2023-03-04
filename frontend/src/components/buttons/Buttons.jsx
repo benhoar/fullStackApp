@@ -32,25 +32,25 @@ export const Buttons = ({ cuisineTypes, mapDispatch, errorMessage, setSideBlog, 
   
    const buttons = {
       0: {
-         image: innerWidth < 960 ? 'images/miniGlobe.png' : 'images/globe2.png',
+         image: innerWidth <= 960 ? 'images/miniGlobe.png' : 'images/globe2.png',
          text: 'Highlight Visits',
          alt: "globe",
          onClick: () => setBlue(),
       },
       1: {
-         image: innerWidth < 960 ? 'images/miniNotes.png' : 'images/revs2.png',
+         image: innerWidth <= 960 ? 'images/miniNotes.png' : 'images/revs2.png',
          text: 'Write a Blog',
          alt: "notes",
          onClick: () => setSideBlog(prevState => !prevState),
       },
       2: {
-         image: innerWidth < 960 ? 'images/miniPlate.png' : 'images/1plate2.png',
+         image: innerWidth <= 960 ? 'images/miniPlate.png' : 'images/1plate2.png',
          text: 'Find a Cuisine',
          alt: "plate",
          onClick: () => setRater(prevState => !prevState),
       },
       3: {
-         image: innerWidth < 960 ? 'images/miniDiner.png' : 'images/diner3.png',
+         image: innerWidth <= 960 ? 'images/miniDiner.png' : 'images/diner3.png',
          text: 'Let\'s Go Out!',
          alt: "diner",
          onClick: () => {

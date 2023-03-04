@@ -2,7 +2,7 @@ import { useState } from "react";
 import useWindowSize from "../../hooks/useWindowSize";
 import "./slidebutton.css";
 
-function SlideButton({ key, details }) {
+function SlideButton({ details }) {
   const [isHovering, setIsHovering] = useState(false);
   const { image, text, alt, onClick } = details
   const { innerWidth } = useWindowSize()
